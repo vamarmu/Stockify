@@ -33,10 +33,12 @@ class FavouritesFragment : Fragment(), SearchImpl {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview)
         val recyclerView_favourites = view.findViewById<RecyclerView>(R.id.recyclerview_favourites)
         val manager = LinearLayoutManager(view.context.applicationContext)
         val manager_favourites = LinearLayoutManager(view.context.applicationContext)
+
         recyclerView_favourites.layoutManager= manager_favourites
         recyclerView.setLayoutManager(manager)
         searchAdapter.list = mutableListOf(
@@ -62,11 +64,13 @@ class FavouritesFragment : Fragment(), SearchImpl {
         fun newInstance() = FavouritesFragment()
     }
 
-    override fun onQueryTextSubmit() {
+    override fun onQueryTextSubmit(filter: String) {
         TODO("Not yet implemented")
     }
 
-    override fun onQueryTextChange() {
+    override fun onQueryTextChange(filter: String) {
         TODO("Not yet implemented")
     }
+
+
 }

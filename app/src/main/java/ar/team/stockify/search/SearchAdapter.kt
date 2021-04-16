@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ar.team.stockify.R
 import ar.team.stockify.model.SearchItem
 
-class SearchAdapter: RecyclerView.Adapter<SearchAdapter.ViewHolder>() , SearchImpl{
+class SearchAdapter: RecyclerView.Adapter<SearchAdapter.ViewHolder>(){
 
 
     class ViewHolder private constructor(view:View):RecyclerView.ViewHolder(view.rootView){
@@ -33,32 +33,21 @@ class SearchAdapter: RecyclerView.Adapter<SearchAdapter.ViewHolder>() , SearchIm
     var list = mutableListOf<SearchItem>()
         set(value) {
             field = value
-            list_copia.addAll(list)
+
             notifyDataSetChanged()
         }
 
-    var list_copia = mutableListOf<SearchItem>()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchAdapter.ViewHolder {
         return ViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: SearchAdapter.ViewHolder, position: Int) {
-        holder.bind(list_copia[position])
+        holder.bind(list[position])
     }
 
     override fun getItemCount(): Int =
        list.size
 
-    override fun onQueryTextSubmit() {
-        TODO("Not yet implemented")
-    }
 
-    override fun onQueryTextChange() {
-        TODO("Not yet implemented")
-    }
 
 }
