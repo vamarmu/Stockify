@@ -5,6 +5,7 @@ import android.content.pm.PackageInfo
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.widget.TextView
 import android.widget.Toast
 
@@ -15,9 +16,9 @@ class SplashActivity : AppCompatActivity() {
 
         val packageInfo = packageManager.getPackageInfo(packageName, 0)
         val version: TextView = findViewById(R.id.version)
-        version.text = "V ${packageInfo.versionName}"
+        version.text = resources.getString(R.string.version, packageInfo.versionName)
 
-        Handler().postDelayed({
+        Handler(Looper.getMainLooper()).postDelayed({
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }, 3000)
