@@ -20,15 +20,15 @@ private const val TYPE_HEADER_ITEM = 0
 private const val TYPE_FAVOURITE_ITEM = 1
 
 class SearchAdapter(private val clickListener: SearchClickListener) :
-    ListAdapter<Symbol, RecyclerView.ViewHolder>(SearchItemDiffCallback()),
-    SearchImpl {
+    ListAdapter<SealedSymbol, RecyclerView.ViewHolder>(SearchItemDiffCallback()),
+    SearchImpl, AddSymbols {
 
-    private lateinit var list_aux: MutableList<Symbol>
+    private lateinit var list_aux: MutableList<SealedSymbol>
     private val adapterScope= CoroutineScope(Dispatchers.Default)
 
-    fun addListWithoutHeader(list: List<BestMatches>?){
+    override fun addListWithoutHeader(list: List<BestMatches>?){
         adapterScope.launch {
-            val symbols = list?.map { Symbol.FavoriteSymbol(it)
+            val symbols = list?.map { SealedSymbol.FavoriteSymbol(it)
             }
             withContext(Dispatchers.Main) {
                 submitList(symbols)
@@ -36,11 +36,11 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
         }
     }
 
-    fun addListWithHeader(list:List<BestMatches>?){
+    override fun addListWithHeader(list:List<BestMatches>?){
         adapterScope.launch {
             val symbols = when (list) {
-                null -> listOf(Symbol.Header)
-                else -> listOf(Symbol.Header) + list.map { Symbol.FavoriteSymbol(it) }
+                null -> listOf(SealedSymbol.Header)
+                else -> listOf(SealedSymbol.Header) + list.map { SealedSymbol.FavoriteSymbol(it) }
             }
             withContext(Dispatchers.Main) {
                 submitList(symbols)
@@ -60,7 +60,7 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ViewHolder -> {
-                val item = getItem(position) as Symbol.FavoriteSymbol
+                val item = getItem(position) as SealedSymbol.FavoriteSymbol
                 holder.bind(clickListener, item.bestMatches)
             }
         }
@@ -68,8 +68,8 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is Symbol.Header -> TYPE_HEADER_ITEM
-            is Symbol.FavoriteSymbol -> TYPE_FAVOURITE_ITEM
+            is SealedSymbol.Header -> TYPE_HEADER_ITEM
+            is SealedSymbol.FavoriteSymbol -> TYPE_FAVOURITE_ITEM
         }
     }
 
@@ -163,12 +163,12 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
 }
 
 
-class SearchItemDiffCallback : DiffUtil.ItemCallback<Symbol>() {
-    override fun areItemsTheSame(oldItem: Symbol, newItem: Symbol): Boolean {
+class SearchItemDiffCallback : DiffUtil.ItemCallback<SealedSymbol>() {
+    override fun areItemsTheSame(oldItem: SealedSymbol, newItem: SealedSymbol): Boolean {
         return oldItem.symbol == newItem.symbol
     }
 
-    override fun areContentsTheSame(oldItem: Symbol, newItem: Symbol): Boolean {
+    override fun areContentsTheSame(oldItem: SealedSymbol, newItem: SealedSymbol): Boolean {
         return oldItem == newItem
     }
 }
@@ -177,12 +177,12 @@ class SearchClickListener(val clickListener: (symbol: String) -> Unit) {
     fun onclick(item: BestMatches) = clickListener(item.symbol)
 }
 
-sealed class Symbol {
-    data class FavoriteSymbol(val bestMatches: BestMatches) : Symbol() {
+sealed class SealedSymbol {
+    data class FavoriteSymbol(val bestMatches: BestMatches) : SealedSymbol() {
         override val symbol = bestMatches.symbol
     }
 
-    object Header : Symbol() {
+    object Header : SealedSymbol() {
         override val symbol = String()
     }
 

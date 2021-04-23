@@ -39,10 +39,44 @@ class FavouritesFragment : Fragment(), SearchImpl {
         recyclerView_favourites.layoutManager = manager_favourites
         recyclerView.setLayoutManager(manager)
 
-        recyclerView_favourites.adapter = searchViewModel?.adapter
+        recyclerView_favourites.adapter = searchViewModel?.favorite_adapter
         searchViewModel?.adapter.submitList(searchViewModel?.items.value)
         recyclerView.adapter = searchViewModel?.adapter
-
+        searchViewModel.addListWithHeader(
+            mutableListOf(
+                BestMatches(
+                    "a",
+                    "b",
+                    "c",
+                    "b",
+                    "c",
+                    "b",
+                    "c",
+                    "b",
+                    "c"
+                ), BestMatches(
+                    "C",
+                    "a",
+                    "c",
+                    "b",
+                    "c",
+                    "b",
+                    "c",
+                    "b",
+                    "c"
+                )
+            )
+        )
+        searchViewModel.addListWithoutHeader(mutableListOf(BestMatches(
+            "a",
+            "b",
+            "c",
+            "b",
+            "c",
+            "b",
+            "c",
+            "b",
+            "c")))
     }
 
     companion object {
