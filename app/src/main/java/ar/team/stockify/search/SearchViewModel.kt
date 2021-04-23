@@ -1,15 +1,20 @@
 package ar.team.stockify.search
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+
 class SearchViewModel: SearchImpl {
+    val _adapter= MutableLiveData<SearchAdapter>()
+    val adapter:LiveData<SearchAdapter>
+    get() = _adapter
+
     override fun onQueryTextSubmit(filter:String) {
-        TODO("Not yet implemented")
-        //Filtrar datos en funcion de los datos cacheados
+        _adapter.value?.onQueryTextSubmit(filter)
     }
 
     override fun onQueryTextChange(filter: String) {
-        TODO("Not yet implemented")
-        //LLamada al API
-        //Verificar la integracion de los datos en funcion de la longitud de entrada
-        //Filtrar Datos
+        _adapter.value?.onQueryTextChange(filter)
     }
+
+
 }

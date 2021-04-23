@@ -18,7 +18,6 @@ private const val ARG_PARAM2 = "param2"
 class FavouritesFragment : Fragment(), SearchImpl {
 
     private val searchViewModel = SearchViewModel()
-    private val searchAdapter = SearchAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,24 +38,11 @@ class FavouritesFragment : Fragment(), SearchImpl {
         val manager = LinearLayoutManager(view.context.applicationContext)
         val manager_favourites = LinearLayoutManager(view.context.applicationContext)
 
-        recyclerView_favourites.layoutManager= manager_favourites
+        recyclerView_favourites.layoutManager = manager_favourites
         recyclerView.setLayoutManager(manager)
-        searchAdapter.list = mutableListOf(
-             SearchItem(
-                "TSCO.LON",
-                "Tesco PLC",
-                "Equity",
-                "United Kingdom",
-                "08:00",
-                "16:30",
-                "UTC+01",
-                "GBX",
-                "0.7273"
-            ),
-        )
 
-        recyclerView_favourites.adapter=searchAdapter
-        recyclerView.adapter = searchAdapter
+        recyclerView_favourites.adapter = searchViewModel.adapter.value
+        recyclerView.adapter = searchViewModel.adapter.value
     }
 
     companion object {
@@ -65,11 +51,11 @@ class FavouritesFragment : Fragment(), SearchImpl {
     }
 
     override fun onQueryTextSubmit(filter: String) {
-        TODO("Not yet implemented")
+        searchViewModel.onQueryTextSubmit(filter)
     }
 
     override fun onQueryTextChange(filter: String) {
-        TODO("Not yet implemented")
+        searchViewModel.onQueryTextChange(filter)
     }
 
 

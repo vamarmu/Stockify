@@ -6,7 +6,7 @@ import androidx.appcompat.widget.SearchView
 import ar.team.stockify.R
 
 class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
-    private val fragment= FavouritesFragment()
+    private val fragment= FavouritesFragment.newInstance()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
