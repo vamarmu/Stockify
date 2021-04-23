@@ -1,20 +1,56 @@
 package ar.team.stockify.search
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.app.Application
+import android.content.Context
+import android.widget.Toast
+import androidx.lifecycle.*
+import ar.team.stockify.model.BestMatches
+import kotlinx.coroutines.launch
 
-class SearchViewModel: SearchImpl {
-    val _adapter= MutableLiveData<SearchAdapter>()
-    val adapter:LiveData<SearchAdapter>
-    get() = _adapter
+class SearchViewModel(application: Application) : AndroidViewModel(application), SearchImpl {
 
-    override fun onQueryTextSubmit(filter:String) {
-        _adapter.value?.onQueryTextSubmit(filter)
+    private val _items = MutableLiveData<List<Symbol>>()
+    val items: LiveData<List<Symbol>>
+        get() = _items
+    val adapter = SearchAdapter(SearchClickListener {
+        //TODO(Redirigir a la pantalla de detalle)
+        Toast.makeText(application, it, Toast.LENGTH_LONG).show()
+    })
+    init {
+        adapter.addListWithHeader(mutableListOf(BestMatches(
+            "a",
+            "b",
+            "c",
+            "b",
+            "c",
+            "b",
+            "c",
+            "b",
+            "c"
+        )))
+    }
+
+
+
+    private var filter_actual = ""
+
+    override fun onQueryTextSubmit(filter: String) {
+        viewModelScope.launch {
+            adapter.onQueryTextSubmit(filter)
+        }
     }
 
     override fun onQueryTextChange(filter: String) {
-        _adapter.value?.onQueryTextChange(filter)
-    }
+        viewModelScope.launch {
+            if (filter.length == 1 && filter_actual != filter) {
+                filter_actual = filter
+                //  Llamada al api
+                adapter.onQueryTextChange(filter)
 
+            } else {
+                adapter.onQueryTextChange(filter)
+            }
+        }
+    }
 
 }

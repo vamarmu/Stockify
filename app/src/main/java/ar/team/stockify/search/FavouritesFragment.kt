@@ -8,16 +8,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.team.stockify.R
-import ar.team.stockify.model.SearchItem
+import ar.team.stockify.model.BestMatches
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class FavouritesFragment : Fragment(), SearchImpl {
 
-    private val searchViewModel = SearchViewModel()
+    private lateinit var searchViewModel: SearchViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +28,8 @@ class FavouritesFragment : Fragment(), SearchImpl {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        searchViewModel =
+            SearchViewModelFactory(requireNotNull(activity).application).create(SearchViewModel::class.java)
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerview)
         val recyclerView_favourites = view.findViewById<RecyclerView>(R.id.recyclerview_favourites)
@@ -41,8 +39,10 @@ class FavouritesFragment : Fragment(), SearchImpl {
         recyclerView_favourites.layoutManager = manager_favourites
         recyclerView.setLayoutManager(manager)
 
-        recyclerView_favourites.adapter = searchViewModel.adapter.value
-        recyclerView.adapter = searchViewModel.adapter.value
+        recyclerView_favourites.adapter = searchViewModel?.adapter
+        searchViewModel?.adapter.submitList(searchViewModel?.items.value)
+        recyclerView.adapter = searchViewModel?.adapter
+
     }
 
     companion object {
@@ -51,11 +51,11 @@ class FavouritesFragment : Fragment(), SearchImpl {
     }
 
     override fun onQueryTextSubmit(filter: String) {
-        searchViewModel.onQueryTextSubmit(filter)
+        searchViewModel?.adapter?.onQueryTextSubmit(filter)
     }
 
     override fun onQueryTextChange(filter: String) {
-        searchViewModel.onQueryTextChange(filter)
+        searchViewModel?.adapter?.onQueryTextChange(filter)
     }
 
 

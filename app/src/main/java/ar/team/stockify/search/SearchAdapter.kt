@@ -1,31 +1,55 @@
 package ar.team.stockify.search
 
-import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ar.team.stockify.R
-import ar.team.stockify.model.SearchItem
+import ar.team.stockify.model.BestMatches
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.stream.Collectors
-import java.util.stream.Stream
 
-private val TYPE_HEADER_ITEM = 0
-private val TYPE_FAVOURITE_ITEM = 1
+private const val TYPE_HEADER_ITEM = 0
+private const val TYPE_FAVOURITE_ITEM = 1
 
-class SearchAdapter : ListAdapter<Symbol, RecyclerView.ViewHolder>(SearchItemDiffCallback()),
+class SearchAdapter(private val clickListener: SearchClickListener) :
+    ListAdapter<Symbol, RecyclerView.ViewHolder>(SearchItemDiffCallback()),
     SearchImpl {
 
-    private var filter_actual = ""
     private lateinit var list_aux: MutableList<Symbol>
+    private val adapterScope= CoroutineScope(Dispatchers.Default)
 
+    fun addListWithoutHeader(list: List<BestMatches>?){
+        adapterScope.launch {
+            val symbols = list?.map { Symbol.FavoriteSymbol(it)
+            }
+            withContext(Dispatchers.Main) {
+                submitList(symbols)
+            }
+        }
+    }
 
+    fun addListWithHeader(list:List<BestMatches>?){
+        adapterScope.launch {
+            val symbols = when (list) {
+                null -> listOf(Symbol.Header)
+                else -> listOf(Symbol.Header) + list.map { Symbol.FavoriteSymbol(it) }
+            }
+            withContext(Dispatchers.Main) {
+                submitList(symbols)
+            }
+        }
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         list_aux = currentList
+        Log.d("ADAPTER", viewType.toString())
         return when (viewType) {
             TYPE_HEADER_ITEM -> SearchAdapter.HeaderViewHolder.from(parent)
             TYPE_FAVOURITE_ITEM -> SearchAdapter.ViewHolder.from(parent)
@@ -37,7 +61,7 @@ class SearchAdapter : ListAdapter<Symbol, RecyclerView.ViewHolder>(SearchItemDif
         when (holder) {
             is ViewHolder -> {
                 val item = getItem(position) as Symbol.FavoriteSymbol
-                holder.bind(item.searchItem)
+                holder.bind(clickListener, item.bestMatches)
             }
         }
     }
@@ -55,12 +79,8 @@ class SearchAdapter : ListAdapter<Symbol, RecyclerView.ViewHolder>(SearchItemDif
     }
 
     override fun onQueryTextChange(filter: String) {
-        if (filter.length == 1 && filter_actual != filter) {
-            filter_actual = filter
-            //  Llamada al api
-        } else {
-            textFilter(filter)
-        }
+
+        textFilter(filter)
 
     }
 
@@ -96,10 +116,13 @@ class SearchAdapter : ListAdapter<Symbol, RecyclerView.ViewHolder>(SearchItemDif
     }
 
     class ViewHolder private constructor(view: View) : RecyclerView.ViewHolder(view.rootView) {
-        val stock: TextView = view.findViewById(R.id.stock)
-        val precio: TextView = view.findViewById(R.id.precio)
-        val cambio: TextView = view.findViewById(R.id.cambio)
-        fun bind(item: SearchItem) {
+        private val stock: TextView = view.findViewById(R.id.stock)
+        private val precio: TextView = view.findViewById(R.id.precio)
+        private val cambio: TextView = view.findViewById(R.id.cambio)
+        fun bind(clickListener: SearchClickListener, item: BestMatches) {
+            itemView.setOnClickListener {
+                clickListener.onclick(item)
+            }
             stock.text = item.symbol
             precio.text = item.currency
             cambio.text = item.matchScore
@@ -113,6 +136,30 @@ class SearchAdapter : ListAdapter<Symbol, RecyclerView.ViewHolder>(SearchItemDif
             }
         }
     }
+
+    class FavouriteViewHolder private constructor(view: View) : RecyclerView.ViewHolder(view.rootView) {
+        private val stock: TextView = view.findViewById(R.id.stock)
+        private val precio: TextView = view.findViewById(R.id.precio)
+        private val cambio: TextView = view.findViewById(R.id.cambio)
+        fun bind(clickListener: SearchClickListener, item: BestMatches) {
+            itemView.setOnClickListener {
+                clickListener.onclick(item)
+            }
+            stock.text = item.symbol
+            precio.text = item.currency
+            cambio.text = item.matchScore
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): FavouriteViewHolder {
+                val view: View = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.search_element, parent, false)
+                return FavouriteViewHolder(view)
+            }
+        }
+    }
+
+
 }
 
 
@@ -126,15 +173,13 @@ class SearchItemDiffCallback : DiffUtil.ItemCallback<Symbol>() {
     }
 }
 
-class SearchClickListener() {
-
+class SearchClickListener(val clickListener: (symbol: String) -> Unit) {
+    fun onclick(item: BestMatches) = clickListener(item.symbol)
 }
 
 sealed class Symbol {
-
-
-    data class FavoriteSymbol(val searchItem: SearchItem) : Symbol() {
-        override val symbol = searchItem.symbol
+    data class FavoriteSymbol(val bestMatches: BestMatches) : Symbol() {
+        override val symbol = bestMatches.symbol
     }
 
     object Header : Symbol() {

@@ -18,12 +18,12 @@ class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        //fragment.onQueryTextSubmit()
+        query?.let { fragment.onQueryTextSubmit(it) }
         return false
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        //fragment.onQueryTextChange()
+        newText?.let { fragment.onQueryTextChange(it) }
         return false
     }
 }
