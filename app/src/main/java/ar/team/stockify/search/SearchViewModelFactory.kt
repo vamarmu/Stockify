@@ -6,11 +6,10 @@ import androidx.lifecycle.ViewModelProvider
 import java.lang.IllegalArgumentException
 
 class SearchViewModelFactory(
-    private val application: Application
 ):ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(SearchViewModel::class.java)){
-            return SearchViewModel(application) as T
+            return SearchViewModel() as T
         }
         throw IllegalArgumentException("Unkown ViewModel class received")
     }

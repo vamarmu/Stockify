@@ -6,25 +6,8 @@
 
     <TextView
         android:id="@+id/stock"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:gravity="center"
         tools:text="Symbol" />
-
-    <TextView
-        android:id="@+id/precio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        tools:text="Currency" />
-
-    <TextView
-        android:id="@+id/cambio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        tools:text="Change" />
 </LinearLayout>

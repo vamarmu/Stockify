@@ -6,7 +6,7 @@ import androidx.lifecycle.*
 import ar.team.stockify.model.BestMatches
 import kotlinx.coroutines.launch
 
-class SearchViewModel(application: Application) : AndroidViewModel(application), SearchImpl, AddSymbols{
+class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
 
     private val _items = MutableLiveData<List<SealedSymbol>>()
     val items: LiveData<List<SealedSymbol>>
@@ -15,16 +15,17 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
 
     val adapter = SearchAdapter(SearchClickListener {
         //TODO(Redirigir a la pantalla de detalle)
-        Toast.makeText(application, it, Toast.LENGTH_LONG).show()
+
     })
 
     val favorite_adapter = SearchAdapter(SearchClickListener {
         //TODO(Redirigir a la pantalla de detalle)
-        Toast.makeText(application, it, Toast.LENGTH_LONG).show()
     })
 
 
-
+    init {
+        //TODO Carga de favoritos
+    }
 
     private var filter_actual = ""
 
@@ -39,12 +40,10 @@ class SearchViewModel(application: Application) : AndroidViewModel(application),
         viewModelScope.launch {
             if (filter.length == 1 && filter_actual != filter) {
                 filter_actual = filter
-                // TODO Llamada al api
+                // TODO LLamada al API
                 adapter.onQueryTextChange(filter)
-                favorite_adapter.onQueryTextChange(filter)
             } else {
                 adapter.onQueryTextChange(filter)
-                favorite_adapter.onQueryTextChange(filter)
             }
         }
     }
