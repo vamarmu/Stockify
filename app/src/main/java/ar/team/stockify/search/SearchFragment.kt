@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ar.team.stockify.R
 
 
-class FavouritesFragment : Fragment(), SearchImpl {
+class SearchFragment : Fragment(), SearchImpl {
 
     private lateinit var searchViewModel: SearchViewModel
 
@@ -33,16 +33,20 @@ class FavouritesFragment : Fragment(), SearchImpl {
         val manager = LinearLayoutManager(view.context.applicationContext)
         val manager_favourites = LinearLayoutManager(view.context.applicationContext)
 
+        searchViewModel.adapter = SearchAdapter(SearchClickListener {
+            //TODO(Redirigir a la pantalla de detalle)
+
+        })
         recyclerView_favourites.layoutManager = manager_favourites
         recyclerView.setLayoutManager(manager)
 
-        recyclerView_favourites.adapter = searchViewModel.favorite_adapter
-       recyclerView.adapter = searchViewModel.adapter
+        recyclerView_favourites.adapter = searchViewModel.adapter
+        recyclerView.adapter = searchViewModel.adapter
     }
 
     companion object {
         @JvmStatic
-        fun newInstance() = FavouritesFragment()
+        fun newInstance() = SearchFragment()
     }
 
     override fun onQueryTextSubmit(filter: String) {

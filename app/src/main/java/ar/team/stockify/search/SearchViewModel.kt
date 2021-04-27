@@ -17,14 +17,8 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
         get() = _items
 
 
-    val adapter = SearchAdapter(SearchClickListener {
-        //TODO(Redirigir a la pantalla de detalle)
+    lateinit var adapter : SearchAdapter
 
-    })
-
-    val favorite_adapter = SearchAdapter(SearchClickListener {
-        //TODO(Redirigir a la pantalla de detalle)
-    })
 
 
     init {
@@ -54,7 +48,7 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
                 )
                 Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
                 _items.value = result.bestMatches
-                adapter.addListWithoutHeader(items.value)
+                addListWithoutHeader(items.value)
             }else {adapter.onQueryTextChange(filter)
 
             filter_actual = filter}
@@ -68,7 +62,7 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
     }
 
     override fun addListWithHeader(list: List<BestMatches>?) {
-        favorite_adapter.addListWithHeader(list)
+        // TODO Añadir elementos a la lista de favoritos
     }
 
 }

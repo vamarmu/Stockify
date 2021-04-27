@@ -4,14 +4,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.appcompat.widget.SearchView
 import ar.team.stockify.R
+import ar.team.stockify.databinding.ActivitySearchBinding
 
 class SearchActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
-    private val fragment= FavouritesFragment.newInstance()
+    private val fragment = SearchFragment.newInstance()
+    private lateinit var searchView: SearchView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ActivitySearchBinding.inflate(layoutInflater).apply {
+            setContentView(root)
+            searchView = searchview
+        }
         setContentView(R.layout.activity_search)
-
-        val searchView = findViewById<SearchView>(R.id.searchview)
         searchView.setOnQueryTextListener(this)
 
         supportFragmentManager.beginTransaction()
