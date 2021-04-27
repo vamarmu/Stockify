@@ -36,18 +36,31 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
     private var filter_actual = ""
     override fun onQueryTextSubmit(filter: String) {
         viewModelScope.launch {
-            adapter.onQueryTextSubmit(filter)
-            favorite_adapter.onQueryTextSubmit(filter)
+            if (filter.length != 1) {
+                val result =
+                    AlphaVantage.service.getSymbolSearch("SYMBOL_SEARCH", filter, Keys.apiKey())
+                Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
+                _items.value = result.bestMatches
+            }
+            adapter.addListWithoutHeader(items.value)
         }
     }
 
     override fun onQueryTextChange(filter: String) {
         viewModelScope.launch {
-                filter_actual = filter
-                val result = AlphaVantage.service.getSymbolSearch("SYMBOL_SEARCH", filter, Keys.apiKey())
+            if (filter.length == 1) {
+                val result = AlphaVantage.service.getSymbolSearch(
+                    "SYMBOL_SEARCH",
+                    filter,
+                    ar.team.stockify.network.Keys.apiKey()
+                )
                 Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
-                _items.value=result.bestMatches
+                _items.value = result.bestMatches
                 adapter.addListWithoutHeader(items.value)
+            }else {adapter.onQueryTextChange(filter)
+
+            filter_actual = filter}
+
 
         }
     }

@@ -13,6 +13,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.*
 import java.util.stream.Collectors
 
 private const val TYPE_HEADER_ITEM = 0
@@ -119,14 +120,14 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
             android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N -> {
                 val collect =
                     currentList.stream().filter {
-                        it.symbol.contains(filter)
+                        it.symbol.toLowerCase(Locale.getDefault()).contains(filter)
                     }.collect(Collectors.toList())
                 submitList(collect)
             }
             else -> {
                 val aux = mutableListOf<SealedSymbol>()
                 currentList.forEach {
-                    if (it.symbol.contains(filter)) {
+                    if (it.symbol.toLowerCase(Locale.getDefault()).contains(filter)) {
                         aux.add(it)
                     }
                 }
