@@ -8,11 +8,12 @@
 
     tools:context=".search.SearchActivity">
 
+
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchview"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/purple_500"
+        android:background="@color/primaryColor"
         app:layout_constraintBottom_toTopOf="@+id/frame_layout"
         app:layout_constraintTop_toTopOf="parent" />
 

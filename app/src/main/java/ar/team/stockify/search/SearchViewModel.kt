@@ -1,15 +1,21 @@
 package ar.team.stockify.search
 
-import android.app.Application
-import android.widget.Toast
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+
 import ar.team.stockify.model.BestMatches
+import ar.team.stockify.model.Symbol
+import ar.team.stockify.network.AlphaVantage
+import ar.team.stockify.network.Keys
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
 
-    private val _items = MutableLiveData<List<SealedSymbol>>()
-    val items: LiveData<List<SealedSymbol>>
+    private val _items = MutableLiveData<List<BestMatches>>()
+    val items: LiveData<List<BestMatches>>
         get() = _items
 
 
@@ -28,7 +34,6 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
     }
 
     private var filter_actual = ""
-
     override fun onQueryTextSubmit(filter: String) {
         viewModelScope.launch {
             adapter.onQueryTextSubmit(filter)
@@ -38,13 +43,12 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
 
     override fun onQueryTextChange(filter: String) {
         viewModelScope.launch {
-            if (filter.length == 1 && filter_actual != filter) {
                 filter_actual = filter
-                // TODO LLamada al API
-                adapter.onQueryTextChange(filter)
-            } else {
-                adapter.onQueryTextChange(filter)
-            }
+                val result = AlphaVantage.service.getSymbolSearch("SYMBOL_SEARCH", filter, Keys.apiKey())
+                Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
+                _items.value=result.bestMatches
+                adapter.addListWithoutHeader(items.value)
+
         }
     }
 

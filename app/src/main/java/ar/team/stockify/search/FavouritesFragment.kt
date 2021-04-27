@@ -38,8 +38,7 @@ class FavouritesFragment : Fragment(), SearchImpl {
         recyclerView.setLayoutManager(manager)
 
         recyclerView_favourites.adapter = searchViewModel.favorite_adapter
-        searchViewModel.adapter.submitList(searchViewModel.items.value)
-        recyclerView.adapter = searchViewModel.adapter
+       recyclerView.adapter = searchViewModel.adapter
     }
 
     companion object {
@@ -48,11 +47,11 @@ class FavouritesFragment : Fragment(), SearchImpl {
     }
 
     override fun onQueryTextSubmit(filter: String) {
-        searchViewModel.adapter.onQueryTextSubmit(filter)
+        searchViewModel.onQueryTextSubmit(filter)
     }
 
     override fun onQueryTextChange(filter: String) {
-        searchViewModel.adapter.onQueryTextChange(filter)
+        searchViewModel.onQueryTextChange(filter)
     }
 
 
