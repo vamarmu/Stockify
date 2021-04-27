@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.team.stockify.R
-import ar.team.stockify.model.BestMatches
 
 
 class FavouritesFragment : Fragment(), SearchImpl {

@@ -4,9 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-
 import ar.team.stockify.model.BestMatches
-import ar.team.stockify.model.Symbol
 import ar.team.stockify.network.AlphaVantage
 import ar.team.stockify.network.Keys
 import kotlinx.coroutines.launch
