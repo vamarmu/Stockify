@@ -104,7 +104,7 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
 
 
     override fun onQueryTextSubmit(filter: String) {
-        textFilter(filter)
+        listAux = currentList
     }
 
     override fun onQueryTextChange(filter: String) {
@@ -120,7 +120,7 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
             android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N -> {
                 val collect =
                     currentList.stream().filter {
-                        it.symbol.toLowerCase(Locale.getDefault()).contains(filter)
+                        it.symbol.toLowerCase().contains(filter)
                     }.collect(Collectors.toList())
                 submitList(collect)
             }

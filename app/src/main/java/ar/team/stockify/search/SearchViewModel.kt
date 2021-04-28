@@ -49,7 +49,8 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
                 Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
                 _items.value = result.bestMatches
                 addListWithoutHeader(items.value)
-            }else {adapter.onQueryTextChange(filter)
+            }else {
+                adapter.onQueryTextChange(filter)
 
             filter_actual = filter}
 
