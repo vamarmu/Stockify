@@ -59,7 +59,6 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
     }
 
     private var listAux: MutableList<SealedSymbol> = mutableListOf()
-    private val adapterScope = CoroutineScope(Dispatchers.Default)
 
     override fun addListWithoutHeader(list: List<BestMatches>?) {
         val symbols = list?.map {
@@ -123,7 +122,7 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
             }
             android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N -> {
                 val collect =
-                    currentList.stream().filter {
+                    listAux.stream().filter {
                         it.symbol.toLowerCase().contains(filter)
                     }.collect(Collectors.toList())
                 submitList(collect)

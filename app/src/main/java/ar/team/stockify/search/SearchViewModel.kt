@@ -35,7 +35,6 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
                     AlphaVantage.service.getSymbolSearch("SYMBOL_SEARCH", filter, Keys.apiKey())
                 Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
                 _items.value = result.bestMatches
-
                 adapter.addListWithoutHeader(items.value)
             }
         }
@@ -44,7 +43,6 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
     override fun onQueryTextChange(filter: String) {
         viewModelScope.launch {
             withContext(Dispatchers.Main) {
-                if (filter.length == 1) {
                     val result = AlphaVantage.service.getSymbolSearch(
                         "SYMBOL_SEARCH",
                         filter,
@@ -53,11 +51,6 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
                     Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
                     _items.value = result.bestMatches
                     addListWithoutHeader(items.value)
-                    adapter.onQueryTextChange(filter_actual)
-                } else {
-                    adapter.onQueryTextChange(filter)
-                    filter_actual = filter
-                }
 
             }
         }
