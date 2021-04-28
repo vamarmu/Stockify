@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ar.team.stockify.R
+import ar.team.stockify.databinding.HeaderSearchElementBinding
+import ar.team.stockify.databinding.SearchElementBinding
 import ar.team.stockify.model.BestMatches
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,18 +25,23 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
     ListAdapter<SealedSymbol, RecyclerView.ViewHolder>(SearchItemDiffCallback()),
     SearchImpl, AddSymbols {
 
-    class HeaderViewHolder private constructor(view: View) : RecyclerView.ViewHolder(view) {
+    class HeaderViewHolder private constructor(view: HeaderSearchElementBinding) :
+        RecyclerView.ViewHolder(view.root) {
         companion object {
             fun from(parent: ViewGroup): HeaderViewHolder {
-                val layoutInflater = LayoutInflater.from(parent.context)
-                val view = layoutInflater.inflate(R.layout.header_search_element, parent, false)
+                val view = HeaderSearchElementBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
                 return HeaderViewHolder(view)
             }
         }
     }
 
-    class ViewHolder private constructor(view: View) : RecyclerView.ViewHolder(view.rootView) {
-        private val stock: TextView = view.findViewById(R.id.stock)
+    class ViewHolder private constructor(view: SearchElementBinding) :
+        RecyclerView.ViewHolder(view.root) {
+        private val stock: TextView = view.stock
         fun bind(clickListener: SearchClickListener, item: BestMatches) {
             itemView.setOnClickListener {
                 clickListener.onclick(item)
@@ -44,38 +51,35 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
-                val view: View = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.search_element, parent, false)
+                val view =
+                    SearchElementBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 return ViewHolder(view)
             }
         }
     }
 
-    private lateinit var listAux: MutableList<SealedSymbol>
+    private var listAux: MutableList<SealedSymbol> = mutableListOf()
     private val adapterScope = CoroutineScope(Dispatchers.Default)
 
     override fun addListWithoutHeader(list: List<BestMatches>?) {
-        adapterScope.launch {
-            val symbols = list?.map {
-                SealedSymbol.FavoriteSymbol(it)
-            }
-            withContext(Dispatchers.Main) {
-                submitList(symbols)
-            }
+        val symbols = list?.map {
+            SealedSymbol.FavoriteSymbol(it)
         }
+        submitList(symbols)
+        listAux = currentList
     }
 
     override fun addListWithHeader(list: List<BestMatches>?) {
-        adapterScope.launch {
-            val symbols = when (list) {
-                null -> listOf(SealedSymbol.Header)
-                else -> listOf(SealedSymbol.Header) + list.map { SealedSymbol.FavoriteSymbol(it) }
-            }
-            withContext(Dispatchers.Main) {
-                submitList(symbols)
-            }
+
+        val symbols = when (list) {
+            null -> listOf(SealedSymbol.Header)
+            else -> listOf(SealedSymbol.Header) + list.map { SealedSymbol.FavoriteSymbol(it) }
         }
+
+        submitList(symbols)
+
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         listAux = currentList
@@ -125,7 +129,7 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
                 submitList(collect)
             }
             else -> {
-                val aux = mutableListOf<SealedSymbol>()
+                val aux = listAux
                 currentList.forEach {
                     if (it.symbol.toLowerCase(Locale.getDefault()).contains(filter)) {
                         aux.add(it)

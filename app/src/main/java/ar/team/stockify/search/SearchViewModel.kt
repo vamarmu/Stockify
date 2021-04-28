@@ -7,7 +7,10 @@ import androidx.lifecycle.viewModelScope
 import ar.team.stockify.model.BestMatches
 import ar.team.stockify.network.AlphaVantage
 import ar.team.stockify.network.Keys
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
@@ -17,8 +20,7 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
         get() = _items
 
 
-    lateinit var adapter : SearchAdapter
-
+    lateinit var adapter: SearchAdapter
 
 
     init {
@@ -33,28 +35,31 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
                     AlphaVantage.service.getSymbolSearch("SYMBOL_SEARCH", filter, Keys.apiKey())
                 Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
                 _items.value = result.bestMatches
+
+                adapter.addListWithoutHeader(items.value)
             }
-            adapter.addListWithoutHeader(items.value)
         }
     }
 
     override fun onQueryTextChange(filter: String) {
         viewModelScope.launch {
-            if (filter.length == 1) {
-                val result = AlphaVantage.service.getSymbolSearch(
-                    "SYMBOL_SEARCH",
-                    filter,
-                    ar.team.stockify.network.Keys.apiKey()
-                )
-                Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
-                _items.value = result.bestMatches
-                addListWithoutHeader(items.value)
-            }else {
-                adapter.onQueryTextChange(filter)
+            withContext(Dispatchers.Main) {
+                if (filter.length == 1) {
+                    val result = AlphaVantage.service.getSymbolSearch(
+                        "SYMBOL_SEARCH",
+                        filter,
+                        ar.team.stockify.network.Keys.apiKey()
+                    )
+                    Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
+                    _items.value = result.bestMatches
+                    addListWithoutHeader(items.value)
+                    adapter.onQueryTextChange(filter_actual)
+                } else {
+                    adapter.onQueryTextChange(filter)
+                    filter_actual = filter
+                }
 
-            filter_actual = filter}
-
-
+            }
         }
     }
 

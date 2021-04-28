@@ -2,11 +2,9 @@ package ar.team.stockify.search
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import ar.team.stockify.R
 import ar.team.stockify.databinding.ActivitySearchBinding
-import java.util.*
 
 class SearchActivity : AppCompatActivity(),SearchView.OnQueryTextListener{
 
@@ -15,7 +13,6 @@ class SearchActivity : AppCompatActivity(),SearchView.OnQueryTextListener{
     override fun onCreate(savedInstanceState: Bundle?) {
           super.onCreate(savedInstanceState)
         val binding = ActivitySearchBinding.inflate(layoutInflater)
-           // setContentView(R.layout.activity_search)
             setContentView(binding.root)
             val searchView = binding.searchView
             searchView.setOnQueryTextListener(this)
@@ -25,12 +22,12 @@ class SearchActivity : AppCompatActivity(),SearchView.OnQueryTextListener{
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        query?.let { fragment.onQueryTextSubmit(it) }
+        query?.let { fragment.onQueryTextSubmit(it.toLowerCase()) }
         return false
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        newText?.let { fragment.onQueryTextChange(it) }
+        newText?.let { fragment.onQueryTextChange(it.toLowerCase()) }
         return false
     }
 }
