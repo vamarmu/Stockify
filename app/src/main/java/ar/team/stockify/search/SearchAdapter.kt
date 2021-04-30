@@ -1,20 +1,14 @@
 package ar.team.stockify.search
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import ar.team.stockify.R
 import ar.team.stockify.databinding.HeaderSearchElementBinding
 import ar.team.stockify.databinding.SearchElementBinding
 import ar.team.stockify.model.BestMatches
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 import java.util.stream.Collectors
 
