@@ -7,6 +7,7 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.TextView
 import ar.team.stockify.databinding.ActivitySplashBinding
+import ar.team.stockify.search.SearchActivity
 
 
 class SplashActivity : AppCompatActivity() {
