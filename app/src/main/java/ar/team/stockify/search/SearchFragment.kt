@@ -1,5 +1,6 @@
 package ar.team.stockify.search
 
+import android.content.Intent
 import android.os.Bundle
 import android.renderscript.ScriptGroup
 import androidx.fragment.app.Fragment
@@ -12,6 +13,8 @@ import ar.team.stockify.R
 
 
 import ar.team.stockify.databinding.FragmentFavouritesBinding
+import ar.team.stockify.details.DetailsActivity
+
 class SearchFragment : Fragment(), SearchImpl {
 
     private lateinit var searchViewModel: SearchViewModel
@@ -39,7 +42,10 @@ class SearchFragment : Fragment(), SearchImpl {
 
         searchViewModel.adapter = SearchAdapter(SearchClickListener {
             //TODO(Redirigir a la pantalla de detalle)
-
+                symbol ->
+            val intent = Intent(context, DetailsActivity::class.java)
+            intent.putExtra(DetailsActivity.DATA, symbol)
+            startActivity(intent)
         })
         recyclerViewFavourites.layoutManager = managerFavourites
         recyclerView.setLayoutManager(manager)
