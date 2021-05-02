@@ -1,9 +1,15 @@
 package ar.team.stockify
 
 import android.app.Application
+import androidx.room.Room
+import ar.team.stockify.database.StockDatabase
 import timber.log.Timber
 
-class Stockify: Application() {
+class StockifyApp: Application() {
+
+    val room = Room
+        .databaseBuilder(this,StockDatabase::class.java, "stock-db")
+        .build()
 
     override fun onCreate() {
         super.onCreate()
