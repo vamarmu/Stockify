@@ -10,10 +10,6 @@ data class AnnualEarning(
     val fiscalDateEnding: String,
     val reportedEPS: String
 )
-data class CompanyDetailsItems(
-    val detailsItems: List<QuarterlyEarning>
-)
-
 
 data class QuarterlyEarning(
     val estimatedEPS: String,
