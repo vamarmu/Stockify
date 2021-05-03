@@ -41,10 +41,10 @@ class SearchFragment : Fragment(), SearchImpl {
         val managerFavourites = LinearLayoutManager(view.context.applicationContext)
 
         searchViewModel.adapter = SearchAdapter(SearchClickListener {
-            //TODO(Redirigir a la pantalla de detalle)
-                symbol ->
+                symbol, name ->
             val intent = Intent(context, DetailsActivity::class.java)
             intent.putExtra(DetailsActivity.DATA, symbol)
+            intent.putExtra(DetailsActivity.COMPANY_NAME, name)
             startActivity(intent)
         })
         recyclerViewFavourites.layoutManager = managerFavourites
