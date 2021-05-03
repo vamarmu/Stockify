@@ -1,50 +1,66 @@
 package ar.team.stockify.details
 
 import androidx.lifecycle.*
-import ar.team.stockify.model.BestMatches
+import ar.team.stockify.databinding.DetailsListItemBinding
+import ar.team.stockify.model.QuarterlyEarning
 import ar.team.stockify.network.AlphaVantage
 import ar.team.stockify.network.Keys
-import ar.team.stockify.search.AddSymbols
-import ar.team.stockify.search.SearchAdapter
-import ar.team.stockify.search.SearchImpl
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class DetailsViewModel() : ViewModel() {
 
 
-    private val _items = MutableLiveData<List<BestMatches>>()
-    val items: LiveData<List<BestMatches>>
-        get() = _items
+    private val _detailsQuarter = MutableLiveData<List<QuarterlyEarning>>()
+    val detailsQuarter: LiveData<List<QuarterlyEarning>>
+        get() = _detailsQuarter
+
+    private val _symbol = MutableLiveData<String>()
+    val symbol: LiveData<String> get() = _symbol
+
+    private val _estimatedEPS = MutableLiveData<String>()
+    val estimatedEPS: LiveData<String> get() = _estimatedEPS
+
+    private val _fiscalDateEnding= MutableLiveData<String>()
+    val fiscalDateEnding: LiveData<String> get() = _fiscalDateEnding
+
+    private val _reportedEPS= MutableLiveData<String>()
+    val reportedEPS: LiveData<String> get() = _reportedEPS
+
+    private val _surprise = MutableLiveData<String>()
+    val surprise: LiveData<String> get() = _surprise
 
 
-    lateinit var adapter: DetailsAdapter
 
 
-    private var filter_actual = ""
-    override fun onQueryCompanyDetails(filter: String) {
+    init {
+          initializeView()
+    }
+
+
+    fun onQueryCompanyDetails(filter: String) {
 
         viewModelScope.launch {
             val result = AlphaVantage.service.getCompanyOverview(
                 "EARNINGS",
-                "IBM",
+                filter,
                 Keys.apiKey())
             Timber.d("${javaClass.simpleName} -> Network call to Get Company Overview Endpoint")
             println(result.symbol)
-            //_items.value = result.symbol
-            addDetailsList(items.value)
+            _detailsQuarter.value = result.quarterlyEarnings
             }
+        }
+
+
+    private fun initializeView()  {
+        _detailsQuarter.value?.run {
+            _estimatedEPS.value = estimatedEPS.toString()
+            _fiscalDateEnding.value =  fiscalDateEnding.toString()
+            _surprise.value = surprise.toString()
         }
     }
 
-    override fun addListWithoutHeader(list: List<BestMatches>?) {
-        adapter.addListWithoutHeader(list)
-    }
-
-    override fun addListWithHeader(list: List<BestMatches>?) {
-        // TODO Añadir elementos a la lista de favoritos
-    }
-
 }
+
+
+
