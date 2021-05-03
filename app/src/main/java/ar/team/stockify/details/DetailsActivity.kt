@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.TextView
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
+import androidx.core.text.underline
 import androidx.lifecycle.*
 import ar.team.stockify.databinding.ActivityDetailsBinding
 import ar.team.stockify.model.QuarterlyEarning
@@ -13,7 +14,7 @@ import ar.team.stockify.model.QuarterlyEarning
 
 class DetailsActivity : AppCompatActivity() {
 
-    companion object{
+    companion object {
         const val DATA = "DetailActivity:detail"
         const val COMPANY_NAME = "name"
     }
@@ -35,38 +36,39 @@ class DetailsActivity : AppCompatActivity() {
         binding.tDetailsCompanyName.text = detailsDataName
         detailsViewModel.onQueryCompanyDetails(detailsData)
 
-        if ( detailsViewModel.detailsQuarter != null) {
-            detailsViewModel.detailsQuarter.observe(this, {list: List<QuarterlyEarning> ->
+        if (detailsViewModel.detailsQuarter != null) {
+            detailsViewModel.detailsQuarter.observe(this, { list: List<QuarterlyEarning> ->
                 bindDetailInfo1(binding.result, list)
                 bindDetailInfo2(binding.result2, list)
             })
         }
     }
 
-    private fun bindDetailInfo1(result: TextView, list: List<QuarterlyEarning> ) {
+    private fun bindDetailInfo1(result: TextView, list: List<QuarterlyEarning>) {
         result.text = buildSpannedString {
 
-            bold { append("estimated EPS: ") }
-            appendLine(list[1].estimatedEPS)
+            append("estimated EPS: ")
+            bold{ appendLine(list[1].estimatedEPS) }
 
-            bold { append("Fiscal Date Ending: ") }
-            appendLine(list[1].fiscalDateEnding)
+            append("Fiscal Date Ending: ")
+            bold { appendLine(list[1].fiscalDateEnding) }
 
-            bold { append("Reported Date: ") }
-            appendLine(list[1].reportedDate)
+            append("Reported Date: ")
+            bold { appendLine(list[1].reportedDate) }
         }
     }
 
-    private fun bindDetailInfo2(result: TextView, list: List<QuarterlyEarning> ) {
+    private fun bindDetailInfo2(result: TextView, list: List<QuarterlyEarning>) {
         result.text = buildSpannedString {
 
-            bold { append("Reported EPS: ") }
-            appendLine(list[1].reportedEPS)
+            append("Reported EPS: ")
+            bold { appendLine(list[1].reportedEPS) }
 
-            bold { appendLine("Surprise: ") }
-            appendLine (list[1].surprise)
+            appendLine("Surprise: ")
+            bold { appendLine(list[1].surprise) }
 
-            bold { append("Surprise Percentage: ") }
-            appendLine(list[1].surprisePercentage)}
+            append("Surprise Percentage: ")
+            bold { appendLine(list[1].surprisePercentage) }
         }
     }
+}
