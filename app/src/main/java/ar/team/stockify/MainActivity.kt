@@ -1,7 +1,8 @@
 package ar.team.stockify
 
-import androidx.appcompat.app.AppCompatActivity
+import android.database.sqlite.SQLiteException
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import ar.team.stockify.database.Stock
 import ar.team.stockify.network.AlphaVantage
@@ -9,12 +10,15 @@ import ar.team.stockify.network.Keys
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+
 class MainActivity : AppCompatActivity() {
 
-    val app = applicationContext as StockifyApp
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val app = applicationContext as StockifyApp
         setContentView(R.layout.activity_main)
 
         //Ejemplos de llamados de Red
@@ -34,18 +38,24 @@ class MainActivity : AppCompatActivity() {
         //Ejemplos de Base de Datos
 
         val stock1 = Stock(symbol = "TSLA", name = "Tesla")
-        val stock2 = Stock (symbol = "AAPL", name = "Apple")
+        val stock2 = Stock(symbol = "AAPL", name = "Apple")
 
 
         lifecycleScope.launch {
-            app.room.stockDao().insert(stock1)
+            try {
+                app.room.stockDao().insert(stock1)
+                app.room.stockDao().insert(stock2)
+            } catch (e: SQLiteException) {
+                println(e.message)
+            }
+
         }
 
         lifecycleScope.launch {
             val favStocks = app.room.stockDao().getAllFav()
 
             favStocks.forEach{
-                println(it.symbol + "" + it.name)
+                println("STOCK SAVED"+ it.symbol + "" + it.name)
             }
         }
     }

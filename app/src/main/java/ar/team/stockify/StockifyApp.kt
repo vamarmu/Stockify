@@ -7,12 +7,15 @@ import timber.log.Timber
 
 class StockifyApp: Application() {
 
-    val room = Room
-        .databaseBuilder(this,StockDatabase::class.java, "stock-db")
-        .build()
+    lateinit var room: StockDatabase
+
 
     override fun onCreate() {
         super.onCreate()
+
+    room = Room
+        .databaseBuilder(this,StockDatabase::class.java, "stock-db")
+        .build()
 
         if(BuildConfig.DEBUG){
             Timber.plant(Timber.DebugTree())
