@@ -19,7 +19,7 @@ class SplashActivity : AppCompatActivity() {
         binding.version.text = resources.getString(R.string.version, BuildConfig.VERSION_NAME)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, SearchActivity::class.java))
+            startActivity(Intent(this, UserActivity::class.java))
             finish()
         }, 3000)
     }

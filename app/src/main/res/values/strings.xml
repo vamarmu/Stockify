@@ -7,4 +7,6 @@
     <string name="cambio">Cambio</string>
     <string name="resultados">Resultados</string>
     <string name="favoritos">Favoritos</string>
+    <string name="user_image">user image</string>
+    <string name="username">username</string>
 </resources>
