@@ -9,7 +9,6 @@ data class Symbol(
     val bestMatches: List<BestMatches>
 )
 
-
 @Parcelize
 data class BestMatches(
     @SerializedName("1. symbol") val symbol: String,

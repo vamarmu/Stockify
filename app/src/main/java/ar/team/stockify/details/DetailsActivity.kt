@@ -36,7 +36,6 @@ class DetailsActivity : AppCompatActivity() {
             binding.ttDetailsCompanySymbol.text = detailsData.symbol
             binding.tDetailsCompanyName.text = detailsData.name
             detailsViewModel.onQueryCompanyDetails(detailsData.symbol)
-
         }
 
         detailsViewModel.detailsQuarter.observe(this, { list: List<QuarterlyEarning> ->

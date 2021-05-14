@@ -52,7 +52,6 @@ class SearchFragment : Fragment(), SearchImpl {
     private fun startDetailsActivity(bestMatches: BestMatches) {
         val intent = Intent(context, DetailsActivity::class.java)
         intent.putExtra(DetailsActivity.DATA, bestMatches)
-
         startActivity(intent)
     }
 
