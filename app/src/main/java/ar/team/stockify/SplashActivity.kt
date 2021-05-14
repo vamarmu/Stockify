@@ -11,6 +11,7 @@ import ar.team.stockify.databinding.ActivitySplashBinding
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
