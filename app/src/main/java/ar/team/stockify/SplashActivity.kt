@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.widget.TextView
 import ar.team.stockify.databinding.ActivitySplashBinding
 import ar.team.stockify.search.SearchActivity
 
@@ -13,6 +12,7 @@ import ar.team.stockify.search.SearchActivity
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
