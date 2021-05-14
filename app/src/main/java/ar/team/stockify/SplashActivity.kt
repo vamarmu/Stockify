@@ -7,6 +7,8 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.TextView
 import ar.team.stockify.databinding.ActivitySplashBinding
+import ar.team.stockify.search.SearchActivity
+
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +19,7 @@ class SplashActivity : AppCompatActivity() {
         binding.version.text = resources.getString(R.string.version, BuildConfig.VERSION_NAME)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, SearchActivity::class.java))
             finish()
         }, 3000)
     }

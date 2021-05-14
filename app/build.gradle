@@ -38,6 +38,7 @@ android {
         }
     }
 
+
     buildFeatures {
          viewBinding = true
     }
@@ -64,6 +65,9 @@ dependencies {
     //Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.4.32"
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
+
 
     //Room Database
     implementation "androidx.room:room-runtime:$room_version"
