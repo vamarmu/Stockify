@@ -15,9 +15,7 @@ import timber.log.Timber
 
 class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
 
-    private val _items = MutableLiveData<List<BestMatches>>()
-    val items: LiveData<List<BestMatches>>
-        get() = _items
+    private var _items = listOf<BestMatches>()
 
 
     lateinit var adapter: SearchAdapter
@@ -30,12 +28,12 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
     private var filter_actual = ""
     override fun onQueryTextSubmit(filter: String) {
         viewModelScope.launch {
-            if (filter.length != 1) {
+            if (filter.length != 1 && filter != filter_actual) {
                 val result =
                     AlphaVantage.service.getSymbolSearch("SYMBOL_SEARCH", filter, Keys.apiKey())
                 Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
-                _items.value = result.bestMatches
-                adapter.addListWithoutHeader(items.value)
+                _items = result.bestMatches
+                adapter.addListWithoutHeader(_items)
             }
         }
     }
@@ -43,15 +41,16 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
     override fun onQueryTextChange(filter: String) {
         viewModelScope.launch {
             withContext(Dispatchers.Main) {
+                if (filter.length == 1 || _items.size > 5) {
                     val result = AlphaVantage.service.getSymbolSearch(
                         "SYMBOL_SEARCH",
                         filter,
                         ar.team.stockify.network.Keys.apiKey()
                     )
                     Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
-                    _items.value = result.bestMatches
-                    addListWithoutHeader(items.value)
-
+                    _items = result.bestMatches
+                    addListWithoutHeader(_items)
+                }
             }
         }
     }

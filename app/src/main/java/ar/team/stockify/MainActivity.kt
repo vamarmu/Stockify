@@ -14,18 +14,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
 
-        lifecycleScope.launch {
-        val result = AlphaVantage.service.getCompanyOverview("EARNINGS", "IBM", Keys.apiKey())
-        Timber.d("${javaClass.simpleName} -> Network call to Get Company Overview Endpoint")
-        println(result.symbol)
-        }
-
-
-        lifecycleScope.launch {
-            val result = AlphaVantage.service.getSymbolSearch("SYMBOL_SEARCH", "tesco", Keys.apiKey())
-            Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
-            println(result.bestMatches[0].symbol)
-        }
 
     }
 }

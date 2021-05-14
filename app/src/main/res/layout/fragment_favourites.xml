@@ -7,6 +7,15 @@
     android:layout_height="match_parent"
     tools:context=".search.SearchFragment">
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:queryHint="Search"
+        android:background="@color/primaryColor"
+        app:layout_constraintBottom_toTopOf="@+id/frame_layout"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:background="@drawable/search_decor"
