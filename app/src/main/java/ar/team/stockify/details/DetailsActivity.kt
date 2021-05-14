@@ -9,6 +9,7 @@ import androidx.core.text.buildSpannedString
 import androidx.core.text.underline
 import androidx.lifecycle.*
 import ar.team.stockify.databinding.ActivityDetailsBinding
+import ar.team.stockify.model.BestMatches
 import ar.team.stockify.model.QuarterlyEarning
 
 
@@ -16,8 +17,8 @@ class DetailsActivity : AppCompatActivity() {
 
     companion object {
         const val DATA = "DetailActivity:detail"
-        const val COMPANY_NAME = "name"
     }
+
 
     private val detailsViewModel by lazy { ViewModelProvider(this).get(DetailsViewModel::class.java) }
 
@@ -28,20 +29,21 @@ class DetailsActivity : AppCompatActivity() {
         binding = ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val detailsData = intent.getSerializableExtra(DATA).toString()
-        val detailsDataName = intent.getSerializableExtra(COMPANY_NAME).toString()
-        Log.d("que es esto???", detailsData)
+        val detailsData = intent.getParcelableExtra<BestMatches>(DATA)
+       // val detailsDataName = intent.getSerializableExtra(DATA.name).toString()
 
-        binding.ttDetailsCompanySymbol.text = detailsData
-        binding.tDetailsCompanyName.text = detailsDataName
-        detailsViewModel.onQueryCompanyDetails(detailsData)
+        if (detailsData != null) {
+            binding.ttDetailsCompanySymbol.text = detailsData.symbol
+            binding.tDetailsCompanyName.text = detailsData.name
+            detailsViewModel.onQueryCompanyDetails(detailsData.symbol)
 
-        if (detailsViewModel.detailsQuarter != null) {
-            detailsViewModel.detailsQuarter.observe(this, { list: List<QuarterlyEarning> ->
-                bindDetailInfo1(binding.result, list)
-                bindDetailInfo2(binding.result2, list)
-            })
         }
+
+        detailsViewModel.detailsQuarter.observe(this, { list: List<QuarterlyEarning> ->
+            bindDetailInfo1(binding.result, list)
+            bindDetailInfo2(binding.result2, list)
+        })
+
     }
 
     private fun bindDetailInfo1(result: TextView, list: List<QuarterlyEarning>) {

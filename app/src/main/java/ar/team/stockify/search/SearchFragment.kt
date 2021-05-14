@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import ar.team.stockify.databinding.FragmentFavouritesBinding
 import ar.team.stockify.details.DetailsActivity
+import ar.team.stockify.model.BestMatches
 
 class SearchFragment : Fragment(), SearchImpl {
 
@@ -37,11 +38,8 @@ class SearchFragment : Fragment(), SearchImpl {
         val managerFavourites = LinearLayoutManager(view.context.applicationContext)
 
         searchViewModel.adapter = SearchAdapter(SearchClickListener {
-                symbol, name ->
-            val intent = Intent(context, DetailsActivity::class.java)
-            intent.putExtra(DetailsActivity.DATA, symbol)
-            intent.putExtra(DetailsActivity.COMPANY_NAME, name)
-            startActivity(intent)
+                bestMatches ->
+            startDetailsActivity(bestMatches)
         })
 
         recyclerViewFavourites.layoutManager = managerFavourites
@@ -49,6 +47,13 @@ class SearchFragment : Fragment(), SearchImpl {
 
         recyclerViewFavourites.adapter = searchViewModel.adapter
         recyclerView.adapter = searchViewModel.adapter
+    }
+
+    private fun startDetailsActivity(bestMatches: BestMatches) {
+        val intent = Intent(context, DetailsActivity::class.java)
+        intent.putExtra(DetailsActivity.DATA, bestMatches)
+
+        startActivity(intent)
     }
 
     companion object {
