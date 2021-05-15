@@ -1,5 +1,6 @@
 package ar.team.stockify.search
 
+import android.content.Intent
 import android.os.Bundle
 import android.renderscript.ScriptGroup
 import androidx.fragment.app.Fragment
@@ -18,8 +19,6 @@ import ar.team.stockify.databinding.FragmentFavouritesBinding
 import ar.team.stockify.details.DetailsActivity
 import ar.team.stockify.model.BestMatches
 
-
-import ar.team.stockify.databinding.FragmentFavouritesBinding
 class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private lateinit var searchViewModel: SearchViewModel
