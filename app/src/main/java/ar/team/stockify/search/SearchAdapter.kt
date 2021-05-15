@@ -145,8 +145,8 @@ class SearchItemDiffCallback : DiffUtil.ItemCallback<SealedSymbol>() {
     }
 }
 
-class SearchClickListener(val clickListener: (symbol: String, name: String) -> Unit) {
-    fun onclick(item: BestMatches) = clickListener(item.symbol, item.name)
+class SearchClickListener(val clickListener: (bestMatches: BestMatches) -> Unit) {
+    fun onclick(item: BestMatches) = clickListener(item)
 }
 
 sealed class SealedSymbol {

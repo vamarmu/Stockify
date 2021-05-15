@@ -7,4 +7,8 @@
     <string name="cambio">Cambio</string>
     <string name="resultados">Resultados</string>
     <string name="favoritos">Favoritos</string>
+
+    <string name="detalles">Detalles</string>
+    <string name="empresa">Company Name</string>
+    <string name="siglas">Symbol</string>
 </resources>

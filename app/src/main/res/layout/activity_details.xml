@@ -21,7 +21,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
             android:padding="16dp"
-            android:text="Detalle"
+            android:text="@string/detalles"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="18sp"
@@ -33,25 +33,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="none"
-            android:text="Simbolo"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-
             android:textSize="42sp"
             app:layout_constraintTop_toBottomOf="@+id/details_title"
-            tools:layout_editor_absoluteX="0dp" />
+            tools:layout_editor_absoluteX="0dp"
+            tools:text="@string/siglas"/>
 
         <TextView
             android:id="@+id/tDetails_company_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="Company Name"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
             android:textSize="24sp"
             app:layout_constraintTop_toBottomOf="@+id/ttDetailsCompanySymbol"
-            tools:layout_editor_absoluteX="0dp" />
+            tools:layout_editor_absoluteX="0dp"
+            tools:text="@string/empresa"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -69,7 +68,6 @@
             android:nestedScrollingEnabled="true"
             android:paddingLeft="10dp"
             android:paddingRight="4dp"
-            android:text="TextView"
             android:textSize="16sp"
             app:lineHeight="24sp" />
 
@@ -79,7 +77,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:nestedScrollingEnabled="true"
-            android:text="TextView"
             android:textSize="16sp"
             app:lineHeight="24sp" />
 
