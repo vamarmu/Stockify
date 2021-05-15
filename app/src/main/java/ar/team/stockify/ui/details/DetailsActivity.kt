@@ -1,16 +1,14 @@
-package ar.team.stockify.details
+package ar.team.stockify.ui.details
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.TextView
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
-import androidx.core.text.underline
 import androidx.lifecycle.*
 import ar.team.stockify.databinding.ActivityDetailsBinding
-import ar.team.stockify.model.BestMatches
 import ar.team.stockify.model.QuarterlyEarning
+import ar.team.stockify.ui.model.BestMatchesDataView
 
 
 class DetailsActivity : AppCompatActivity() {
@@ -29,7 +27,7 @@ class DetailsActivity : AppCompatActivity() {
         binding = ActivityDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val detailsData = intent.getParcelableExtra<BestMatches>(DATA)
+        val detailsData = intent.getParcelableExtra<BestMatchesDataView>(DATA)
        // val detailsDataName = intent.getSerializableExtra(DATA.name).toString()
 
         if (detailsData != null) {
@@ -39,8 +37,10 @@ class DetailsActivity : AppCompatActivity() {
         }
 
         detailsViewModel.detailsQuarter.observe(this, { list: List<QuarterlyEarning> ->
-            bindDetailInfo1(binding.result, list)
-            bindDetailInfo2(binding.result2, list)
+            if(list.isNotEmpty()) {
+                bindDetailInfo1(binding.result, list)
+                bindDetailInfo2(binding.result2, list)
+            }
         })
 
     }

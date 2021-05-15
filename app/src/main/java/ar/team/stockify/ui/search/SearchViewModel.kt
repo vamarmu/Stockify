@@ -1,14 +1,13 @@
-package ar.team.stockify.search
+package ar.team.stockify.ui.search
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ar.team.stockify.model.BestMatches
-import ar.team.stockify.network.AlphaVantage
+import ar.team.stockify.data.repository.StocksRepository
+import ar.team.stockify.domain.BestMatches
 import ar.team.stockify.network.Keys
+import ar.team.stockify.network.SymbolsDataSourceImp
+import ar.team.stockify.usecases.GetStocksUseCase
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -17,9 +16,14 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
 
     private var _items = listOf<BestMatches>()
 
-
     lateinit var adapter: SearchAdapter
 
+    private val getStocksUseCase: GetStocksUseCase = GetStocksUseCase(
+        StocksRepository(
+            apiKey = Keys.apiKey(),
+            remoteDataSource = SymbolsDataSourceImp()
+        )
+    )
 
     init {
         //TODO Carga de favoritos
@@ -29,8 +33,7 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
     override fun onQueryTextSubmit(filter: String) {
         viewModelScope.launch {
             if (filter.length != 1 && filter != filter_actual) {
-                val result =
-                    AlphaVantage.service.getSymbolSearch("SYMBOL_SEARCH", filter, Keys.apiKey())
+                val result = getStocksUseCase.invoke(filter)
                 Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
                 _items = result.bestMatches
                 adapter.addListWithoutHeader(_items)
@@ -42,11 +45,7 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
         viewModelScope.launch {
             withContext(Dispatchers.Main) {
                 if (filter.length == 1 || _items.size > 5) {
-                    val result = AlphaVantage.service.getSymbolSearch(
-                        "SYMBOL_SEARCH",
-                        filter,
-                        ar.team.stockify.network.Keys.apiKey()
-                    )
+                    val result = getStocksUseCase.invoke(filter)
                     Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
                     _items = result.bestMatches
                     addListWithoutHeader(_items)

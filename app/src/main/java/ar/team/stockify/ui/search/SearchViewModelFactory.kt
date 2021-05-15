@@ -1,4 +1,4 @@
-package ar.team.stockify.search
+package ar.team.stockify.ui.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

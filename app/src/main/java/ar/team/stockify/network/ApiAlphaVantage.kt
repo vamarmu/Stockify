@@ -1,7 +1,7 @@
 package ar.team.stockify.network
 
 import ar.team.stockify.model.Company
-import ar.team.stockify.model.Symbol
+import ar.team.stockify.model.RemoteSymbol
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -9,18 +9,17 @@ interface ApiAlphaVantage {
 
     companion object {
         const val COMPANY_OVERVIEW = "/api/simulation/restaurantsByGeo"
+        const val SYMBOL_SEARCH_FUNCTION = "SYMBOL_SEARCH"
     }
 
-    @GET("/query")
+    @GET("/query?function=SYMBOL_SEARCH")
     suspend fun getSymbolSearch(
-        @Query("function") function: String,
         @Query("keywords") keywords: String,
         @Query("apikey") apiKey: String
-    ): Symbol
+    ): RemoteSymbol
 
-    @GET("/query")
+    @GET("/query?function=EARNINGS")
     suspend fun getCompanyOverview(
-        @Query("function") function: String,
         @Query("symbol") symbol: String,
         @Query("apikey") apiKey: String
     ): Company

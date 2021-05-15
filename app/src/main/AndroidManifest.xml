@@ -15,10 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Stockify">
 
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".ui.main.MainActivity"></activity>
        
         <activity 
-            android:name=".SplashActivity" 
+            android:name=".ui.splash.SplashActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,9 +26,9 @@
             </intent-filter>
         </activity>
       
-        <activity android:name=".search.SearchActivity"></activity>
+        <activity android:name="ar.team.stockify.ui.search.SearchActivity"></activity>
       
-        <activity android:name=".details.DetailsActivity"></activity>
+        <activity android:name="ar.team.stockify.ui.details.DetailsActivity"></activity>
       
     </application>
 

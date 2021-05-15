@@ -1,4 +1,4 @@
-package ar.team.stockify.details
+package ar.team.stockify.ui.details
 
 import androidx.lifecycle.*
 
@@ -24,7 +24,6 @@ class DetailsViewModel() : ViewModel() {
 
         viewModelScope.launch {
             val companyResponse = AlphaVantage.service.getCompanyOverview(
-                "EARNINGS",
                 filter,
                 Keys.apiKey())
             Timber.d("${javaClass.simpleName} -> Network call to Get Company Overview Endpoint")
