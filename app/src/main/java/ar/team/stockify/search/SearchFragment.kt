@@ -14,6 +14,9 @@ import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ar.team.stockify.R
+import ar.team.stockify.databinding.FragmentFavouritesBinding
+import ar.team.stockify.details.DetailsActivity
+import ar.team.stockify.model.BestMatches
 
 
 import ar.team.stockify.databinding.FragmentFavouritesBinding
@@ -43,15 +46,21 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
         val manager = LinearLayoutManager(view.context.applicationContext)
         val managerFavourites = LinearLayoutManager(view.context.applicationContext)
 
-        searchViewModel.adapter = SearchAdapter(SearchClickListener {
-            //TODO(Redirigir a la pantalla de detalle)
-
+        searchViewModel.adapter = SearchAdapter(SearchClickListener { bestMatches ->
+            startDetailsActivity(bestMatches)
         })
+       
         recyclerViewFavourites.layoutManager = managerFavourites
         recyclerView.setLayoutManager(manager)
 
         recyclerViewFavourites.adapter = searchViewModel.adapter
         recyclerView.adapter = searchViewModel.adapter
+    }
+
+    private fun startDetailsActivity(bestMatches: BestMatches) {
+        val intent = Intent(context, DetailsActivity::class.java)
+        intent.putExtra(DetailsActivity.DATA, bestMatches)
+        startActivity(intent)
     }
 
     companion object {
