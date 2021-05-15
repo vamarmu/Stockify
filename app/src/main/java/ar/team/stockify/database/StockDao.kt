@@ -11,6 +11,9 @@ interface StockDao {
     @Query("SELECT * FROM Stock")
     suspend fun getAllFav(): List<Stock>
 
+    @Query("SELECT EXISTS (SELECT 1 FROM Stock WHERE symbol = :symbol)")
+    suspend fun exists(symbol: String): Boolean
+
     @Insert
     suspend fun insert (stock: Stock)
 

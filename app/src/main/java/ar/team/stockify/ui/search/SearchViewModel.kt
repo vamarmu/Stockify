@@ -32,7 +32,7 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
     private var filter_actual = ""
     override fun onQueryTextSubmit(filter: String) {
         viewModelScope.launch {
-            if (filter.length != 1 && filter != filter_actual) {
+            if (filter.length != 1 && filter != filter_actual && filter.isNotEmpty()) {
                 val result = getStocksUseCase.invoke(filter)
                 Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
                 _items = result.bestMatches
@@ -44,8 +44,7 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
     override fun onQueryTextChange(filter: String) {
         viewModelScope.launch {
             withContext(Dispatchers.Main) {
-                if (filter.length == 1 || _items.size > 5) {
-                    val result = getStocksUseCase.invoke(filter)
+                if (filter.length == 1 || _items.size > 5 && filter.isNotEmpty()) { val result = getStocksUseCase.invoke(filter)
                     Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
                     _items = result.bestMatches
                     addListWithoutHeader(_items)
