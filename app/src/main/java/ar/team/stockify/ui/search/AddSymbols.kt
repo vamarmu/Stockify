@@ -1,6 +1,7 @@
-package ar.team.stockify.search
+package ar.team.stockify.ui.search
 
-import ar.team.stockify.model.BestMatches
+import ar.team.stockify.domain.BestMatches
+
 
 interface AddSymbols {
     fun addListWithoutHeader(list: List<BestMatches>?)

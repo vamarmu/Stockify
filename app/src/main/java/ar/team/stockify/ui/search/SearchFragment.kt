@@ -1,23 +1,20 @@
-package ar.team.stockify.search
+package ar.team.stockify.ui.search
 
 import android.content.Intent
 import android.os.Bundle
-import android.renderscript.ScriptGroup
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import ar.team.stockify.R
 import ar.team.stockify.databinding.FragmentFavouritesBinding
-import ar.team.stockify.details.DetailsActivity
-import ar.team.stockify.model.BestMatches
+import ar.team.stockify.ui.details.DetailsActivity
+import ar.team.stockify.ui.details.toBestMatchesDataView
+import ar.team.stockify.ui.model.BestMatchesDataView
 
 class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
 
@@ -46,7 +43,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
         val managerFavourites = LinearLayoutManager(view.context.applicationContext)
 
         searchViewModel.adapter = SearchAdapter(SearchClickListener { bestMatches ->
-            startDetailsActivity(bestMatches)
+            startDetailsActivity(bestMatches.toBestMatchesDataView())
         })
        
         recyclerViewFavourites.layoutManager = managerFavourites
@@ -56,7 +53,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
         recyclerView.adapter = searchViewModel.adapter
     }
 
-    private fun startDetailsActivity(bestMatches: BestMatches) {
+    private fun startDetailsActivity(bestMatches: BestMatchesDataView) {
         val intent = Intent(context, DetailsActivity::class.java)
         intent.putExtra(DetailsActivity.DATA, bestMatches)
         startActivity(intent)

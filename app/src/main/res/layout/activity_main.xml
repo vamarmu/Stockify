@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.main.MainActivity">
 
     <fragment
         android:id="@+id/frame_layout"
-        android:name="ar.team.stockify.search.SearchFragment"
+        android:name="ar.team.stockify.ui.search.SearchFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

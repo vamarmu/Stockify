@@ -1,9 +1,11 @@
-package ar.team.stockify
+package ar.team.stockify.ui.main
 
 import android.database.sqlite.SQLiteException
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import ar.team.stockify.R
+import ar.team.stockify.StockifyApp
 import ar.team.stockify.database.Stock
 import ar.team.stockify.network.AlphaVantage
 import ar.team.stockify.network.Keys
@@ -21,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         val app = applicationContext as StockifyApp
         setContentView(R.layout.activity_main)
 
-        //Ejemplos de llamados de Red
+        /*//Ejemplos de llamados de Red
         lifecycleScope.launch {
         val result = AlphaVantage.service.getCompanyOverview("EARNINGS", "IBM", Keys.apiKey())
         Timber.d("${javaClass.simpleName} -> Network call to Get Company Overview Endpoint")
@@ -33,7 +35,7 @@ class MainActivity : AppCompatActivity() {
             val result = AlphaVantage.service.getSymbolSearch("SYMBOL_SEARCH", "tesco", Keys.apiKey())
             Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
             println(result.bestMatches[0].symbol)
-        }
+        }*/
 
         //Ejemplos de Base de Datos
 
