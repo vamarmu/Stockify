@@ -59,9 +59,11 @@ class DetailsActivity : AppCompatActivity() {
                     if (app.room.stockDao().exists(it.symbol)) {
                         app.room.stockDao().delete(it)
                         binding.imgButton.setImageResource(R.drawable.ic_add_button)
+                        binding.textButton.text = getString(R.string.addButton)
                     } else {
                         app.room.stockDao().insert(it)
                         binding.imgButton.setImageResource(R.drawable.ic_remove_button)
+                        binding.textButton.text = getString(R.string.removeButton)
                     }
                 }
             }
