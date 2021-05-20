@@ -13,18 +13,11 @@
         tools:text="Symbol" />
 
     <TextView
-        android:id="@+id/precio"
+        android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="center"
-        tools:text="Currency" />
+        tools:text="@string/name" />
 
-    <TextView
-        android:id="@+id/cambio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        tools:text="Change" />
 </LinearLayout>

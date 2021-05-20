@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import ar.team.stockify.databinding.FavoriteSearchElementBinding
 import ar.team.stockify.databinding.HeaderSearchElementBinding
 import ar.team.stockify.databinding.SearchElementBinding
 import ar.team.stockify.domain.Stock
@@ -30,20 +31,22 @@ class FavouritesAdapter(private val clickListener: FavouriteClickListener) :
         }
     }
 
-    class ViewHolder private constructor(view: SearchElementBinding) :
+    class ViewHolder private constructor(view: FavoriteSearchElementBinding) :
         RecyclerView.ViewHolder(view.root) {
         private val stock: TextView = view.stock
+        private val name:TextView=view.name
         fun bind(clickListener: FavouriteClickListener, item: Stock) {
             itemView.setOnClickListener {
                 clickListener.onclick(item)
             }
             stock.text = item.symbol
+            name.text=item.name
         }
 
         companion object {
             fun from(parent: ViewGroup): ViewHolder {
                 val view =
-                    SearchElementBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                    FavoriteSearchElementBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 return ViewHolder(view)
             }
         }

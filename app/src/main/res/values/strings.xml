@@ -11,4 +11,5 @@
     <string name="detalles">Detalles</string>
     <string name="empresa">Company Name</string>
     <string name="siglas">Symbol</string>
+    <string name="name">Name</string>
 </resources>

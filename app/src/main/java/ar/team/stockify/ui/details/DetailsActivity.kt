@@ -36,7 +36,7 @@ class DetailsActivity : AppCompatActivity() {
             detailsViewModel.onQueryCompanyDetails(detailsData.symbol)
         }
 
-        detailsViewModel.detailsQuarter.obs erve(this, { list: List<QuarterlyEarning> ->
+        detailsViewModel.detailsQuarter.observe(this, { list: List<QuarterlyEarning> ->
             if(list.isNotEmpty()) {
                 bindDetailInfo1(binding.result, list)
                 bindDetailInfo2(binding.result2, list)
