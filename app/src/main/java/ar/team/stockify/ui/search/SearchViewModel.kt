@@ -2,31 +2,30 @@ package ar.team.stockify.ui.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ar.team.stockify.data.repository.StocksRepository
 import ar.team.stockify.domain.BestMatches
-import ar.team.stockify.network.Keys
-import ar.team.stockify.network.SymbolsDataSourceImp
+import ar.team.stockify.domain.Stock
+import ar.team.stockify.usecases.GetFavouritesUseCase
 import ar.team.stockify.usecases.GetStocksUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
-class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
+class SearchViewModel(
+    private var getStocksUseCase: GetStocksUseCase,
+    private var getFavouritesUseCase: GetFavouritesUseCase
+) : ViewModel(), SearchImpl {
 
     private var _items = listOf<BestMatches>()
 
     lateinit var adapter: SearchAdapter
-
-    private val getStocksUseCase: GetStocksUseCase = GetStocksUseCase(
-        StocksRepository(
-            apiKey = Keys.apiKey(),
-            remoteDataSource = SymbolsDataSourceImp()
-        )
-    )
+    private lateinit var favouritesadapter: FavouritesAdapter
 
     init {
-        //TODO Carga de favoritos
+        viewModelScope.launch {
+            addListWithHeader(getFavouritesUseCase.invoke())
+        }
+
     }
 
     private var filter_actual = ""
@@ -54,12 +53,12 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
         }
     }
 
-    override fun addListWithoutHeader(list: List<BestMatches>?) {
+     private fun addListWithoutHeader(list: List<BestMatches>?) {
         adapter.addListWithoutHeader(list)
     }
 
-    override fun addListWithHeader(list: List<BestMatches>?) {
-        // TODO Añadir elementos a la lista de favoritos
+     private fun addListWithHeader(list: List<Stock>?) {
+        favouritesadapter.addListWithHeader(list)
     }
 
 }

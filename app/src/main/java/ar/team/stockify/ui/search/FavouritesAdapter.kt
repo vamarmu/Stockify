@@ -8,16 +8,13 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ar.team.stockify.databinding.HeaderSearchElementBinding
 import ar.team.stockify.databinding.SearchElementBinding
-import ar.team.stockify.domain.BestMatches
-import java.util.*
-import java.util.stream.Collectors
+import ar.team.stockify.domain.Stock
 
 private const val TYPE_HEADER_ITEM = 0
 private const val TYPE_FAVOURITE_ITEM = 1
 
-class SearchAdapter(private val clickListener: SearchClickListener) :
-    ListAdapter<SealedSymbol, RecyclerView.ViewHolder>(SearchItemDiffCallback()),
-    SearchImpl {
+class FavouritesAdapter(private val clickListener: FavouriteClickListener) :
+    ListAdapter<SealedStock, RecyclerView.ViewHolder>(FavouriteItemDiffCallback()) {
 
     class HeaderViewHolder private constructor(view: HeaderSearchElementBinding) :
         RecyclerView.ViewHolder(view.root) {
@@ -36,7 +33,7 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
     class ViewHolder private constructor(view: SearchElementBinding) :
         RecyclerView.ViewHolder(view.root) {
         private val stock: TextView = view.stock
-        fun bind(clickListener: SearchClickListener, item: BestMatches) {
+        fun bind(clickListener: FavouriteClickListener, item: Stock) {
             itemView.setOnClickListener {
                 clickListener.onclick(item)
             }
@@ -52,16 +49,19 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
         }
     }
 
-    private var listAux: MutableList<SealedSymbol> = mutableListOf()
+    private var listAux: MutableList<SealedStock> = mutableListOf()
 
-     fun addListWithoutHeader(list: List<BestMatches>?) {
-        val symbols = list?.map {
-            SealedSymbol.FavoriteSymbol(it)
+
+    fun addListWithHeader(list: List<Stock>?) {
+
+        val symbols = when (list) {
+            null -> listOf(SealedStock.Header)
+            else -> listOf(SealedStock.Header) + list.map { SealedStock.FavoriteStock(it) }
         }
-        submitList(symbols)
-        listAux = currentList
-    }
 
+        submitList(symbols)
+
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -76,76 +76,42 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is ViewHolder -> {
-                val item = getItem(position) as SealedSymbol.FavoriteSymbol
-                holder.bind(clickListener, item.bestMatches)
+                val item = getItem(position) as SealedStock.FavoriteStock
+                holder.bind(clickListener, item.stock)
             }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is SealedSymbol.Header -> TYPE_HEADER_ITEM
-            is SealedSymbol.FavoriteSymbol -> TYPE_FAVOURITE_ITEM
+            is SealedStock.Header -> TYPE_HEADER_ITEM
+            is SealedStock.FavoriteStock -> TYPE_FAVOURITE_ITEM
         }
     }
 
-
-    override fun onQueryTextSubmit(filter: String) {
-        listAux = currentList
-    }
-
-    override fun onQueryTextChange(filter: String) {
-        textFilter(filter)
-
-    }
-
-    private fun textFilter(filter: String) {
-        when {
-            filter.isEmpty() -> {
-                submitList(listAux)
-            }
-            android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N -> {
-                val collect =
-                    listAux.stream().filter {
-                        it.symbol.lowercase(Locale.getDefault()).contains(filter)
-                    }.collect(Collectors.toList())
-                submitList(collect)
-            }
-            else -> {
-                val aux = listAux
-                currentList.forEach {
-                    if (it.symbol.lowercase(Locale.getDefault()).contains(filter)) {
-                        aux.add(it)
-                    }
-                }
-                submitList(aux)
-            }
-        }
-    }
 }
 
-
-class SearchItemDiffCallback : DiffUtil.ItemCallback<SealedSymbol>() {
-    override fun areItemsTheSame(oldItem: SealedSymbol, newItem: SealedSymbol): Boolean {
+class FavouriteItemDiffCallback : DiffUtil.ItemCallback<SealedStock>() {
+    override fun areItemsTheSame(oldItem: SealedStock, newItem: SealedStock): Boolean {
         return oldItem.symbol == newItem.symbol
     }
 
-    override fun areContentsTheSame(oldItem: SealedSymbol, newItem: SealedSymbol): Boolean {
+    override fun areContentsTheSame(oldItem: SealedStock, newItem: SealedStock): Boolean {
         return oldItem == newItem
     }
 }
 
 
-class SearchClickListener(val clickListener: (bestMatches: BestMatches) -> Unit) {
-    fun onclick(item: BestMatches) = clickListener(item)
+class FavouriteClickListener(val clickListener: (stock: Stock) -> Unit) {
+    fun onclick(item: Stock) = clickListener(item)
 }
 
-sealed class SealedSymbol {
-    data class FavoriteSymbol(val bestMatches: BestMatches) : SealedSymbol() {
-        override val symbol = bestMatches.symbol
+sealed class SealedStock {
+    data class FavoriteStock(val stock: Stock) : SealedStock() {
+        override val symbol = stock.symbol
     }
 
-    object Header : SealedSymbol() {
+    object Header : SealedStock() {
         override val symbol = String()
     }
 

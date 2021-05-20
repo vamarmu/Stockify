@@ -20,7 +20,7 @@ class DetailsActivity : AppCompatActivity() {
 
     private val detailsViewModel by lazy { ViewModelProvider(this).get(DetailsViewModel::class.java) }
 
-    lateinit var binding: ActivityDetailsBinding
+    private lateinit var binding: ActivityDetailsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,7 @@ class DetailsActivity : AppCompatActivity() {
             detailsViewModel.onQueryCompanyDetails(detailsData.symbol)
         }
 
-        detailsViewModel.detailsQuarter.observe(this, { list: List<QuarterlyEarning> ->
+        detailsViewModel.detailsQuarter.obs erve(this, { list: List<QuarterlyEarning> ->
             if(list.isNotEmpty()) {
                 bindDetailInfo1(binding.result, list)
                 bindDetailInfo2(binding.result2, list)

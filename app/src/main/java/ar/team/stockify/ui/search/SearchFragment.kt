@@ -11,10 +11,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
+import ar.team.stockify.StockifyApp
+import ar.team.stockify.data.repository.FavouritesRepository
+import ar.team.stockify.data.repository.StocksRepository
+import ar.team.stockify.database.RoomDataSourceImp
 import ar.team.stockify.databinding.FragmentFavouritesBinding
+import ar.team.stockify.network.Keys
+import ar.team.stockify.network.SymbolsDataSourceImp
 import ar.team.stockify.ui.details.DetailsActivity
 import ar.team.stockify.ui.details.toBestMatchesDataView
 import ar.team.stockify.ui.model.BestMatchesDataView
+import ar.team.stockify.usecases.GetFavouritesUseCase
+import ar.team.stockify.usecases.GetStocksUseCase
 
 class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
 
@@ -23,7 +31,7 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentFavouritesBinding.inflate(inflater, container, false)
         return binding.root
 
@@ -32,9 +40,22 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val searchView = binding.searchView
+        val app = this.context!!.applicationContext as StockifyApp
         searchView.setOnQueryTextListener(this)
         searchViewModel = getViewModel{
-            SearchViewModel()
+            SearchViewModel(
+                GetStocksUseCase(
+                StocksRepository(
+                    apiKey = Keys.apiKey(),
+                    remoteDataSource = SymbolsDataSourceImp()
+                )
+            ),
+                GetFavouritesUseCase(
+                    FavouritesRepository(
+                        localDataSource = RoomDataSourceImp(app.room)
+                    )
+                )
+            )
         }
         val recyclerView = binding.recyclerview
         val recyclerViewFavourites = binding.recyclerviewFavourites
