@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ar.team.stockify.databinding.FavoriteSearchElementBinding
 import ar.team.stockify.databinding.HeaderSearchElementBinding
-import ar.team.stockify.databinding.SearchElementBinding
 import ar.team.stockify.domain.Stock
 
 private const val TYPE_HEADER_ITEM = 0
@@ -57,12 +56,12 @@ class FavouritesAdapter(private val clickListener: FavouriteClickListener) :
 
     fun addListWithHeader(list: List<Stock>?) {
 
-        val symbols = when (list) {
+        val stocks = when (list) {
             null -> listOf(SealedStock.Header)
             else -> listOf(SealedStock.Header) + list.map { SealedStock.FavoriteStock(it) }
         }
 
-        submitList(symbols)
+        submitList(stocks)
 
     }
 

@@ -2,14 +2,12 @@ package ar.team.stockify.ui.search
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.team.stockify.StockifyApp
 import ar.team.stockify.data.repository.FavouritesRepository
@@ -23,11 +21,13 @@ import ar.team.stockify.ui.details.toBestMatchesDataView
 import ar.team.stockify.ui.model.BestMatchesDataView
 import ar.team.stockify.usecases.GetFavouritesUseCase
 import ar.team.stockify.usecases.GetStocksUseCase
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
-class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
+class SearchFragment : Fragment(){
 
     private lateinit var searchViewModel: SearchViewModel
-    private lateinit var binding : FragmentFavouritesBinding
+    private lateinit var binding: FragmentFavouritesBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,15 +41,15 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
         super.onViewCreated(view, savedInstanceState)
         val searchView = binding.searchView
         val app = this.context!!.applicationContext as StockifyApp
-        searchView.setOnQueryTextListener(this)
-        searchViewModel = getViewModel{
+
+        searchViewModel = getViewModel {
             SearchViewModel(
                 GetStocksUseCase(
-                StocksRepository(
-                    apiKey = Keys.apiKey(),
-                    remoteDataSource = SymbolsDataSourceImp()
-                )
-            ),
+                    StocksRepository(
+                        apiKey = Keys.apiKey(),
+                        remoteDataSource = SymbolsDataSourceImp()
+                    )
+                ),
                 GetFavouritesUseCase(
                     FavouritesRepository(
                         localDataSource = RoomDataSourceImp(app.room)
@@ -66,12 +66,30 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
         searchViewModel.adapter = SearchAdapter(SearchClickListener { bestMatches ->
             startDetailsActivity(bestMatches.toBestMatchesDataView())
         })
-       
-        recyclerViewFavourites.layoutManager = managerFavourites
-        recyclerView.setLayoutManager(manager)
 
-        recyclerViewFavourites.adapter = searchViewModel.adapter
+        searchViewModel.favouritesadapter = FavouritesAdapter(FavouriteClickListener { stock ->
+            startDetailsActivity( stock.toBestMatchesDataView())
+        })
+
+        recyclerViewFavourites.layoutManager = managerFavourites
+        recyclerView.layoutManager = manager
+
+        recyclerViewFavourites.adapter = searchViewModel.favouritesadapter
         recyclerView.adapter = searchViewModel.adapter
+
+        val setTextChange: (String?)-> Unit={ newText ->
+            newText?.let {
+                searchViewModel.onQueryTextChange(newText)
+            }
+        }
+        val setTextSubmit:(String?)-> Unit={ newText ->
+            newText?.let {
+                searchViewModel.onQueryTextChange(newText)
+            }
+        }
+        searchView.setOnQueryTextListener(
+            QueryTextListener (this.lifecycle, setTextChange, setTextSubmit)
+        )
     }
 
     private fun startDetailsActivity(bestMatches: BestMatchesDataView) {
@@ -80,23 +98,39 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
         startActivity(intent)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = SearchFragment()
-    }
+    internal class QueryTextListener(
+        lifecycle: Lifecycle,
+        private val queryTextChange: (String?) -> Unit,
+        private val queryTextSubmit:(String?) -> Unit
+    ) : SearchView.OnQueryTextListener {
 
-    override fun onQueryTextSubmit(filter: String): Boolean {
-        searchViewModel.onQueryTextSubmit(filter)
-        return false
-    }
+        private val coroutineScope = lifecycle.coroutineScope
 
-    override fun onQueryTextChange(filter: String): Boolean {
-        searchViewModel.onQueryTextChange(filter)
-        return false
-    }
+        private var searchJob: Job? = null
 
+        override fun onQueryTextSubmit(query: String?): Boolean {
+           searchJob?.cancel()
+            searchJob = coroutineScope.launch {
+                query?.let {
+                    queryTextSubmit(query)
+                }
+            }
+            return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            searchJob?.cancel()
+            searchJob = coroutineScope.launch {
+                newText?.let {
+                    queryTextChange(newText)
+                }
+            }
+            return false
+        }
+    }
 
 }
+
 @Suppress("UNCHECKED_CAST")
 inline fun <reified T : ViewModel> Fragment.getViewModel(crossinline factory: () -> T): T {
 

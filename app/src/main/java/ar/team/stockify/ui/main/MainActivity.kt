@@ -6,11 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import ar.team.stockify.R
 import ar.team.stockify.StockifyApp
-import ar.team.stockify.database.Stock
-import ar.team.stockify.network.AlphaVantage
-import ar.team.stockify.network.Keys
+import ar.team.stockify.database.LocalStock
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 
 class MainActivity : AppCompatActivity() {
@@ -39,11 +36,11 @@ class MainActivity : AppCompatActivity() {
 
         //Ejemplos de Base de Datos
 
-        val stock1 = Stock(symbol = "TSLA", name = "Tesla")
-        val stock2 = Stock(symbol = "AAPL", name = "Apple")
+       // val stock1 = LocalStock(symbol = "TSLA", name = "Tesla")
+       // val stock2 = LocalStock(symbol = "AAPL", name = "Apple")
 
 
-        lifecycleScope.launch {
+        /*/lifecycleScope.launch {
             try {
                 app.room.stockDao().insert(stock1)
                 app.room.stockDao().insert(stock2)
@@ -59,6 +56,6 @@ class MainActivity : AppCompatActivity() {
             favStocks.forEach{
                 println("STOCK SAVED"+ it.symbol + "" + it.name)
             }
-        }
+        }*/
     }
 }

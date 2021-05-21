@@ -19,7 +19,7 @@ class SearchViewModel(
     private var _items = listOf<BestMatches>()
 
     lateinit var adapter: SearchAdapter
-    private lateinit var favouritesadapter: FavouritesAdapter
+    lateinit var favouritesadapter: FavouritesAdapter
 
     init {
         viewModelScope.launch {
@@ -28,10 +28,10 @@ class SearchViewModel(
 
     }
 
-    private var filter_actual = ""
+    private var filterActual = ""
     override fun onQueryTextSubmit(filter: String) {
         viewModelScope.launch {
-            if (filter.length != 1 && filter != filter_actual) {
+            if (filter.length != 1 && filter != filterActual) {
                 val result = getStocksUseCase.invoke(filter)
                 Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
                 _items = result.bestMatches

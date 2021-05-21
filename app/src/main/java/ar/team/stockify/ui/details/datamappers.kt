@@ -1,7 +1,8 @@
 package ar.team.stockify.ui.details
 
-import ar.team.stockify.database.Stock
+import ar.team.stockify.database.LocalStock
 import ar.team.stockify.domain.BestMatches
+import ar.team.stockify.domain.Stock
 import ar.team.stockify.ui.model.BestMatchesDataView
 
 fun BestMatches.toBestMatchesDataView(): BestMatchesDataView = BestMatchesDataView(
@@ -9,7 +10,11 @@ fun BestMatches.toBestMatchesDataView(): BestMatchesDataView = BestMatchesDataVi
     name = name,
 )
 
-fun Stock.toStock(): ar.team.stockify.domain.Stock = ar.team.stockify.domain.Stock(
+fun Stock.toBestMatchesDataView(): BestMatchesDataView = BestMatchesDataView(
+    symbol = symbol,
+    name = name,
+)
+fun LocalStock.toStock(): ar.team.stockify.domain.Stock = ar.team.stockify.domain.Stock(
     symbol = symbol,
     name = name
 )
