@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
@@ -15,10 +16,13 @@ import ar.team.stockify.databinding.FragmentFavouritesBinding
 import ar.team.stockify.ui.details.DetailsActivity
 import ar.team.stockify.ui.details.toBestMatchesDataView
 import ar.team.stockify.ui.model.BestMatchesDataView
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
 
-    private lateinit var searchViewModel: SearchViewModel
+    private val searchViewModel: SearchViewModel by viewModels()
+
     private lateinit var binding : FragmentFavouritesBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,9 +37,8 @@ class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
         super.onViewCreated(view, savedInstanceState)
         val searchView = binding.searchView
         searchView.setOnQueryTextListener(this)
-        searchViewModel = getViewModel{
-            SearchViewModel()
-        }
+        /*searchViewModel = getViewModel{ SearchViewModel() }*/
+
         val recyclerView = binding.recyclerview
         val recyclerViewFavourites = binding.recyclerviewFavourites
 
