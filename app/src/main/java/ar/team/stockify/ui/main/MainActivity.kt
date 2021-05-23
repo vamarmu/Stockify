@@ -7,20 +7,22 @@ import androidx.lifecycle.lifecycleScope
 import ar.team.stockify.R
 import ar.team.stockify.StockifyApp
 import ar.team.stockify.database.Stock
+import ar.team.stockify.database.StockDatabase
 import ar.team.stockify.network.AlphaVantage
 import ar.team.stockify.network.Keys
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-
+    @Inject
+    lateinit var db: StockDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val app = applicationContext as StockifyApp
         setContentView(R.layout.activity_main)
 
         /*//Ejemplos de llamados de Red
@@ -29,7 +31,6 @@ class MainActivity : AppCompatActivity() {
         Timber.d("${javaClass.simpleName} -> Network call to Get Company Overview Endpoint")
         println(result.symbol)
         }
-
 
         lifecycleScope.launch {
             val result = AlphaVantage.service.getSymbolSearch("SYMBOL_SEARCH", "tesco", Keys.apiKey())
@@ -45,8 +46,8 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                app.room.stockDao().insert(stock1)
-                app.room.stockDao().insert(stock2)
+                db.stockDao().insert(stock1)
+                db.stockDao().insert(stock2)
             } catch (e: SQLiteException) {
                 println(e.message)
             }
@@ -54,10 +55,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            val favStocks = app.room.stockDao().getAllFav()
+            val favStocks = db.stockDao().getAllFav()
 
-            favStocks.forEach{
-                println("STOCK SAVED"+ it.symbol + "" + it.name)
+            favStocks.forEach {
+                println("STOCK SAVED" + it.symbol + "" + it.name)
             }
         }
     }

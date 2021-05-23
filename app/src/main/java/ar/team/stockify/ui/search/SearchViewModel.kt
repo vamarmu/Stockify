@@ -5,25 +5,30 @@ import androidx.lifecycle.viewModelScope
 import ar.team.stockify.data.repository.StocksRepository
 import ar.team.stockify.domain.BestMatches
 import ar.team.stockify.network.Keys
-import ar.team.stockify.network.SymbolsDataSourceImp
+import ar.team.stockify.network.RemoteDataSourceImp
 import ar.team.stockify.usecases.GetStocksUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
 
-class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
+@HiltViewModel
+class SearchViewModel @Inject constructor(
+    private val getStocksUseCase: GetStocksUseCase
+) : ViewModel(), SearchImpl, AddSymbols {
 
     private var _items = listOf<BestMatches>()
 
     lateinit var adapter: SearchAdapter
 
-    private val getStocksUseCase: GetStocksUseCase = GetStocksUseCase(
+    /*private val getStocksUseCase: GetStocksUseCase = GetStocksUseCase(
         StocksRepository(
             apiKey = Keys.apiKey(),
-            remoteDataSource = SymbolsDataSourceImp()
+            remoteDataSource = RemoteDataSourceImp()
         )
-    )
+    )*/
 
     init {
         //TODO Carga de favoritos
