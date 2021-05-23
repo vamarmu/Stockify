@@ -10,16 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.team.stockify.StockifyApp
-import ar.team.stockify.data.repository.FavouritesRepository
 import ar.team.stockify.data.repository.StocksRepository
-import ar.team.stockify.database.RoomDataSourceImp
-import ar.team.stockify.databinding.FragmentFavouritesBinding
+import ar.team.stockify.databinding.FragmentSearchBinding
 import ar.team.stockify.network.Keys
 import ar.team.stockify.network.SymbolsDataSourceImp
 import ar.team.stockify.ui.details.DetailsActivity
 import ar.team.stockify.ui.details.toBestMatchesDataView
 import ar.team.stockify.ui.model.BestMatchesDataView
-import ar.team.stockify.usecases.GetFavouritesUseCase
 import ar.team.stockify.usecases.GetStocksUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -27,12 +24,12 @@ import kotlinx.coroutines.launch
 class SearchFragment : Fragment(){
 
     private lateinit var searchViewModel: SearchViewModel
-    private lateinit var binding: FragmentFavouritesBinding
+    private lateinit var binding: FragmentSearchBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentFavouritesBinding.inflate(inflater, container, false)
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -50,31 +47,18 @@ class SearchFragment : Fragment(){
                         remoteDataSource = SymbolsDataSourceImp()
                     )
                 ),
-                GetFavouritesUseCase(
-                    FavouritesRepository(
-                        localDataSource = RoomDataSourceImp(app.room)
-                    )
-                )
             )
         }
+
         val recyclerView = binding.recyclerview
-        val recyclerViewFavourites = binding.recyclerviewFavourites
 
         val manager = LinearLayoutManager(view.context.applicationContext)
-        val managerFavourites = LinearLayoutManager(view.context.applicationContext)
 
         searchViewModel.adapter = SearchAdapter(SearchClickListener { bestMatches ->
             startDetailsActivity(bestMatches.toBestMatchesDataView())
         })
 
-        searchViewModel.favouritesadapter = FavouritesAdapter(FavouriteClickListener { stock ->
-            startDetailsActivity( stock.toBestMatchesDataView())
-        })
-
-        recyclerViewFavourites.layoutManager = managerFavourites
         recyclerView.layoutManager = manager
-
-        recyclerViewFavourites.adapter = searchViewModel.favouritesadapter
         recyclerView.adapter = searchViewModel.adapter
 
         val setTextChange: (String?)-> Unit={ newText ->
