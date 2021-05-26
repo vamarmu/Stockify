@@ -9,4 +9,7 @@
     <string name="favoritos">Favoritos</string>
     <string name="user_image">user image</string>
     <string name="username">username</string>
+    <string name="save">Guardar</string>
+    <string name="set_name">Introduce tu nombre</string>
+    <string name="upload_user_image">Subir imagen de usuario</string>
 </resources>
