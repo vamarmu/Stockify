@@ -12,4 +12,8 @@
     <string name="save">Guardar</string>
     <string name="set_name">Introduce tu nombre</string>
     <string name="upload_user_image">Subir imagen de usuario</string>
+
+    <string name="detalles">Detalles</string>
+    <string name="empresa">Company Name</string>
+    <string name="siglas">Symbol</string>
 </resources>

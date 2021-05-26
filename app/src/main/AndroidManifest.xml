@@ -31,12 +31,21 @@
         <activity android:name=".UserActivity"></activity>
 
         <activity android:name=".SplashActivity" android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
+        <activity android:name=".ui.main.MainActivity"></activity>
+
+        <activity
+            android:name=".ui.splash.SplashActivity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name="ar.team.stockify.ui.search.SearchActivity"></activity>
+
+        <activity android:name="ar.team.stockify.ui.details.DetailsActivity"></activity>
+
     </application>
 
 </manifest>

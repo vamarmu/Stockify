@@ -1,4 +1,4 @@
-package ar.team.stockify
+package ar.team.stockify.ui.splash
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

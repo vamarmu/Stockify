@@ -1,12 +1,15 @@
 package ar.team.stockify.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import com.google.gson.annotations.SerializedName
 
-data class Symbol(
-    val bestMatches: List<BestMatches>
+data class RemoteSymbol(
+    val bestMatches: List<RemoteBestMatches>
 )
 
-data class BestMatches(
+@Parcelize
+data class RemoteBestMatches(
     @SerializedName("1. symbol") val symbol: String,
     @SerializedName("2. name") val name: String,
     @SerializedName("3. type") val type: String,
@@ -16,4 +19,4 @@ data class BestMatches(
     @SerializedName("7. timezone") val timezone: String,
     @SerializedName("8. currency") val currency: String,
     @SerializedName("9. matchScore") val matchScore: String
-)
+): Parcelable

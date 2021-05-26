@@ -1,4 +1,4 @@
-package ar.team.stockify.search
+package ar.team.stockify.ui.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ar.team.stockify.databinding.HeaderSearchElementBinding
 import ar.team.stockify.databinding.SearchElementBinding
-import ar.team.stockify.model.BestMatches
+import ar.team.stockify.domain.BestMatches
 import java.util.*
 import java.util.stream.Collectors
 
@@ -145,8 +145,9 @@ class SearchItemDiffCallback : DiffUtil.ItemCallback<SealedSymbol>() {
     }
 }
 
-class SearchClickListener(val clickListener: (symbol: String) -> Unit) {
-    fun onclick(item: BestMatches) = clickListener(item.symbol)
+
+class SearchClickListener(val clickListener: (bestMatches: BestMatches) -> Unit) {
+    fun onclick(item: BestMatches) = clickListener(item)
 }
 
 sealed class SealedSymbol {
