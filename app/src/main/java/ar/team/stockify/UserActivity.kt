@@ -16,7 +16,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import ar.team.stockify.databinding.ActivityUserBinding
-import ar.team.stockify.search.SearchActivity
+import ar.team.stockify.ui.main.MainActivity
 import java.io.File
 import java.io.IOException
 
@@ -100,7 +100,7 @@ class UserActivity : AppCompatActivity(){
 
     private fun startSearchActivity() {
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, SearchActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }, 3000)
     }

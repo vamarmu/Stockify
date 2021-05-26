@@ -1,13 +1,14 @@
 package ar.team.stockify.ui.splash
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import ar.team.stockify.BuildConfig
+import ar.team.stockify.R
+import ar.team.stockify.UserActivity
 import ar.team.stockify.databinding.ActivitySplashBinding
-import ar.team.stockify.search.SearchActivity
 
 
 class SplashActivity : AppCompatActivity() {
