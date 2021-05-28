@@ -6,18 +6,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import ar.team.stockify.R
 import ar.team.stockify.StockifyApp
-import ar.team.stockify.database.LocalStock
+import ar.team.stockify.database.Stock
+import ar.team.stockify.database.StockDatabase
+import ar.team.stockify.network.AlphaVantage
+import ar.team.stockify.network.Keys
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-
+    @Inject
+    lateinit var db: StockDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val app = applicationContext as StockifyApp
         setContentView(R.layout.activity_main)
 
         /*//Ejemplos de llamados de Red
@@ -56,6 +60,6 @@ class MainActivity : AppCompatActivity() {
             favStocks.forEach{
                 println("STOCK SAVED"+ it.symbol + "" + it.name)
             }
-        }*/
+        }
     }
 }

@@ -8,6 +8,10 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.*
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.team.stockify.StockifyApp
 import ar.team.stockify.data.repository.StocksRepository
@@ -20,10 +24,15 @@ import ar.team.stockify.ui.model.BestMatchesDataView
 import ar.team.stockify.usecases.GetStocksUseCase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
+class SearchFragment : Fragment(), SearchView.OnQueryTextListener {
 class SearchFragment : Fragment(){
 
-    private lateinit var searchViewModel: SearchViewModel
+    private val searchViewModel: SearchViewModel by viewModels()
+
+    private lateinit var binding : FragmentFavouritesBinding
     private lateinit var binding: FragmentSearchBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,18 +46,8 @@ class SearchFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val searchView = binding.searchView
-        val app = this.context!!.applicationContext as StockifyApp
-
-        searchViewModel = getViewModel {
-            SearchViewModel(
-                GetStocksUseCase(
-                    StocksRepository(
-                        apiKey = Keys.apiKey(),
-                        remoteDataSource = SymbolsDataSourceImp()
-                    )
-                ),
-            )
-        }
+        searchView.setOnQueryTextListener(this)
+        /*searchViewModel = getViewModel{ SearchViewModel() }*/
 
         val recyclerView = binding.recyclerview
 

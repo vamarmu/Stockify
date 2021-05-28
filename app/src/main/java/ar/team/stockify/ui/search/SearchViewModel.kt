@@ -5,16 +5,21 @@ import androidx.lifecycle.viewModelScope
 import ar.team.stockify.domain.BestMatches
 import ar.team.stockify.domain.Stock
 import ar.team.stockify.usecases.GetFavouritesUseCase
+import ar.team.stockify.network.Keys
+import ar.team.stockify.network.RemoteDataSourceImp
 import ar.team.stockify.usecases.GetStocksUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import javax.inject.Inject
 
-class SearchViewModel(
-    private var getStocksUseCase: GetStocksUseCase
-) : ViewModel(), SearchImpl {
+@HiltViewModel
+class SearchViewModel @Inject constructor(
+    private val getStocksUseCase: GetStocksUseCase
+) : ViewModel(), SearchImpl{
 
     private var _items = listOf<BestMatches>()
 
