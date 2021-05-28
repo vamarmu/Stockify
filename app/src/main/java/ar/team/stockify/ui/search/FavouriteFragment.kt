@@ -6,20 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import ar.team.stockify.StockifyApp
-import ar.team.stockify.data.repository.FavouritesRepository
-import ar.team.stockify.database.RoomDataSourceImp
 import ar.team.stockify.databinding.FragmentFavouriteBinding
 import ar.team.stockify.ui.details.DetailsActivity
 import ar.team.stockify.ui.details.toBestMatchesDataView
 import ar.team.stockify.ui.model.BestMatchesDataView
-import ar.team.stockify.usecases.GetFavouritesUseCase
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class FavouriteFragment : Fragment() {
 
-    private lateinit var favouritesViewModel: FragmentViewModel
+    private val favouritesViewModel: FragmentViewModel  by viewModels()
     private lateinit var binding: FragmentFavouriteBinding
 
     override fun onCreateView(
@@ -33,26 +32,9 @@ class FavouriteFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val app = this.context!!.applicationContext as StockifyApp
-
-        favouritesViewModel = getViewModel {
-            FragmentViewModel(
-                GetFavouritesUseCase(
-                    FavouritesRepository(
-                        localDataSource = RoomDataSourceImp(app.room)
-                    )
-                )
-            )
-        }
 
         val recyclerViewFavourites = binding.recyclerviewFavourites
-
-
         val managerFavourites = LinearLayoutManager(view.context.applicationContext)
-
-        favouritesViewModel.adapter = SearchAdapter(SearchClickListener { bestMatches ->
-            startDetailsActivity(bestMatches.toBestMatchesDataView())
-        })
 
         favouritesViewModel.favouritesadapter = FavouritesAdapter(FavouriteClickListener { stock ->
             startDetailsActivity( stock.toBestMatchesDataView())

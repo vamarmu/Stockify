@@ -5,20 +5,19 @@ import androidx.lifecycle.viewModelScope
 import ar.team.stockify.domain.BestMatches
 import ar.team.stockify.domain.Stock
 import ar.team.stockify.usecases.GetFavouritesUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FragmentViewModel(
+@HiltViewModel
+class FragmentViewModel @Inject constructor(
     private var getFavouritesUseCase: GetFavouritesUseCase
 ): ViewModel() {
-
-    private var _items = listOf<BestMatches>()
-
-    lateinit var adapter: SearchAdapter
     lateinit var favouritesadapter: FavouritesAdapter
 
     init {
         viewModelScope.launch {
-            addListWithHeader(getFavouritesUseCase.invoke())
+            addListWithHeader( getFavouritesUseCase.invoke())
         }
 
     }

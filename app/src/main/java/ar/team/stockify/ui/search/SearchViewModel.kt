@@ -19,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val getStocksUseCase: GetStocksUseCase
-) : ViewModel(), SearchImpl{
+) : ViewModel(){
 
     private var _items = listOf<BestMatches>()
 
@@ -29,7 +29,7 @@ class SearchViewModel @Inject constructor(
 
     private var filterActual = ""
 
-    override fun onQueryTextSubmit(filter: String) {
+     fun onQueryTextSubmit(filter: String) {
         if (filter.length != 1 && filter != filterActual) {
             searchJob?.cancel()
             searchJob = viewModelScope.launch {
@@ -42,7 +42,7 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    override fun onQueryTextChange(filter: String) {
+     fun onQueryTextChange(filter: String) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             withContext(Dispatchers.Main) {

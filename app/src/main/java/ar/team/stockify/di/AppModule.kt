@@ -2,8 +2,11 @@ package ar.team.stockify.di
 
 import android.app.Application
 import androidx.room.Room
+import ar.team.stockify.data.repository.FavouritesRepository
 import ar.team.stockify.data.repository.StocksRepository
+import ar.team.stockify.data.source.LocalDataSource
 import ar.team.stockify.data.source.RemoteDataSource
+import ar.team.stockify.database.LocalDataSourceImp
 import ar.team.stockify.database.StockDatabase
 import ar.team.stockify.network.RemoteDataSourceImp
 import dagger.Module
@@ -34,4 +37,11 @@ class AppModule {
     @Provides
     fun remoteDataSourceProvider(): RemoteDataSource = RemoteDataSourceImp()
 
+    @Provides
+    fun favouritesRepositoryProvider(
+        localDataSource: LocalDataSource
+    ):FavouritesRepository= FavouritesRepository(localDataSource)
+
+    @Provides
+    fun localDataSourceProvider(db:StockDatabase): LocalDataSource=LocalDataSourceImp(db)
 }
