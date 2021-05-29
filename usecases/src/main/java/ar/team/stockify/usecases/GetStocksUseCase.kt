@@ -1,9 +1,9 @@
 package ar.team.stockify.usecases
 
-import ar.team.stockify.data.repository.StocksRepository
+import ar.team.stockify.data.repository.StockifyRepository
 import ar.team.stockify.domain.Symbols
 
-class GetStocksUseCase(private val stocksRepository: StocksRepository) {
+class GetStocksUseCase(private val stockifyRepository: StockifyRepository) {
     suspend fun invoke(filter: String): Symbols =
-        stocksRepository.getSymbols(filter)
+        stockifyRepository.getSymbols(filter)
 }

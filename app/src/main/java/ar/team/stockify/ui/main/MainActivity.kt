@@ -5,14 +5,10 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import ar.team.stockify.R
-import ar.team.stockify.StockifyApp
-import ar.team.stockify.database.Stock
+import ar.team.stockify.database.LocalStock
 import ar.team.stockify.database.StockDatabase
-import ar.team.stockify.network.AlphaVantage
-import ar.team.stockify.network.Keys
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -25,23 +21,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        /*//Ejemplos de llamados de Red
-        lifecycleScope.launch {
-        val result = AlphaVantage.service.getCompanyOverview("EARNINGS", "IBM", Keys.apiKey())
-        Timber.d("${javaClass.simpleName} -> Network call to Get Company Overview Endpoint")
-        println(result.symbol)
-        }
-
-        lifecycleScope.launch {
-            val result = AlphaVantage.service.getSymbolSearch("SYMBOL_SEARCH", "tesco", Keys.apiKey())
-            Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
-            println(result.bestMatches[0].symbol)
-        }*/
-
-        //Ejemplos de Base de Datos
-
-        val stock1 = Stock(symbol = "TSLA", name = "Tesla")
-        val stock2 = Stock(symbol = "AAPL", name = "Apple")
+        val stock1 = LocalStock(symbol = "TSLA", name = "Tesla")
+        val stock2 = LocalStock(symbol = "AAPL", name = "Apple")
 
 
         lifecycleScope.launch {

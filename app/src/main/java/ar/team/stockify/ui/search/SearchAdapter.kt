@@ -17,7 +17,7 @@ private const val TYPE_FAVOURITE_ITEM = 1
 
 class SearchAdapter(private val clickListener: SearchClickListener) :
     ListAdapter<SealedSymbol, RecyclerView.ViewHolder>(SearchItemDiffCallback()),
-    SearchImpl, AddSymbols {
+    SearchImpl {
 
     class HeaderViewHolder private constructor(view: HeaderSearchElementBinding) :
         RecyclerView.ViewHolder(view.root) {
@@ -54,7 +54,7 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
 
     private var listAux: MutableList<SealedSymbol> = mutableListOf()
 
-    override fun addListWithoutHeader(list: List<BestMatches>?) {
+     fun addListWithoutHeader(list: List<BestMatches>?) {
         val symbols = list?.map {
             SealedSymbol.FavoriteSymbol(it)
         }
@@ -62,16 +62,6 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
         listAux = currentList
     }
 
-    override fun addListWithHeader(list: List<BestMatches>?) {
-
-        val symbols = when (list) {
-            null -> listOf(SealedSymbol.Header)
-            else -> listOf(SealedSymbol.Header) + list.map { SealedSymbol.FavoriteSymbol(it) }
-        }
-
-        submitList(symbols)
-
-    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -117,14 +107,14 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
             android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N -> {
                 val collect =
                     listAux.stream().filter {
-                        it.symbol.toLowerCase().contains(filter)
+                        it.symbol.lowercase(Locale.getDefault()).contains(filter)
                     }.collect(Collectors.toList())
                 submitList(collect)
             }
             else -> {
                 val aux = listAux
                 currentList.forEach {
-                    if (it.symbol.toLowerCase(Locale.getDefault()).contains(filter)) {
+                    if (it.symbol.lowercase(Locale.getDefault()).contains(filter)) {
                         aux.add(it)
                     }
                 }

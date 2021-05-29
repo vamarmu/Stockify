@@ -1,7 +1,7 @@
 package ar.team.stockify.network
 
 import ar.team.stockify.model.Company
-import ar.team.stockify.model.RemoteSymbol
+import ar.team.stockify.network.model.RemoteSymbol
 import retrofit2.http.GET
 import retrofit2.http.Query
 
