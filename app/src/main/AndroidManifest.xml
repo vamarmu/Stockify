@@ -27,7 +27,7 @@
         </provider>
 
         <activity android:name=".ui.user.UserActivity"></activity>
-        
+
         <activity android:name=".ui.main.MainActivity" />
 
         <activity

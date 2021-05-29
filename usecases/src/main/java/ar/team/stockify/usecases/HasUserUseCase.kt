@@ -1,6 +1,5 @@
 package ar.team.stockify.usecases
 
-import ar.team.stockify.data.repository.StocksRepository
 import ar.team.stockify.data.repository.UserRepository
 
 class HasUserUseCase(private val userRepository: UserRepository) {

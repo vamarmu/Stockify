@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.graphics.Camera
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -15,12 +16,14 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import ar.team.stockify.data.repository.StocksRepository
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import ar.team.stockify.data.repository.UserRepository
 import ar.team.stockify.databinding.ActivityUserBinding
-import ar.team.stockify.network.Keys
-import ar.team.stockify.network.SymbolsDataSourceImp
+import ar.team.stockify.model.QuarterlyEarning
 import ar.team.stockify.storage.UserDataSourceImp
+import ar.team.stockify.ui.details.DetailsViewModel
 import ar.team.stockify.ui.main.MainActivity
 import ar.team.stockify.usecases.GetUserUseCase
 import ar.team.stockify.usecases.HasUserUseCase
@@ -30,6 +33,37 @@ import java.io.IOException
 
 
 class UserActivity : AppCompatActivity(){
+
+    private val userViewModel by lazy { ViewModelProvider(this).get(UserViewModel::class.java) }
+
+    private lateinit var binding: ActivityUserBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityUserBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        userViewModel.model.observe(this, Observer(::updateUi))
+    }
+
+    private fun updateUi(model: UserViewModel.UiUserModel) {
+        when(model) {
+            is UserViewModel.UiUserModel.NoUser -> {
+                onClickImageButton()
+                onClickButton()
+            }
+            is UserViewModel.UiUserModel.Content -> bindUser()
+            is UserViewModel.UiUserModel.Camera -> {
+                if (checkCamera()) {
+                    requestPermissionLauncher1.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                }
+            }
+            is UserViewModel.UiUserModel.Submit -> {
+                setUserUseCase.invoke(binding.username.text.toString(), currentPhotoName)
+                bindUser()
+            }
+        }
+    }
 
     private val hasUserUseCase: HasUserUseCase = HasUserUseCase(
         UserRepository(
@@ -52,7 +86,6 @@ class UserActivity : AppCompatActivity(){
     lateinit var currentPhotoName: String
     private val REQUEST_TAKE_PHOTO = 1
 
-    private lateinit var binding: ActivityUserBinding
 
     private val requestPermissionLauncher1 = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         when {
@@ -72,33 +105,18 @@ class UserActivity : AppCompatActivity(){
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityUserBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        if(hasUserUseCase.invoke()) {
-            bindUser()
-        } else {
-            onClickImageButton()
-            onClickButton()
-        }
-    }
 
     private fun onClickButton() {
         binding.button.setOnClickListener {
-            setUserUseCase.invoke(binding.username.text.toString(), currentPhotoName)
-            //setSharedPreference("username", binding.username.text.toString())
-            //setSharedPreference("user_image", currentPhotoName)
-            bindUser()
+            userViewModel.onButtonClicked()
         }
     }
 
     private fun onClickImageButton() {
         binding.imageButton.setOnClickListener {
-            if (checkCamera()) {
-                requestPermissionLauncher1.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            }
+            userViewModel.onImageButtonClicked()
+
         }
     }
 
