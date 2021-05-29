@@ -1,6 +1,7 @@
 package ar.team.stockify.di
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import ar.team.stockify.data.repository.StocksRepository
 import ar.team.stockify.data.source.RemoteDataSource
