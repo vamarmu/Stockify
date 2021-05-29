@@ -1,4 +1,4 @@
-package ar.team.stockify
+package ar.team.stockify.ui.user
 
 import android.Manifest
 import android.content.Context
@@ -15,13 +15,39 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import ar.team.stockify.data.repository.StocksRepository
+import ar.team.stockify.data.repository.UserRepository
 import ar.team.stockify.databinding.ActivityUserBinding
+import ar.team.stockify.network.Keys
+import ar.team.stockify.network.SymbolsDataSourceImp
+import ar.team.stockify.storage.UserDataSourceImp
 import ar.team.stockify.ui.main.MainActivity
+import ar.team.stockify.usecases.GetUserUseCase
+import ar.team.stockify.usecases.HasUserUseCase
+import ar.team.stockify.usecases.SetUserUseCase
 import java.io.File
 import java.io.IOException
 
 
 class UserActivity : AppCompatActivity(){
+
+    private val hasUserUseCase: HasUserUseCase = HasUserUseCase(
+        UserRepository(
+            localDataSource = UserDataSourceImp(getPreferences(Context.MODE_PRIVATE), getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!)
+        )
+    )
+
+    private val getUserUseCase: GetUserUseCase = GetUserUseCase(
+        UserRepository(
+            localDataSource = UserDataSourceImp(getPreferences(Context.MODE_PRIVATE), getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!)
+        )
+    )
+
+    private val setUserUseCase: SetUserUseCase = SetUserUseCase(
+        UserRepository(
+            localDataSource = UserDataSourceImp(getPreferences(Context.MODE_PRIVATE), getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!)
+        )
+    )
 
     lateinit var currentPhotoName: String
     private val REQUEST_TAKE_PHOTO = 1
@@ -51,7 +77,7 @@ class UserActivity : AppCompatActivity(){
         binding = ActivityUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if(hasUser()) {
+        if(hasUserUseCase.invoke()) {
             bindUser()
         } else {
             onClickImageButton()
@@ -61,8 +87,9 @@ class UserActivity : AppCompatActivity(){
 
     private fun onClickButton() {
         binding.button.setOnClickListener {
-            setSharedPreference("username", binding.username.text.toString())
-            setSharedPreference("user_image", currentPhotoName)
+            setUserUseCase.invoke(binding.username.text.toString(), currentPhotoName)
+            //setSharedPreference("username", binding.username.text.toString())
+            //setSharedPreference("user_image", currentPhotoName)
             bindUser()
         }
     }
@@ -75,7 +102,7 @@ class UserActivity : AppCompatActivity(){
         }
     }
 
-    private fun hasUser() =
+    /*private fun hasUser() =
         existSharedPreference("user_image") && existSharedPreference("username") && File(
             getAvatarPath()
         ).exists()
@@ -86,15 +113,16 @@ class UserActivity : AppCompatActivity(){
             putString(name, value)
             commit()
         }
-    }
+    }*/
 
     private fun bindUser() {
+        val user = getUserUseCase.invoke()
         binding.button.visibility = View.INVISIBLE
-        val file = File(getAvatarPath())
+        val file = File(user.avatar)
         val myBitmap = BitmapFactory.decodeFile(file.absolutePath)
         binding.imageButton.setImageBitmap(myBitmap)
         binding.username.inputType = 0
-        binding.username.setText(getSharedPreference("username"))
+        binding.username.setText(user.name)
         startSearchActivity()
     }
 
@@ -105,6 +133,7 @@ class UserActivity : AppCompatActivity(){
         }, 3000)
     }
 
+    /*
     private fun getAvatarPath() =
         getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.absolutePath.toString() + "/" + getSharedPreference("user_image")
 
@@ -113,6 +142,7 @@ class UserActivity : AppCompatActivity(){
     private fun getSharedPreference(name: String): String? {
         return getPreferences(Context.MODE_PRIVATE).getString(name, null)
     }
+    */
 
     private fun checkCamera(): Boolean {
         // Check whether your app is running on a device that has a front-facing camera.

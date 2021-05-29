@@ -1,16 +1,22 @@
 package ar.team.stockify.ui.search
 
+import android.content.Context
+import android.content.SharedPreferences
+import android.os.Environment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ar.team.stockify.data.repository.StocksRepository
+import ar.team.stockify.data.source.LocalDataSource
 import ar.team.stockify.domain.BestMatches
 import ar.team.stockify.network.Keys
 import ar.team.stockify.network.SymbolsDataSourceImp
+import ar.team.stockify.storage.UserDataSourceImp
 import ar.team.stockify.usecases.GetStocksUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.io.File
 
 class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
 
@@ -22,7 +28,7 @@ class SearchViewModel() : ViewModel(), SearchImpl, AddSymbols {
         StocksRepository(
             apiKey = Keys.apiKey(),
             remoteDataSource = SymbolsDataSourceImp()
-        )
+            )
     )
 
     init {

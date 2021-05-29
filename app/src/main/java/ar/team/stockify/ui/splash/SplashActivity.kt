@@ -7,7 +7,7 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import ar.team.stockify.BuildConfig
 import ar.team.stockify.R
-import ar.team.stockify.UserActivity
+import ar.team.stockify.ui.user.UserActivity
 import ar.team.stockify.databinding.ActivitySplashBinding
 
 

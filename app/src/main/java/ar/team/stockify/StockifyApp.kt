@@ -21,4 +21,6 @@ class StockifyApp: Application() {
             Timber.plant(Timber.DebugTree())
         }
     }
+
+    fun get(): Application = this
 }
