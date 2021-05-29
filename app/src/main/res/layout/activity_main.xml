@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainActivity">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/frame_layout"
         android:name="ar.team.stockify.ui.search.SearchFragment"
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_height="wrap_content"/>
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:name="ar.team.stockify.ui.search.FavouriteFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

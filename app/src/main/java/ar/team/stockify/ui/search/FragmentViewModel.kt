@@ -2,7 +2,6 @@ package ar.team.stockify.ui.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ar.team.stockify.domain.BestMatches
 import ar.team.stockify.domain.Stock
 import ar.team.stockify.usecases.GetFavouritesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,7 +12,7 @@ import javax.inject.Inject
 class FragmentViewModel @Inject constructor(
     private var getFavouritesUseCase: GetFavouritesUseCase
 ): ViewModel() {
-    lateinit var favouritesadapter: FavouritesAdapter
+    lateinit var favouritesAdapter: FavouritesAdapter
 
     init {
         viewModelScope.launch {
@@ -22,6 +21,6 @@ class FragmentViewModel @Inject constructor(
 
     }
     private fun addListWithHeader(list: List<Stock>?) {
-        favouritesadapter.addListWithHeader(list)
+        favouritesAdapter.addListWithHeader(list)
     }
 }

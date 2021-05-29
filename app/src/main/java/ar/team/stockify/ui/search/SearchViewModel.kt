@@ -3,10 +3,6 @@ package ar.team.stockify.ui.search
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import ar.team.stockify.domain.BestMatches
-import ar.team.stockify.domain.Stock
-import ar.team.stockify.usecases.GetFavouritesUseCase
-import ar.team.stockify.network.Keys
-import ar.team.stockify.network.RemoteDataSourceImp
 import ar.team.stockify.usecases.GetStocksUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -46,7 +42,7 @@ class SearchViewModel @Inject constructor(
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             withContext(Dispatchers.Main) {
-                if (_items.isEmpty() || _items.size > 5 && filterActual==filter) {
+                if (_items.isEmpty() || _items.size > 5 && filterActual!=filter) {
                     val result = getStocksUseCase.invoke(filter)
                     Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
                     _items = result.bestMatches

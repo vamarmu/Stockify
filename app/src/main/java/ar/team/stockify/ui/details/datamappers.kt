@@ -14,7 +14,8 @@ fun Stock.toBestMatchesDataView(): BestMatchesDataView = BestMatchesDataView(
     symbol = symbol,
     name = name,
 )
-fun LocalStock.toStock(): ar.team.stockify.domain.Stock = ar.team.stockify.domain.Stock(
+
+fun LocalStock.toStock(): Stock = Stock(
     symbol = symbol,
     name = name
 )

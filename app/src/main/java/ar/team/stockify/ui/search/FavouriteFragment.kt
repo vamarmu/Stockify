@@ -36,13 +36,13 @@ class FavouriteFragment : Fragment() {
         val recyclerViewFavourites = binding.recyclerviewFavourites
         val managerFavourites = LinearLayoutManager(view.context.applicationContext)
 
-        favouritesViewModel.favouritesadapter = FavouritesAdapter(FavouriteClickListener { stock ->
+        favouritesViewModel.favouritesAdapter = FavouritesAdapter(FavouriteClickListener { stock ->
             startDetailsActivity( stock.toBestMatchesDataView())
         })
 
         recyclerViewFavourites.layoutManager = managerFavourites
 
-        recyclerViewFavourites.adapter = favouritesViewModel.favouritesadapter
+        recyclerViewFavourites.adapter = favouritesViewModel.favouritesAdapter
 
 
 
