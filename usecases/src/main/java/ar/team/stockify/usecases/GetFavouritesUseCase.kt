@@ -1,11 +1,9 @@
 package ar.team.stockify.usecases
 
-import ar.team.stockify.data.repository.FavouritesRepository
-import ar.team.stockify.data.repository.StocksRepository
+import ar.team.stockify.data.repository.StockifyRepository
 import ar.team.stockify.domain.Stock
-import ar.team.stockify.domain.Symbols
 
-class GetFavouritesUseCase(private val favouritesRepository: FavouritesRepository) {
+class GetFavouritesUseCase(private val stockifyRepository: StockifyRepository) {
     suspend fun invoke(): List<Stock> =
-        favouritesRepository.getSymbols()
+        stockifyRepository.getFavourites()
 }
