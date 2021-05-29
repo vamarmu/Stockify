@@ -8,7 +8,6 @@ import ar.team.stockify.data.source.RemoteDataSource
 import ar.team.stockify.database.LocalDataSourceImp
 import ar.team.stockify.database.StockDatabase
 import ar.team.stockify.network.RemoteDataSourceImp
-import ar.team.stockify.ui.user.UserService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,7 +41,4 @@ class AppModule {
     @Provides
     fun localDataSourceProvider(db:StockDatabase): LocalDataSource=LocalDataSourceImp(db)
 
-    @Provides
-    @Singleton
-    fun userServiceProvider() = UserService()
 }

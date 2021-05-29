@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
-import android.graphics.Camera
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -18,16 +17,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
-import ar.team.stockify.data.repository.UserRepository
 import ar.team.stockify.databinding.ActivityUserBinding
-import ar.team.stockify.model.QuarterlyEarning
-import ar.team.stockify.storage.UserDataSourceImp
-import ar.team.stockify.ui.details.DetailsViewModel
 import ar.team.stockify.ui.main.MainActivity
-import ar.team.stockify.usecases.GetUserUseCase
-import ar.team.stockify.usecases.HasUserUseCase
-import ar.team.stockify.usecases.SetUserUseCase
 import java.io.File
 import java.io.IOException
 
@@ -59,29 +50,12 @@ class UserActivity : AppCompatActivity(){
                 }
             }
             is UserViewModel.UiUserModel.Submit -> {
-                setUserUseCase.invoke(binding.username.text.toString(), currentPhotoName)
+                setSharedPreference("username", binding.username.text.toString())
+                setSharedPreference("user_image", currentPhotoName)
                 bindUser()
             }
         }
     }
-
-    private val hasUserUseCase: HasUserUseCase = HasUserUseCase(
-        UserRepository(
-            localDataSource = UserDataSourceImp(getPreferences(Context.MODE_PRIVATE), getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!)
-        )
-    )
-
-    private val getUserUseCase: GetUserUseCase = GetUserUseCase(
-        UserRepository(
-            localDataSource = UserDataSourceImp(getPreferences(Context.MODE_PRIVATE), getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!)
-        )
-    )
-
-    private val setUserUseCase: SetUserUseCase = SetUserUseCase(
-        UserRepository(
-            localDataSource = UserDataSourceImp(getPreferences(Context.MODE_PRIVATE), getExternalFilesDir(Environment.DIRECTORY_PICTURES)!!)
-        )
-    )
 
     lateinit var currentPhotoName: String
     private val REQUEST_TAKE_PHOTO = 1
@@ -120,7 +94,7 @@ class UserActivity : AppCompatActivity(){
         }
     }
 
-    /*private fun hasUser() =
+    private fun hasUser() =
         existSharedPreference("user_image") && existSharedPreference("username") && File(
             getAvatarPath()
         ).exists()
@@ -131,16 +105,15 @@ class UserActivity : AppCompatActivity(){
             putString(name, value)
             commit()
         }
-    }*/
+    }
 
     private fun bindUser() {
-        val user = getUserUseCase.invoke()
         binding.button.visibility = View.INVISIBLE
-        val file = File(user.avatar)
+        val file = File(getSharedPreference("user_image"))
         val myBitmap = BitmapFactory.decodeFile(file.absolutePath)
         binding.imageButton.setImageBitmap(myBitmap)
         binding.username.inputType = 0
-        binding.username.setText(user.name)
+        binding.username.setText(getSharedPreference("username"))
         startSearchActivity()
     }
 
@@ -151,7 +124,7 @@ class UserActivity : AppCompatActivity(){
         }, 3000)
     }
 
-    /*
+
     private fun getAvatarPath() =
         getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.absolutePath.toString() + "/" + getSharedPreference("user_image")
 
@@ -160,7 +133,7 @@ class UserActivity : AppCompatActivity(){
     private fun getSharedPreference(name: String): String? {
         return getPreferences(Context.MODE_PRIVATE).getString(name, null)
     }
-    */
+
 
     private fun checkCamera(): Boolean {
         // Check whether your app is running on a device that has a front-facing camera.
