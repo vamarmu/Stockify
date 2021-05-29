@@ -7,7 +7,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object AlphaVantage {
 
-    const val BASE_URL = "https://www.alphavantage.co"
+    private const val BASE_URL = "https://www.alphavantage.co"
 
     private val okHttpClient = HttpLoggingInterceptor().run {
         level = HttpLoggingInterceptor.Level.BODY

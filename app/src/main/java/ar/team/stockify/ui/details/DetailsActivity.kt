@@ -20,7 +20,7 @@ class DetailsActivity : AppCompatActivity() {
 
     private val detailsViewModel by lazy { ViewModelProvider(this).get(DetailsViewModel::class.java) }
 
-    lateinit var binding: ActivityDetailsBinding
+    private lateinit var binding: ActivityDetailsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

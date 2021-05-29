@@ -39,4 +39,10 @@
    />
 
 
+    <androidx.fragment.app.FragmentContainerView
+        android:name="ar.team.stockify.ui.search.FavouriteFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/frame_favourites" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

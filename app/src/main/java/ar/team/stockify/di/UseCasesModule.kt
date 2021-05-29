@@ -1,6 +1,7 @@
 package ar.team.stockify.di
 
-import ar.team.stockify.data.repository.StocksRepository
+import ar.team.stockify.data.repository.StockifyRepository
+import ar.team.stockify.usecases.GetFavouritesUseCase
 import ar.team.stockify.usecases.GetStocksUseCase
 import dagger.Module
 import dagger.Provides
@@ -13,6 +14,11 @@ class UseCasesModule {
 
     @Provides
     fun providesGetStocksUseCase(
-        stocksRepository: StocksRepository
-    ): GetStocksUseCase = GetStocksUseCase(stocksRepository)
+        stockifyRepository: StockifyRepository
+    ): GetStocksUseCase = GetStocksUseCase(stockifyRepository)
+
+    @Provides
+    fun providesGetFavouritesUseCase(
+        stockifyRepository: StockifyRepository
+    ):GetFavouritesUseCase=GetFavouritesUseCase(stockifyRepository = stockifyRepository)
 }
