@@ -26,7 +26,9 @@ class AppModule {
         app,
         StockDatabase::class.java,
         "stock-db"
-    ).build()
+    )
+    .fallbackToDestructiveMigration()
+    .build()
 
     @Provides
     fun stocksRepositoryProvider(localDataSource: LocalDataSource,
