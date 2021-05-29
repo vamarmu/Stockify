@@ -1,4 +1,4 @@
-package ar.team.stockify.model
+package ar.team.stockify.network.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

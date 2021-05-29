@@ -8,13 +8,13 @@ import androidx.room.Query
 @Dao
 interface StockDao {
 
-    @Query("SELECT * FROM Stock")
-    suspend fun getAllFav(): List<Stock>
+    @Query("SELECT * FROM LocalStock")
+    suspend fun getAllFav(): List<LocalStock>
 
     @Insert
-    suspend fun insert (stock: Stock)
+    suspend fun insert (stock: LocalStock)
 
     @Delete
-    suspend fun delete (stock: Stock)
+    suspend fun delete (stock: LocalStock)
 
 }

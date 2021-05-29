@@ -9,7 +9,7 @@ import ar.team.stockify.network.Keys
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-class DetailsViewModel() : ViewModel() {
+class DetailsViewModel : ViewModel() {
 
 
     private val _detailsQuarter = MutableLiveData<List<QuarterlyEarning>>()
@@ -28,7 +28,7 @@ class DetailsViewModel() : ViewModel() {
                 Keys.apiKey())
             Timber.d("${javaClass.simpleName} -> Network call to Get Company Overview Endpoint")
             _company.value = companyResponse
-            _detailsQuarter.value = companyResponse?.quarterlyEarnings
+            _detailsQuarter.value = companyResponse.quarterlyEarnings
 
             println(companyResponse.quarterlyEarnings)
             }

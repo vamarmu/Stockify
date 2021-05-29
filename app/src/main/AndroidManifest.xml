@@ -27,8 +27,8 @@
         </provider>
 
         <activity android:name=".ui.user.UserActivity"></activity>
-
-        <activity android:name=".ui.main.MainActivity"></activity>
+        
+        <activity android:name=".ui.main.MainActivity" />
 
         <activity
             android:name=".ui.splash.SplashActivity"
@@ -39,7 +39,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="ar.team.stockify.ui.details.DetailsActivity"></activity>
+
+        <activity android:name="ar.team.stockify.ui.details.DetailsActivity" />
 
     </application>
 
