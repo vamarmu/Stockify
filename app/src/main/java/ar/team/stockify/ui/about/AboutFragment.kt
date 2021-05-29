@@ -14,7 +14,6 @@ import ar.team.stockify.databinding.AboutFragmentBinding
 
 class AboutFragment : Fragment() {
 
-
     private lateinit var binding : AboutFragmentBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,8 +26,8 @@ class AboutFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.versionName.text = resources.getString(R.string.version, BuildConfig.VERSION_NAME)
-        binding.packageName.text = resources.getString(R.string.application_id, BuildConfig.APPLICATION_ID)
+        binding.versionName.text = resources.getString(R.string.about_version, BuildConfig.VERSION_NAME)
+        binding.packageName.text = resources.getString(R.string.about_application_id, BuildConfig.APPLICATION_ID)
 
     }
 

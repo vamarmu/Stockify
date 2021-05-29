@@ -2,7 +2,7 @@
     <string name="app_name">Stockify</string>
     <string name="logo">logo</string>
     <string name="version">V %s</string>
-    <string name="application_id">Application ID  %s</string>
+
     <string name="stock">Stock</string>
     <string name="precio">Precio</string>
     <string name="cambio">Cambio</string>
@@ -18,6 +18,12 @@
     <string name="item_menu_user">User</string>
     <string name="item_menu_search">Search</string>
     <string name="item_menu_about">About</string>
+
+    <!-- About -->
+    <string name="about_application_id">Application ID  %s</string>
+    <string name="about_version">Version  %s</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="name">Name</string>

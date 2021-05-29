@@ -11,6 +11,12 @@
         android:label="Main"
         tools:layout="@layout/main_content_fragment_layout" />
 
+    <fragment
+        android:id="@+id/aboutFragment"
+        android:name="ar.team.stockify.ui.about.AboutFragment"
+        android:label="About"
+        tools:layout="@layout/about_fragment" />
+
 
 
 </navigation>

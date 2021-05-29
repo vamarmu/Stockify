@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/bottomMenu"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/nav_graph" />
+        app:navGraph="@navigation/main_nav_graph" />
 
    <!-- <fragment
         android:id="@+id/frame_layout"
@@ -38,11 +38,12 @@
     app:menu="@menu/nav_menu"
    />
 
-
+<!--
     <androidx.fragment.app.FragmentContainerView
         android:name="ar.team.stockify.ui.search.FavouriteFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/frame_favourites" />
+-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
