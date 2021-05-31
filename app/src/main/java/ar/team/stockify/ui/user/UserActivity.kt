@@ -11,51 +11,27 @@ import android.os.Environment
 import android.os.Handler
 import android.os.Looper
 import android.provider.MediaStore
+import android.util.AttributeSet
+
 import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import ar.team.stockify.databinding.ActivityUserBinding
+import ar.team.stockify.domain.User
 import ar.team.stockify.ui.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.IOException
 
-
-class UserActivity : AppCompatActivity(){
-
-    private val userViewModel by lazy { ViewModelProvider(this).get(UserViewModel::class.java) }
-
+@AndroidEntryPoint
+class UserActivity : AppCompatActivity() {
+    private val userViewModel: UserViewModel by viewModels()
     private lateinit var binding: ActivityUserBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityUserBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        userViewModel.model.observe(this, Observer(::updateUi))
-    }
-
-    private fun updateUi(model: UserViewModel.UiUserModel) {
-        when(model) {
-            is UserViewModel.UiUserModel.NoUser -> {
-                onClickImageButton()
-                onClickButton()
-            }
-            is UserViewModel.UiUserModel.Content -> bindUser()
-            is UserViewModel.UiUserModel.Camera -> {
-                if (checkCamera()) {
-                    requestPermissionLauncher1.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                }
-            }
-            is UserViewModel.UiUserModel.Submit -> {
-                setSharedPreference("username", binding.username.text.toString())
-                setSharedPreference("user_image", currentPhotoName)
-                bindUser()
-            }
-        }
-    }
 
     lateinit var currentPhotoName: String
     private val REQUEST_TAKE_PHOTO = 1
@@ -79,10 +55,42 @@ class UserActivity : AppCompatActivity(){
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityUserBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        userViewModel.model.observe(this, Observer(::updateUi))
+
+    }
 
 
-    private fun onClickButton() {
-        binding.button.setOnClickListener {
+
+    private fun updateUi(model: UserViewModel.UiUserModel) {
+        when(model) {
+            is UserViewModel.UiUserModel.NoUser -> {
+                onClickImageButton()
+                onClickButton()
+            }
+            is UserViewModel.UiUserModel.Content -> {  bindUser(model.user)}
+            is UserViewModel.UiUserModel.Camera -> {
+                if (checkCamera()) {
+                    requestPermissionLauncher1.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                }
+            }
+            is UserViewModel.UiUserModel.Submit -> {
+                //TODO Validar que los campos no esten vacios
+                userViewModel.saveUser(binding.username.text.toString(),currentPhotoName)
+
+            // TODO llamar Snackbar o Toast con un error
+            }
+        }
+    }
+
+
+
+
+
+    private fun onClickButton() { binding.button.setOnClickListener {
             userViewModel.onButtonClicked()
         }
     }
@@ -90,31 +98,20 @@ class UserActivity : AppCompatActivity(){
     private fun onClickImageButton() {
         binding.imageButton.setOnClickListener {
             userViewModel.onImageButtonClicked()
-
         }
     }
 
-    private fun hasUser() =
-        existSharedPreference("user_image") && existSharedPreference("username") && File(
-            getAvatarPath()
-        ).exists()
 
-    private fun setSharedPreference(name: String, value: String) {
-        val sharedPref = getPreferences(MODE_PRIVATE) ?: return
-        with(sharedPref.edit()) {
-            putString(name, value)
-            commit()
-        }
-    }
 
-    private fun bindUser() {
+    private fun bindUser(user : User) {
         binding.button.visibility = View.INVISIBLE
-        val file = File(getSharedPreference("user_image"))
+        val file = File(getAvatarPath(user.avatar))
         val myBitmap = BitmapFactory.decodeFile(file.absolutePath)
         binding.imageButton.setImageBitmap(myBitmap)
         binding.username.inputType = 0
-        binding.username.setText(getSharedPreference("username"))
+        binding.username.setText(user.name)
         startSearchActivity()
+
     }
 
     private fun startSearchActivity() {
@@ -125,14 +122,9 @@ class UserActivity : AppCompatActivity(){
     }
 
 
-    private fun getAvatarPath() =
-        getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.absolutePath.toString() + "/" + getSharedPreference("user_image")
+    private fun getAvatarPath(imageUser : String) =
+        getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.absolutePath.toString() + "/ " +imageUser
 
-    private fun existSharedPreference(name: String) = getPreferences(Context.MODE_PRIVATE).contains(name)
-
-    private fun getSharedPreference(name: String): String? {
-        return getPreferences(Context.MODE_PRIVATE).getString(name, null)
-    }
 
 
     private fun checkCamera(): Boolean {

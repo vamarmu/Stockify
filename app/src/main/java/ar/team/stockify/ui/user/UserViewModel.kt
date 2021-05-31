@@ -1,28 +1,27 @@
 package ar.team.stockify.ui.user
 
-import androidx.lifecycle.*
-import ar.team.stockify.data.repository.UserRepository
-import ar.team.stockify.domain.User
 
-import ar.team.stockify.model.Company
-import ar.team.stockify.model.QuarterlyEarning
-import ar.team.stockify.network.AlphaVantage
-import ar.team.stockify.network.Keys
+import androidx.lifecycle.*
+import ar.team.stockify.data.repository.StockifyRepository
+import ar.team.stockify.domain.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    userRepository: UserRepository
+    // TODO quitar userRepository y añadir el caso de uso
+    // getUserUserCase
+    //setUserUSerCase
+    private val userRepository: StockifyRepository
 ) : ViewModel() {
 
     sealed class UiUserModel {
         object NoUser: UiUserModel()
-        class Content(user: User): UiUserModel()
+        class Content(val user: User): UiUserModel()
         object Camera: UiUserModel()
         object Submit: UiUserModel()
+
     }
 
     private val _model = MutableLiveData<UiUserModel>()
@@ -30,14 +29,29 @@ class UserViewModel @Inject constructor(
         get() = _model
 
     init {
-        if(userRepository.hasUser()) {
-            _model.value = UiUserModel.Content(userRepository.getUser())
-        } else _model.value = UiUserModel.NoUser
+        viewModelScope.launch {
+            _model.value = userRepository.getUser()?.let{ user ->
+                UiUserModel.Content(user)
+            }?:UiUserModel.NoUser
+        }
+
     }
 
-    fun onImageButtonClicked() = UiUserModel.Camera
+    fun saveUser (name: String, image: String){
+        viewModelScope.launch {
+            _model.value = UiUserModel.Content(userRepository.setUser(name,image))
+        }
+    }
 
-    fun onButtonClicked() = UiUserModel.Submit
+    fun onImageButtonClicked() {
+        _model.value= UiUserModel.Camera
+    }
+
+
+    fun onButtonClicked() {
+        _model.value = UiUserModel.Submit
+    }
+
 }
 
 
