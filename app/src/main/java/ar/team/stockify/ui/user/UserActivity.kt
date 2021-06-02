@@ -14,6 +14,7 @@ import android.provider.MediaStore
 import android.util.AttributeSet
 
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -35,7 +36,6 @@ class UserActivity : AppCompatActivity() {
 
     lateinit var currentPhotoName: String
     private val REQUEST_TAKE_PHOTO = 1
-
 
     private val requestPermissionLauncher1 = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
         when {
@@ -63,8 +63,6 @@ class UserActivity : AppCompatActivity() {
 
     }
 
-
-
     private fun updateUi(model: UserViewModel.UiUserModel) {
         when(model) {
             is UserViewModel.UiUserModel.NoUser -> {
@@ -78,17 +76,14 @@ class UserActivity : AppCompatActivity() {
                 }
             }
             is UserViewModel.UiUserModel.Submit -> {
-                //TODO Validar que los campos no esten vacios
-                userViewModel.saveUser(binding.username.text.toString(),currentPhotoName)
-
-            // TODO llamar Snackbar o Toast con un error
+                if(binding.username.text!=null && this::currentPhotoName.isInitialized && File(getAvatarPath(currentPhotoName)).exists()) {
+                    userViewModel.saveUser(binding.username.text.toString(), currentPhotoName)
+                } else {
+                    Toast.makeText(this, "Debes indicar un nombre y una foto", Toast.LENGTH_LONG)
+                }
             }
         }
     }
-
-
-
-
 
     private fun onClickButton() { binding.button.setOnClickListener {
             userViewModel.onButtonClicked()
@@ -100,8 +95,6 @@ class UserActivity : AppCompatActivity() {
             userViewModel.onImageButtonClicked()
         }
     }
-
-
 
     private fun bindUser(user : User) {
         binding.button.visibility = View.INVISIBLE
@@ -121,11 +114,8 @@ class UserActivity : AppCompatActivity() {
         }, 3000)
     }
 
-
     private fun getAvatarPath(imageUser : String) =
-        getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.absolutePath.toString() + "/ " +imageUser
-
-
+        getExternalFilesDir(Environment.DIRECTORY_PICTURES)?.absolutePath.toString() + "/" +imageUser
 
     private fun checkCamera(): Boolean {
         // Check whether your app is running on a device that has a front-facing camera.

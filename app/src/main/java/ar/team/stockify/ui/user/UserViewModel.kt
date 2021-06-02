@@ -1,19 +1,20 @@
 package ar.team.stockify.ui.user
 
-
-import androidx.lifecycle.*
-import ar.team.stockify.data.repository.StockifyRepository
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import ar.team.stockify.domain.User
+import ar.team.stockify.usecases.GetUserUseCase
+import ar.team.stockify.usecases.SetUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    // TODO quitar userRepository y añadir el caso de uso
-    // getUserUserCase
-    //setUserUSerCase
-    private val userRepository: StockifyRepository
+    private val getUserUseCase: GetUserUseCase,
+    private val setUserUseCase: SetUserUseCase
 ) : ViewModel() {
 
     sealed class UiUserModel {
@@ -21,7 +22,6 @@ class UserViewModel @Inject constructor(
         class Content(val user: User): UiUserModel()
         object Camera: UiUserModel()
         object Submit: UiUserModel()
-
     }
 
     private val _model = MutableLiveData<UiUserModel>()
@@ -30,16 +30,15 @@ class UserViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _model.value = userRepository.getUser()?.let{ user ->
+            _model.value = getUserUseCase.invoke()?.let{ user ->
                 UiUserModel.Content(user)
             }?:UiUserModel.NoUser
         }
-
     }
 
     fun saveUser (name: String, image: String){
         viewModelScope.launch {
-            _model.value = UiUserModel.Content(userRepository.setUser(name,image))
+            _model.value = UiUserModel.Content(setUserUseCase.invoke(name,image))
         }
     }
 
