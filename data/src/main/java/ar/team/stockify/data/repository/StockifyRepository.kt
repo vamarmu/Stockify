@@ -15,4 +15,7 @@ class StockifyRepository(
 
     suspend fun getFavourites(): List<Stock> =
         localDataSource.getSymbols()
+
+    suspend fun addRemoveFavourite(stock: Stock) =
+        localDataSource.addRemoveFavourite(stock)
 }

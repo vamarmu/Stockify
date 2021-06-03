@@ -19,3 +19,8 @@ fun LocalStock.toStock(): Stock = Stock(
     symbol = symbol,
     name = name
 )
+
+fun Stock.toLocalStock(): LocalStock = LocalStock(
+    symbol = symbol,
+    name = name
+)
