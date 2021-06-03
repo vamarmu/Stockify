@@ -4,6 +4,7 @@ import ar.team.stockify.data.source.LocalDataSource
 import ar.team.stockify.data.source.RemoteDataSource
 import ar.team.stockify.domain.Stock
 import ar.team.stockify.domain.Symbols
+import ar.team.stockify.domain.User
 
 class StockifyRepository(
     private val localDataSource: LocalDataSource,
@@ -15,4 +16,9 @@ class StockifyRepository(
 
     suspend fun getFavourites(): List<Stock> =
         localDataSource.getSymbols()
+
+
+    suspend fun getUser() : User? = localDataSource.getUser()
+
+    suspend fun setUser(name : String, resource : String) : User = localDataSource.setUser(name, resource)
 }
