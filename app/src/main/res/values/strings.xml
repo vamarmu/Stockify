@@ -3,6 +3,7 @@
     <string name="logo">logo</string>
     <string name="version">V %s</string>
     <string name="stock">Stock</string>
+    <string name="name">Nombre</string>
     <string name="precio">Precio</string>
     <string name="cambio">Cambio</string>
     <string name="resultados">Resultados</string>
