@@ -1,11 +1,7 @@
 package ar.team.stockify.domain
 
-data class Company(
-    val quarterlyEarnings: List<QuarterlyEarning>,
-    val symbol: String
-)
 
-data class QuarterlyEarning(
+data class StockDetail(
     val estimatedEPS: String,
     val fiscalDateEnding: String,
     val reportedDate: String,
