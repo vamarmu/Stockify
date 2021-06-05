@@ -13,4 +13,6 @@ interface LocalDataSource {
 
     suspend fun removeUser()
 
+    suspend fun addRemoveFavourite(stock: Stock)
+
 }

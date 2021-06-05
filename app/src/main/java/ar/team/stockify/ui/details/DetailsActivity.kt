@@ -3,14 +3,17 @@ package ar.team.stockify.ui.details
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
 import androidx.lifecycle.*
+import ar.team.stockify.R
 import ar.team.stockify.databinding.ActivityDetailsBinding
 import ar.team.stockify.model.QuarterlyEarning
 import ar.team.stockify.ui.model.BestMatchesDataView
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class DetailsActivity : AppCompatActivity() {
 
     companion object {
@@ -18,8 +21,7 @@ class DetailsActivity : AppCompatActivity() {
     }
 
 
-    private val detailsViewModel by lazy { ViewModelProvider(this).get(DetailsViewModel::class.java) }
-
+    private val detailsViewModel: DetailsViewModel by viewModels()
     private lateinit var binding: ActivityDetailsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,7 +32,14 @@ class DetailsActivity : AppCompatActivity() {
         val detailsData = intent.getParcelableExtra<BestMatchesDataView>(DATA)
        // val detailsDataName = intent.getSerializableExtra(DATA.name).toString()
 
-        if (detailsData != null) {
+        binding.favouritesButton.setOnClickListener {
+            if (detailsData != null) {
+                detailsViewModel.addRemoveFavourites(detailsData.toStock())
+            }
+        }
+
+
+            if (detailsData != null) {
             binding.ttDetailsCompanySymbol.text = detailsData.symbol
             binding.tDetailsCompanyName.text = detailsData.name
             detailsViewModel.onQueryCompanyDetails(detailsData.symbol)
@@ -40,6 +49,18 @@ class DetailsActivity : AppCompatActivity() {
             if(list.isNotEmpty()) {
                 bindDetailInfo1(binding.result, list)
                 bindDetailInfo2(binding.result2, list)
+            }
+        })
+
+        detailsData?.toStock()?.let { detailsViewModel.stockSaved(it) }
+
+        detailsViewModel.favStock.observe(this, { stockSaved ->
+            if (stockSaved) {
+                binding.imgButton.setImageResource(R.drawable.ic_remove_button)
+                binding.textButton.text = getString(R.string.removeButton)
+            }else{
+                binding.imgButton.setImageResource(R.drawable.ic_add_button)
+                binding.textButton.text = getString(R.string.addButton)
             }
         })
 

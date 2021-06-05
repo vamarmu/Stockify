@@ -20,5 +20,7 @@ class StockifyRepository(
 
     suspend fun getUser() : User? = localDataSource.getUser()
 
-    suspend fun setUser(name : String, resource : String) : User = localDataSource.setUser(name, resource)
+suspend fun setUser(name : String, resource : String) : User = localDataSource.setUser(name, resource)
+
+suspend fun addRemoveFavourite(stock: Stock) = localDataSource.addRemoveFavourite(stock)
 }
