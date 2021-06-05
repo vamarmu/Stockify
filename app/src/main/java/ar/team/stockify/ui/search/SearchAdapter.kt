@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ar.team.stockify.databinding.HeaderSearchElementBinding
 import ar.team.stockify.databinding.SearchElementBinding
-import ar.team.stockify.domain.BestMatches
+import ar.team.stockify.domain.Stock
 import java.util.*
 import java.util.stream.Collectors
 
@@ -36,7 +36,7 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
     class ViewHolder private constructor(view: SearchElementBinding) :
         RecyclerView.ViewHolder(view.root) {
         private val stock: TextView = view.stock
-        fun bind(clickListener: SearchClickListener, item: BestMatches) {
+        fun bind(clickListener: SearchClickListener, item: Stock) {
             itemView.setOnClickListener {
                 clickListener.onclick(item)
             }
@@ -54,7 +54,7 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
 
     private var listAux: MutableList<SealedSymbol> = mutableListOf()
 
-     fun addListWithoutHeader(list: List<BestMatches>?) {
+     fun addListWithoutHeader(list: List<Stock>?) {
         val symbols = list?.map {
             SealedSymbol.FavoriteSymbol(it)
         }
@@ -77,7 +77,7 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
         when (holder) {
             is ViewHolder -> {
                 val item = getItem(position) as SealedSymbol.FavoriteSymbol
-                holder.bind(clickListener, item.bestMatches)
+                holder.bind(clickListener, item.stock)
             }
         }
     }
@@ -101,7 +101,7 @@ class SearchAdapter(private val clickListener: SearchClickListener) :
 
     private fun textFilter(filter: String) {
         when {
-            filter.isEmpty() -> {
+            filter.isNullOrEmpty() -> {
                 submitList(listAux)
             }
             android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N -> {
@@ -136,13 +136,13 @@ class SearchItemDiffCallback : DiffUtil.ItemCallback<SealedSymbol>() {
 }
 
 
-class SearchClickListener(val clickListener: (bestMatches: BestMatches) -> Unit) {
-    fun onclick(item: BestMatches) = clickListener(item)
+class SearchClickListener(val clickListener: (stock: Stock) -> Unit) {
+    fun onclick(item: Stock) = clickListener(item)
 }
 
 sealed class SealedSymbol {
-    data class FavoriteSymbol(val bestMatches: BestMatches) : SealedSymbol() {
-        override val symbol = bestMatches.symbol
+    data class FavoriteSymbol(val stock: Stock) : SealedSymbol() {
+        override val symbol = stock.symbol
     }
 
     object Header : SealedSymbol() {

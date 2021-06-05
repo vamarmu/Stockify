@@ -1,11 +1,9 @@
 package ar.team.stockify.data.source
 
-import ar.team.stockify.domain.Symbols
+import ar.team.stockify.domain.Stock
 
 interface RemoteDataSource {
 
-    suspend fun getSymbols(filter: String, apiKey: String): Symbols
-
-
+    suspend fun getStocks(filter: String, apiKey: String): List<Stock>
 
 }
