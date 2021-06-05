@@ -2,22 +2,22 @@ package ar.team.stockify.ui.details
 
 import androidx.lifecycle.*
 
-import ar.team.stockify.model.Company
-import ar.team.stockify.model.QuarterlyEarning
 import ar.team.stockify.network.AlphaVantage
 import ar.team.stockify.network.Keys
+import ar.team.stockify.network.model.RemoteCompany
+import ar.team.stockify.network.model.RemoteQuarterlyEarning
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class DetailsViewModel() : ViewModel() {
 
 
-    private val _detailsQuarter = MutableLiveData<List<QuarterlyEarning>>()
-    val detailsQuarter: LiveData<List<QuarterlyEarning>>
+    private val _detailsQuarter = MutableLiveData<List<RemoteQuarterlyEarning>>()
+    val detailsQuarter: LiveData<List<RemoteQuarterlyEarning>>
         get() = _detailsQuarter
 
-    private val _company = MutableLiveData<Company>()
-    val company: LiveData<Company>
+    private val _company = MutableLiveData<RemoteCompany>()
+    val company: LiveData<RemoteCompany>
         get() = _company
 
     fun onQueryCompanyDetails(filter: String) {
