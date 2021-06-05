@@ -12,30 +12,43 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
+class LocalDataSourceImp(
+    private val stockDatabase: StockDatabase,
+    private val preferences: SharedPreferences
+) : LocalDataSource {
 
-class LocalDataSourceImp (private val stockDatabase: StockDatabase, private val preferences: SharedPreferences): LocalDataSource {
+    private val stockDAO = stockDatabase.stockDao()
 
-    private val stockDAO=stockDatabase.stockDao()
-
-
+    companion object {
+        const val PREFERENCE_NAME_USER = "nameUer"
+        const val PREFERENCE_IMAGE_USER = "imageUser"
+    }
 
     override suspend fun getSymbols(): List<Stock> = withContext(Dispatchers.IO) {
-        stockDAO.getAllFav().map {it.toStock()}.toList()
+        stockDAO.getAllFav().map { it.toStock() }.toList()
     }
 
     override suspend fun getUser(): User? =
         if (preferences.contains(PREFERENCE_NAME_USER)
-            && preferences.contains(PREFERENCE_NAME_USER) ) {
-           User(preferences[PREFERENCE_NAME_USER],preferences[PREFERENCE_IMAGE_USER])
+            && preferences.contains(PREFERENCE_NAME_USER)
+        ) {
+            User(preferences[PREFERENCE_NAME_USER], preferences[PREFERENCE_IMAGE_USER])
         } else null
 
     override suspend fun setUser(name: String, image: String): User {
         preferences.edit {
-            putString(PREFERENCE_NAME_USER,name)
-            putString(PREFERENCE_IMAGE_USER,image)
+            putString(PREFERENCE_NAME_USER, name)
+            putString(PREFERENCE_IMAGE_USER, image)
             commit()
+        }
+        return User(name, image)
     }
-        return User (name,image)
+
+    override suspend fun removeUser() {
+        preferences.edit {
+            clear()
+            commit()
+        }
     }
 
     override suspend fun addRemoveFavourite(stock: Stock) {
@@ -43,18 +56,10 @@ class LocalDataSourceImp (private val stockDatabase: StockDatabase, private val 
         if (favStock?.toStock() == stock) {
             stockDAO.delete(favStock)
         } else {
-    override suspend fun removeUser() {
-        preferences.edit {
-            clear()
-            commit()
-        }
+
             stockDAO.insert(stock.toLocalStock())
         }
-
-    companion object {
-        const val PREFERENCE_NAME_USER = "nameUer"
-        const val PREFERENCE_IMAGE_USER = "imageUser"
     }
-
 }
+
 
