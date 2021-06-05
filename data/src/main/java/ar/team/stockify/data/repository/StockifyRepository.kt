@@ -3,6 +3,7 @@ package ar.team.stockify.data.repository
 import ar.team.stockify.data.source.LocalDataSource
 import ar.team.stockify.data.source.RemoteDataSource
 import ar.team.stockify.domain.Stock
+import ar.team.stockify.domain.StockDetail
 import ar.team.stockify.domain.User
 
 class StockifyRepository(
@@ -12,6 +13,9 @@ class StockifyRepository(
 ) {
     suspend fun getStocks(filter: String): List<Stock> =
         remoteDataSource.getStocks(filter = filter, apiKey = apiKey)
+
+    suspend fun getStockDetail(stock: String): List<StockDetail>? =
+        remoteDataSource.getStockDetail(filter = stock, apiKey = apiKey)
 
     suspend fun getFavourites(): List<Stock> =
         localDataSource.getSymbols()

@@ -19,8 +19,8 @@ interface ApiAlphaVantage {
     ): RemoteListBestMatches
 
     @GET("/query?function=EARNINGS")
-    suspend fun getCompanyOverview(
+    suspend fun getStockDetail(
         @Query("symbol") symbol: String,
         @Query("apikey") apiKey: String
-    ): RemoteCompany
+    ): RemoteCompany?
 }

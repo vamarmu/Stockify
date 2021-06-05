@@ -1,6 +1,9 @@
 package ar.team.stockify.network.model
 
+import com.google.gson.annotations.SerializedName
+
 data class RemoteCompany(
+    @SerializedName("quarterlyEarnings")
     val remoteQuarterlyEarnings: List<RemoteQuarterlyEarning>,
     val symbol: String
 )

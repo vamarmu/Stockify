@@ -1,11 +1,7 @@
 package ar.team.stockify.di
 
 import ar.team.stockify.data.repository.StockifyRepository
-import ar.team.stockify.usecases.AddRemoveFavUseCase
-import ar.team.stockify.usecases.GetFavouritesUseCase
-import ar.team.stockify.usecases.GetStocksUseCase
-import ar.team.stockify.usecases.GetUserUseCase
-import ar.team.stockify.usecases.SetUserUseCase
+import ar.team.stockify.usecases.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,6 +15,11 @@ class UseCasesModule {
     fun providesGetStocksUseCase(
         stockifyRepository: StockifyRepository
     ): GetStocksUseCase = GetStocksUseCase(stockifyRepository = stockifyRepository)
+
+    @Provides
+    fun providesGetStockDetailUseCase(
+        stockifyRepository: StockifyRepository
+    ): GetStockDetailUseCase = GetStockDetailUseCase(stockifyRepository = stockifyRepository)
 
     @Provides
     fun providesGetFavouritesUseCase(
