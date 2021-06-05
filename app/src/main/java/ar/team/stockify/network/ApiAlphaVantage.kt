@@ -1,7 +1,7 @@
 package ar.team.stockify.network
 
-import ar.team.stockify.model.Company
 import ar.team.stockify.model.RemoteSymbol
+import ar.team.stockify.network.model.RemoteCompany
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -22,5 +22,5 @@ interface ApiAlphaVantage {
     suspend fun getCompanyOverview(
         @Query("symbol") symbol: String,
         @Query("apikey") apiKey: String
-    ): Company
+    ): RemoteCompany
 }
