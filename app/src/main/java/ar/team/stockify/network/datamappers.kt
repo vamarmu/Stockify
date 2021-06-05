@@ -1,15 +1,17 @@
 package ar.team.stockify.network
 
-import ar.team.stockify.domain.BestMatches
-import ar.team.stockify.domain.Symbols
-import ar.team.stockify.network.model.RemoteBestMatches
-import ar.team.stockify.network.model.RemoteSymbol
 
-fun RemoteSymbol.toSymbols() : Symbols = Symbols(
-    bestMatches = this.bestMatches.map { it.toBestMatches()}.toList()
+import ar.team.stockify.domain.Stock
+
+import ar.team.stockify.network.model.RemoteBestMatches
+
+
+fun RemoteBestMatches.toStock() : Stock = Stock(
+    symbol = symbol,
+    name = name,
 )
 
-fun RemoteBestMatches.toBestMatches(): BestMatches = BestMatches(
+/*fun RemoteBestMatches.toBestMatches(): BestMatches = BestMatches(
     symbol = symbol,
     name = name,
     type = type,
@@ -19,5 +21,5 @@ fun RemoteBestMatches.toBestMatches(): BestMatches = BestMatches(
     timezone = timezone,
     currency = currency,
     matchScore = matchScore
-)
+)*/
 

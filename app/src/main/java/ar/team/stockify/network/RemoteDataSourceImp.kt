@@ -1,16 +1,17 @@
 package ar.team.stockify.network
 
 import ar.team.stockify.data.source.RemoteDataSource
-import ar.team.stockify.domain.Symbols
-import ar.team.stockify.domain.User
+import ar.team.stockify.domain.Stock
 
 
 class RemoteDataSourceImp : RemoteDataSource {
 
-    override suspend fun getSymbols(filter: String, apiKey: String): Symbols =
-        AlphaVantage.service.getSymbolSearch(
+    override suspend fun getStocks(filter: String, apiKey: String): List<Stock> =
+        AlphaVantage.service.getStocks(
             filter,
             apiKey
-        ).toSymbols()
+        ).bestMatches.map {
+            it.toStock()
+        }
 }
 

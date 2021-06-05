@@ -1,11 +1,11 @@
-package ar.team.stockify.domain
+package ar.team.stockify.network.model
 
-data class Company(
-    val quarterlyEarnings: List<QuarterlyEarning>,
+data class RemoteCompany(
+    val remoteQuarterlyEarnings: List<RemoteQuarterlyEarning>,
     val symbol: String
 )
 
-data class QuarterlyEarning(
+data class RemoteQuarterlyEarning(
     val estimatedEPS: String,
     val fiscalDateEnding: String,
     val reportedDate: String,

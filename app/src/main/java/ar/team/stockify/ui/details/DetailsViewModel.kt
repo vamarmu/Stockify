@@ -7,6 +7,7 @@ import ar.team.stockify.model.Company
 import ar.team.stockify.model.QuarterlyEarning
 import ar.team.stockify.network.AlphaVantage
 import ar.team.stockify.network.Keys
+import ar.team.stockify.network.model.RemoteQuarterlyEarning
 import ar.team.stockify.usecases.AddRemoveFavUseCase
 import ar.team.stockify.usecases.GetFavouritesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,13 +22,10 @@ class DetailsViewModel @Inject constructor(
 ) : ViewModel() {
 
 
-    private val _detailsQuarter = MutableLiveData<List<QuarterlyEarning>>()
-    val detailsQuarter: LiveData<List<QuarterlyEarning>>
+    private val _detailsQuarter = MutableLiveData<List<RemoteQuarterlyEarning>>()
+    val detailsQuarter: LiveData<List<RemoteQuarterlyEarning>>
         get() = _detailsQuarter
 
-    private val _company = MutableLiveData<Company>()
-    val company: LiveData<Company>
-        get() = _company
 
     private val _favStock = MutableLiveData<Boolean>()
     val favStock: LiveData<Boolean> = _favStock
@@ -40,16 +38,16 @@ class DetailsViewModel @Inject constructor(
                 Keys.apiKey()
             )
             Timber.d("${javaClass.simpleName} -> Network call to Get Company Overview Endpoint")
-            _company.value = companyResponse
-            _detailsQuarter.value = companyResponse.quarterlyEarnings
+            if (!companyResponse.remoteQuarterlyEarnings.isNullOrEmpty()) {
+                _detailsQuarter.value = companyResponse.remoteQuarterlyEarnings
+            }
 
-            println(companyResponse.quarterlyEarnings)
         }
     }
 
-    fun addRemoveFavourites(stock: Stock){
-        viewModelScope.launch{
-            addRemoveFavUseCase.invoke(stock).also{
+    fun addRemoveFavourites(stock: Stock) {
+        viewModelScope.launch {
+            addRemoveFavUseCase.invoke(stock).also {
                 stockSaved(stock)
             }
         }

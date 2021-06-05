@@ -2,7 +2,7 @@ package ar.team.stockify.ui.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import ar.team.stockify.domain.BestMatches
+import ar.team.stockify.domain.Stock
 import ar.team.stockify.usecases.GetStocksUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +17,7 @@ class SearchViewModel @Inject constructor(
     private val getStocksUseCase: GetStocksUseCase
 ) : ViewModel(){
 
-    private var _items = listOf<BestMatches>()
+    private var _items = listOf<Stock>()
 
     lateinit var adapter: SearchAdapter
 
@@ -31,7 +31,7 @@ class SearchViewModel @Inject constructor(
             searchJob = viewModelScope.launch {
                 val result = getStocksUseCase.invoke(filter)
                 Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
-                _items = result.bestMatches
+                _items = result
                 adapter.addListWithoutHeader(_items)
                 filterActual=filter
             }
@@ -42,10 +42,10 @@ class SearchViewModel @Inject constructor(
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
             withContext(Dispatchers.Main) {
-                if (_items.isEmpty() || _items.size > 5 && filterActual!=filter) {
+                if (_items.isNullOrEmpty() || _items.size > 5 && filterActual!=filter) {
                     val result = getStocksUseCase.invoke(filter)
                     Timber.d("${javaClass.simpleName} -> Network call to Get Symbol Search Endpoint")
-                    _items = result.bestMatches
+                    _items = result
                     addListWithoutHeader(_items)
                     filterActual=filter
                 }
@@ -53,9 +53,8 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private fun addListWithoutHeader(list: List<BestMatches>?) {
+    private fun addListWithoutHeader(list: List<Stock>?) {
         adapter.addListWithoutHeader(list)
     }
-
 
 }

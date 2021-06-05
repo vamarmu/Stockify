@@ -36,7 +36,6 @@ class SearchFragment : Fragment(){
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
             val searchView = binding.searchView
-            /*searchViewModel = getViewModel{ SearchViewModel() }*/
 
             val recyclerView = binding.recyclerview
 

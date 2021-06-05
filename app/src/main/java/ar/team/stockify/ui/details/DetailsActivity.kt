@@ -10,6 +10,7 @@ import androidx.lifecycle.*
 import ar.team.stockify.R
 import ar.team.stockify.databinding.ActivityDetailsBinding
 import ar.team.stockify.model.QuarterlyEarning
+import ar.team.stockify.network.model.RemoteQuarterlyEarning
 import ar.team.stockify.ui.model.BestMatchesDataView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,7 +46,7 @@ class DetailsActivity : AppCompatActivity() {
             detailsViewModel.onQueryCompanyDetails(detailsData.symbol)
         }
 
-        detailsViewModel.detailsQuarter.observe(this, { list: List<QuarterlyEarning> ->
+        detailsViewModel.detailsQuarter.observe(this, { list: List<RemoteQuarterlyEarning> ->
             if(list.isNotEmpty()) {
                 bindDetailInfo1(binding.result, list)
                 bindDetailInfo2(binding.result2, list)
@@ -66,7 +67,7 @@ class DetailsActivity : AppCompatActivity() {
 
     }
 
-    private fun bindDetailInfo1(result: TextView, list: List<QuarterlyEarning>) {
+    private fun bindDetailInfo1(result: TextView, list: List<RemoteQuarterlyEarning>) {
         result.text = buildSpannedString {
 
             append("estimated EPS: ")
@@ -80,7 +81,7 @@ class DetailsActivity : AppCompatActivity() {
         }
     }
 
-    private fun bindDetailInfo2(result: TextView, list: List<QuarterlyEarning>) {
+    private fun bindDetailInfo2(result: TextView, list: List<RemoteQuarterlyEarning>) {
         result.text = buildSpannedString {
 
             append("Reported EPS: ")
