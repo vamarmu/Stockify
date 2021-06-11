@@ -1,24 +1,23 @@
 package ar.team.stockify.ui.details
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.core.text.bold
 import androidx.core.text.buildSpannedString
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import ar.team.stockify.R
-import ar.team.stockify.databinding.ActivityDetailsBinding
+import ar.team.stockify.databinding.DetailFragmentBinding
 import ar.team.stockify.domain.StockDetail
-import ar.team.stockify.model.QuarterlyEarning
-import ar.team.stockify.network.model.RemoteQuarterlyEarning
-import ar.team.stockify.ui.model.BestMatchesDataView
-import ar.team.stockify.ui.user.UserViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DetailsActivity : AppCompatActivity() {
+class DetailFragment : Fragment() {
 
     companion object {
         const val DATA = "DetailActivity:detail"
@@ -26,14 +25,22 @@ class DetailsActivity : AppCompatActivity() {
 
 
     private val detailsViewModel: DetailsViewModel by viewModels()
-    private lateinit var binding: ActivityDetailsBinding
+    private lateinit var binding: DetailFragmentBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityDetailsBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        val detailsData = intent.getParcelableExtra<BestMatchesDataView>(DATA)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DetailFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+
+        //val detailsData = intent.getParcelableExtra<BestMatchesDataView>(DATA)
        // val detailsDataName = intent.getSerializableExtra(DATA.name).toString()
 
         binding.favouritesButton.setOnClickListener {
@@ -49,7 +56,7 @@ class DetailsActivity : AppCompatActivity() {
         }
 
 
-        detailsViewModel.model.observe(this, Observer{ uiDetailModel ->
+        detailsViewModel.model.observe(viewLifecycleOwner, Observer{ uiDetailModel ->
             when(uiDetailModel){
                 is DetailsViewModel.UiDetailModel.Content -> {
                     if(uiDetailModel.detail.isNotEmpty()) {
@@ -84,11 +91,11 @@ class DetailsActivity : AppCompatActivity() {
     }
 
     private fun onNoContent(){
-        Toast.makeText(this,"SIN DATOS", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(),"SIN DATOS", Toast.LENGTH_SHORT).show()
     }
 
     private fun onLoad(){
-        Toast.makeText(this,"CARGANDO....", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(),"CARGANDO....", Toast.LENGTH_SHORT).show()
     }
 
     private fun bindDetailInfo1(result: TextView, list: List<StockDetail>) {

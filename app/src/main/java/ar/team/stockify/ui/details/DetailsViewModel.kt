@@ -83,7 +83,6 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             getFavouritesUseCase.invoke().also { it ->
                 _favStock.value = it.contains(stock)
-
             }
         }
     }
