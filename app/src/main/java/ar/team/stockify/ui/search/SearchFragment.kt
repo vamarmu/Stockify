@@ -9,10 +9,13 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.team.stockify.databinding.FragmentSearchBinding
 import ar.team.stockify.ui.details.DetailFragment
 import ar.team.stockify.ui.details.toBestMatchesDataView
+import ar.team.stockify.ui.details.toStockDataView
+import ar.team.stockify.ui.main.MainContentFragmentDirections
 import ar.team.stockify.ui.model.BestMatchesDataView
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
@@ -41,8 +44,9 @@ class SearchFragment : Fragment(){
 
             val manager = LinearLayoutManager(view.context.applicationContext)
 
-            searchViewModel.adapter = SearchAdapter(SearchClickListener { bestMatches ->
-                startDetailsActivity(bestMatches.toBestMatchesDataView())
+            searchViewModel.adapter = SearchAdapter(SearchClickListener { stock ->
+                findNavController().navigate(MainContentFragmentDirections.actionToDetail(stock.toStockDataView()))
+               //TODO ADD NAV **************
             })
 
             recyclerView.layoutManager = manager

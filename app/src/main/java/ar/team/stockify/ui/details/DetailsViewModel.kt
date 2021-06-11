@@ -8,6 +8,7 @@ import ar.team.stockify.domain.User
 import ar.team.stockify.network.AlphaVantage
 import ar.team.stockify.network.Keys
 import ar.team.stockify.network.model.RemoteQuarterlyEarning
+import ar.team.stockify.ui.model.StockDataView
 import ar.team.stockify.ui.user.UserViewModel
 import ar.team.stockify.usecases.AddRemoveFavUseCase
 import ar.team.stockify.usecases.GetFavouritesUseCase
@@ -35,10 +36,6 @@ class DetailsViewModel @Inject constructor(
     val model: LiveData<UiDetailModel>
         get() = _model
 
-    private val _detailsQuarter = MutableLiveData<List<StockDetail>>()
-    val detailsQuarter: LiveData<List<StockDetail>>
-        get() = _detailsQuarter
-
 
     private val _favStock = MutableLiveData<Boolean>()
     val favStock: LiveData<Boolean> = _favStock
@@ -57,7 +54,6 @@ class DetailsViewModel @Inject constructor(
 
             listDetail?.let { list ->
                 if (listDetail.isNotEmpty()) {
-                    _detailsQuarter.value = list
                     _model.value = UiDetailModel.Content(list)
                 }
                 else
@@ -67,10 +63,11 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    fun addRemoveFavourites(stock: Stock) {
+    fun addRemoveFavourites(stockDataView: StockDataView) {
+
         viewModelScope.launch {
-            addRemoveFavUseCase.invoke(stock).also {
-                stockSaved(stock)
+            addRemoveFavUseCase.invoke(stockDataView.toStock()).also {
+                stockSaved(stockDataView)
             }
             //TODO No sabemos si es o no favorito ¿?¿?¿?¿??
            /* favStock.value?.let { state ->
@@ -79,10 +76,10 @@ class DetailsViewModel @Inject constructor(
         }
     }
 
-    fun stockSaved(stock: Stock) {
+    fun stockSaved(stockDataView: StockDataView) {
         viewModelScope.launch {
             getFavouritesUseCase.invoke().also { it ->
-                _favStock.value = it.contains(stock)
+                _favStock.value = it.contains(stockDataView.toStock())
             }
         }
     }

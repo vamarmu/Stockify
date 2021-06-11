@@ -11,6 +11,7 @@ import androidx.core.text.buildSpannedString
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
+import androidx.navigation.fragment.navArgs
 import ar.team.stockify.R
 import ar.team.stockify.databinding.DetailFragmentBinding
 import ar.team.stockify.domain.StockDetail
@@ -23,7 +24,7 @@ class DetailFragment : Fragment() {
         const val DATA = "DetailActivity:detail"
     }
 
-
+    val args: DetailFragmentArgs by navArgs()
     private val detailsViewModel: DetailsViewModel by viewModels()
     private lateinit var binding: DetailFragmentBinding
 
@@ -39,22 +40,14 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-
-        //val detailsData = intent.getParcelableExtra<BestMatchesDataView>(DATA)
-       // val detailsDataName = intent.getSerializableExtra(DATA.name).toString()
-
         binding.favouritesButton.setOnClickListener {
-            if (detailsData != null) {
-                detailsViewModel.addRemoveFavourites(detailsData.toStock())
-            }
+                detailsViewModel.addRemoveFavourites(args.detailsData)
         }
 
-            if (detailsData != null) {
-            binding.ttDetailsCompanySymbol.text = detailsData.symbol
-            binding.tDetailsCompanyName.text = detailsData.name
-            detailsViewModel.onQueryCompanyDetails(detailsData.symbol)
-        }
 
+        binding.ttDetailsCompanySymbol.text = args.detailsData.symbol
+        binding.tDetailsCompanyName.text = args.detailsData.name
+        detailsViewModel.onQueryCompanyDetails(args.detailsData.symbol)
 
         detailsViewModel.model.observe(viewLifecycleOwner, Observer{ uiDetailModel ->
             when(uiDetailModel){
@@ -84,10 +77,7 @@ class DetailFragment : Fragment() {
 
         })
 
-        detailsData?.toStock()?.let { detailsViewModel.stockSaved(it) }
-
-
-
+       detailsViewModel.stockSaved(args.detailsData)
     }
 
     private fun onNoContent(){

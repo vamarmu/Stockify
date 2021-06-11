@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Stockify</string>
+
+    <!-- Splash -->
     <string name="logo">logo</string>
     <string name="version">V %s</string>
 
@@ -29,12 +31,7 @@
     <string name="about_application_id">Application ID  %s</string>
     <string name="about_version">Version  %s</string>
 
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="name">Name</string>
-
-
+    <!-- Favourite Button -->
     <string name="addButton">Agregar a Favoritos</string>
     <string name="removeButton">Remover de Favoritos</string>
 </resources>
