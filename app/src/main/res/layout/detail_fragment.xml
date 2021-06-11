@@ -6,14 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.details.DetailsActivity">
+    tools:context=".ui.details.DetailFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/details_header"
         android:layout_width="match_parent"
-        android:background="@drawable/search_decor"
         android:layout_height="258dp"
-        >
+        android:background="@drawable/search_decor">
 
         <TextView
             android:id="@+id/details_title"
@@ -38,7 +37,7 @@
             android:textSize="42sp"
             app:layout_constraintTop_toBottomOf="@+id/details_title"
             tools:layout_editor_absoluteX="0dp"
-            tools:text="@string/siglas"/>
+            tools:text="@string/siglas" />
 
         <TextView
             android:id="@+id/tDetails_company_name"
@@ -50,9 +49,35 @@
             android:textSize="24sp"
             app:layout_constraintTop_toBottomOf="@+id/ttDetailsCompanySymbol"
             tools:layout_editor_absoluteX="0dp"
-            tools:text="@string/empresa"/>
+            tools:text="@string/empresa" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <RelativeLayout
+        android:id="@+id/favouritesButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp">
+
+        <ImageView
+            android:id="@+id/imgButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add_button" />
+
+        <TextView
+            android:id="@+id/textButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_toEndOf="@id/imgButton"
+            android:text="@string/addButton"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

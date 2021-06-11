@@ -1,7 +1,7 @@
 package ar.team.stockify.network
 
-import ar.team.stockify.model.Company
-import ar.team.stockify.network.model.RemoteSymbol
+import ar.team.stockify.network.model.RemoteCompany
+import ar.team.stockify.network.model.RemoteListBestMatches
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -13,14 +13,14 @@ interface ApiAlphaVantage {
     }
 
     @GET("/query?function=SYMBOL_SEARCH")
-    suspend fun getSymbolSearch(
+    suspend fun getStocks(
         @Query("keywords") keywords: String,
         @Query("apikey") apiKey: String
-    ): RemoteSymbol
+    ): RemoteListBestMatches
 
     @GET("/query?function=EARNINGS")
-    suspend fun getCompanyOverview(
+    suspend fun getStockDetail(
         @Query("symbol") symbol: String,
         @Query("apikey") apiKey: String
-    ): Company
+    ): RemoteCompany?
 }

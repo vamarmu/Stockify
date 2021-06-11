@@ -1,6 +1,7 @@
 package ar.team.stockify.di
 
 import android.app.Application
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
 import ar.team.stockify.data.repository.StockifyRepository
@@ -22,7 +23,7 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun databaseProvider(app: Application) = Room.databaseBuilder(
+    fun databaseProvider(app: Application):StockDatabase = Room.databaseBuilder(
         app,
         StockDatabase::class.java,
         "stock-db"
@@ -31,14 +32,21 @@ class AppModule {
     .build()
 
     @Provides
-    fun stocksRepositoryProvider(localDataSource: LocalDataSource,
-        remoteDataSource: RemoteDataSource,
-        @Named("apiKey") apiKey: String
-    ): StockifyRepository = StockifyRepository(localDataSource, remoteDataSource, apiKey)
+    @Singleton
+    fun preferencesProvider (app:Application) : SharedPreferences = app.getSharedPreferences("UserPreferences",AppCompatActivity.MODE_PRIVATE)
+
 
     @Provides
     fun remoteDataSourceProvider(): RemoteDataSource = RemoteDataSourceImp()
 
     @Provides
-    fun localDataSourceProvider(db:StockDatabase): LocalDataSource=LocalDataSourceImp(db)
+    fun localDataSourceProvider(db:StockDatabase , preferences: SharedPreferences): LocalDataSource=LocalDataSourceImp(db,preferences)
+
+    @Provides
+    fun stocksRepositoryProvider(
+        localDataSource: LocalDataSource,
+        remoteDataSource: RemoteDataSource,
+        @Named("apiKey") apiKey: String
+    ): StockifyRepository = StockifyRepository(localDataSource, remoteDataSource, apiKey)
+
 }

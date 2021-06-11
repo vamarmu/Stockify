@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.team.stockify.databinding.FragmentSearchBinding
-import ar.team.stockify.ui.details.DetailsActivity
+import ar.team.stockify.ui.details.DetailFragment
 import ar.team.stockify.ui.details.toBestMatchesDataView
 import ar.team.stockify.ui.model.BestMatchesDataView
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,7 +36,6 @@ class SearchFragment : Fragment(){
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
             val searchView = binding.searchView
-            /*searchViewModel = getViewModel{ SearchViewModel() }*/
 
             val recyclerView = binding.recyclerview
 
@@ -65,8 +64,8 @@ class SearchFragment : Fragment(){
         }
 
         private fun startDetailsActivity(bestMatches: BestMatchesDataView) {
-            val intent = Intent(context, DetailsActivity::class.java)
-            intent.putExtra(DetailsActivity.DATA, bestMatches)
+            val intent = Intent(context, DetailFragment::class.java)
+            intent.putExtra(DetailFragment.DATA, bestMatches)
             startActivity(intent)
         }
 

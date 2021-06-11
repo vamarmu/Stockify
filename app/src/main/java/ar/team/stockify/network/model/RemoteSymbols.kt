@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import com.google.gson.annotations.SerializedName
 
-data class RemoteSymbol(
+data class RemoteListBestMatches(
     val bestMatches: List<RemoteBestMatches>
 )
 
