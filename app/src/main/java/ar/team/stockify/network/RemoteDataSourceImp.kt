@@ -8,12 +8,17 @@ import ar.team.stockify.domain.StockDetail
 class RemoteDataSourceImp : RemoteDataSource {
 
     override suspend fun getStocks(filter: String, apiKey: String): List<Stock> =
-        AlphaVantage.service.getStocks(
+         AlphaVantage.service.getStocks(
             filter,
             apiKey
-        ).bestMatches.map {
-            it.toStock()
-        }
+        )?.bestMatches?.let { bestMatches ->
+                bestMatches.map {
+                    it.toStock()
+                }
+
+        }?:emptyList()
+
+
 
     override suspend fun getStockDetail(filter: String, apiKey: String): List<StockDetail>? {
         val rest = AlphaVantage.service.getStockDetail(filter,apiKey)

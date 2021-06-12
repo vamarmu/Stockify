@@ -2,6 +2,7 @@ package ar.team.stockify.ui.main
 
 import android.database.sqlite.SQLiteException
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         binding.bottomMenu.setupWithNavController(navController)
 
-       /* TODO descomentar para cuando este preparado el DetailFragment
+
        navController.addOnDestinationChangedListener { _, destination, _ ->
             if(destination.id == R.id.detailFragment) {
                 binding.bottomMenu.visibility = View.GONE
@@ -40,7 +41,7 @@ class MainActivity : AppCompatActivity() {
                 binding.bottomMenu.visibility = View.VISIBLE
             }
         }
-        */
+
 
         val stock1 = LocalStock(symbol = "TSLA", name = "Tesla")
         val stock2 = LocalStock(symbol = "AAPL", name = "Apple")

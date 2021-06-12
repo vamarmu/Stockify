@@ -11,6 +11,7 @@ import androidx.core.text.buildSpannedString
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.*
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.navArgs
 import ar.team.stockify.R
 import ar.team.stockify.databinding.DetailFragmentBinding
@@ -24,7 +25,7 @@ class DetailFragment : Fragment() {
         const val DATA = "DetailActivity:detail"
     }
 
-    val args: DetailFragmentArgs by navArgs()
+    private val args: DetailFragmentArgs by navArgs()
     private val detailsViewModel: DetailsViewModel by viewModels()
     private lateinit var binding: DetailFragmentBinding
 
@@ -39,6 +40,15 @@ class DetailFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+
+        binding.detailsToolbar.apply {
+            title=""
+            setNavigationIcon(R.drawable.ic_arrow_back)
+            setNavigationOnClickListener {
+                NavHostFragment.findNavController(this@DetailFragment).popBackStack()
+            }
+        }
 
         binding.favouritesButton.setOnClickListener {
                 detailsViewModel.addRemoveFavourites(args.detailsData)

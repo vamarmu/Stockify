@@ -8,6 +8,13 @@
     android:orientation="vertical"
     tools:context=".ui.details.DetailFragment">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/detailsToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/details_header"
         android:layout_width="match_parent"
