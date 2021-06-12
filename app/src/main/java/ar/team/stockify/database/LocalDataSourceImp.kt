@@ -51,13 +51,14 @@ class LocalDataSourceImp(
         }
     }
 
-    override suspend fun addRemoveFavourite(stock: Stock) {
+    override suspend fun addRemoveFavourite(stock: Stock): Boolean {
         val favStock: LocalStock? = stockDAO.getAllFav().find { it.toStock() == stock }
-        if (favStock?.toStock() == stock) {
+        return if (favStock?.toStock() == stock) {
             stockDAO.delete(favStock)
+            false
         } else {
-
             stockDAO.insert(stock.toLocalStock())
+            true
         }
     }
 }
