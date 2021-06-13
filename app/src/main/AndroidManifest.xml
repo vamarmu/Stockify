@@ -40,8 +40,6 @@
         </activity>
 
 
-        <activity android:name="ar.team.stockify.ui.details.DetailsActivity" />
-
     </application>
 
 </manifest>

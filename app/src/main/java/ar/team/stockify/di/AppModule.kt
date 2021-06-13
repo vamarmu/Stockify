@@ -31,7 +31,6 @@ class AppModule {
     .fallbackToDestructiveMigration()
     .build()
 
-
     @Provides
     @Singleton
     fun preferencesProvider (app:Application) : SharedPreferences = app.getSharedPreferences("UserPreferences",AppCompatActivity.MODE_PRIVATE)

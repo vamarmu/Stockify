@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/userNameEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/set_name"
@@ -38,6 +38,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
+        app:layout_constraintTop_toBottomOf="@+id/userNameEdit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

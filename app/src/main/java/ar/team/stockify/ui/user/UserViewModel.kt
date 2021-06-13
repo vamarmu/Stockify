@@ -19,7 +19,7 @@ class UserViewModel @Inject constructor(
 
     sealed class UiUserModel {
         object NoUser: UiUserModel()
-        class Content(val user: User): UiUserModel()
+        class  Content(val user: User): UiUserModel()
         object Camera: UiUserModel()
         object Submit: UiUserModel()
     }

@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.team.stockify.databinding.FragmentFavouriteBinding
-import ar.team.stockify.ui.details.DetailsActivity
+import ar.team.stockify.ui.details.DetailFragment
 import ar.team.stockify.ui.details.toBestMatchesDataView
 import ar.team.stockify.ui.model.BestMatchesDataView
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,8 +49,8 @@ class FavouriteFragment : Fragment() {
     }
 
     private fun startDetailsActivity(bestMatches: BestMatchesDataView) {
-        val intent = Intent(context, DetailsActivity::class.java)
-        intent.putExtra(DetailsActivity.DATA, bestMatches)
+        val intent = Intent(context, DetailFragment::class.java)
+        intent.putExtra(DetailFragment.DATA, bestMatches)
         startActivity(intent)
     }
 }
