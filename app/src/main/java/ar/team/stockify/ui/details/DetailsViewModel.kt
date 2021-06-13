@@ -3,8 +3,7 @@ package ar.team.stockify.ui.details
 import androidx.lifecycle.*
 import ar.team.stockify.domain.Stock
 import ar.team.stockify.domain.StockDetail
-import ar.team.stockify.domain.User
-import ar.team.stockify.domain.StockDetail
+import ar.team.stockify.ui.model.StockDataView
 
 import ar.team.stockify.usecases.AddRemoveFavUseCase
 import ar.team.stockify.usecases.GetFavouritesUseCase
@@ -32,48 +31,43 @@ class DetailsViewModel @Inject constructor(
     val model: LiveData<UiDetailModel>
         get() = _model
 
-    private val _detailsQuarter = MutableLiveData<List<StockDetail>>()
-    val detailsQuarter: LiveData<List<StockDetail>>
-        get() = _detailsQuarter
-
-/*
-    private val _favStock = MutableLiveData<Boolean>()
-    val favStock: LiveData<Boolean> = _favStock*/
 
     init {
         _model.value= UiDetailModel.Loading
     }
 
 
-    fun onQueryCompanyDetails(stock: Stock) {
+    fun onQueryCompanyDetails(stockData: StockDataView) {
 
         viewModelScope.launch {
-            val listDetail:List<StockDetail>? = getStockDetailUseCase.invoke(stock)
+            val stock = stockData.toStock()
             checkIsFavourite(stock)
-            val listDetail:List<StockDetail>? = getStockDetailUseCase.invoke(stock.name)
+            val listDetail: List<StockDetail>? = getStockDetailUseCase.invoke(stock.name)
             Timber.d("${javaClass.simpleName} -> Network call to Get Company Overview Endpoint")
             println("TAG $listDetail")
 
             listDetail?.let { list ->
                 if (listDetail.isNotEmpty()) {
                     _model.value = UiDetailModel.Content(list)
-                }
-                else
+                } else
                     _model.value = UiDetailModel.NoContent
 
+            }?: kotlin.run {
+                _model.value = UiDetailModel.NoContent
+            }
         }
     }
 
+
     private suspend fun checkIsFavourite(stock: Stock) {
-            getFavouritesUseCase.invoke().also { it ->
-                //_favStock.value = it.contains(stock)
+            getFavouritesUseCase.invoke().also {
                 _model.value = UiDetailModel.IsFavourite(it.contains(stock))
             }
     }
 
-    fun addRemoveFavourites(stock: Stock) {
+    fun addRemoveFavourites(stockData: StockDataView) {
         viewModelScope.launch {
-            _model.value = UiDetailModel.IsFavourite(addRemoveFavUseCase.invoke(stock))
+            _model.value = UiDetailModel.IsFavourite(addRemoveFavUseCase.invoke(stockData.toStock()))
         }
     }
 }

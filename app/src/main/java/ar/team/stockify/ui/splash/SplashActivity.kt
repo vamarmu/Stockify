@@ -9,19 +9,14 @@ import ar.team.stockify.BuildConfig
 import ar.team.stockify.R
 import ar.team.stockify.ui.user.UserActivity
 import ar.team.stockify.databinding.ActivitySplashBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        binding.version.text = resources.getString(R.string.version, BuildConfig.VERSION_NAME)
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, UserActivity::class.java))
-            finish()
-        }, 3000)
     }
 }

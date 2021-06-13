@@ -57,7 +57,7 @@ class DetailFragment : Fragment() {
 
         binding.ttDetailsCompanySymbol.text = args.detailsData.symbol
         binding.tDetailsCompanyName.text = args.detailsData.name
-        detailsViewModel.onQueryCompanyDetails(args.detailsData.symbol)
+        detailsViewModel.onQueryCompanyDetails(args.detailsData)
 
         detailsViewModel.model.observe(viewLifecycleOwner, Observer{ uiDetailModel ->
             when(uiDetailModel){
@@ -67,13 +67,10 @@ class DetailFragment : Fragment() {
                         bindDetailInfo2(binding.result2, uiDetailModel.detail)
                     }
                 }
-                is DetailsViewModel.UiDetailModel.NoContent -> {
-                    onNoContent()
-                }
                 is DetailsViewModel.UiDetailModel.Loading -> {
                     onLoad()
                 }
-                is DetailsViewModel.UiDetailModel.ToggleFavourite ->{
+                is DetailsViewModel.UiDetailModel.IsFavourite ->{
                     if (uiDetailModel.state) {
                         binding.imgButton.setImageResource(R.drawable.ic_remove_button)
                         binding.textButton.text = getString(R.string.removeButton)
@@ -86,8 +83,6 @@ class DetailFragment : Fragment() {
             }
 
         })
-
-       detailsViewModel.stockSaved(args.detailsData)
     }
 
     private fun onNoContent(){

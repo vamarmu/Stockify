@@ -3,12 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/landing_nav_graph"
-    app:startDestination="@id/splashActivity">
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="ar.team.stockify.ui.splash.SplashFragment"
+        android:label="Splash"
+        tools:layout="@layout/splash_fragment">
+
+        <action
+            android:id="@+id/action_to_profile"
+            app:destination="@id/userFragment"
+            />
+
+    </fragment>
 
 
-    <activity
-        android:id="@+id/splashActivity"
-        android:name="ar.team.stockify.ui.splash.SplashActivity"
-        android:label="SplashActivity" />
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="ar.team.stockify.ui.user.UserFragment"
+        android:label="Profile"
+        tools:layout="@layout/user_fragment" >
+        <argument
+            android:name="isFromSplash"
+            android:defaultValue ="false"
+            app:argType="boolean" />
+
+    </fragment>
 
 </navigation>

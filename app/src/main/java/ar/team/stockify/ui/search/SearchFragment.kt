@@ -46,7 +46,6 @@ class SearchFragment : Fragment(){
 
             searchViewModel.adapter = SearchAdapter(SearchClickListener { stock ->
                 findNavController().navigate(MainContentFragmentDirections.actionToDetail(stock.toStockDataView()))
-               //TODO ADD NAV **************
             })
 
             recyclerView.layoutManager = manager
