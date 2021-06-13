@@ -46,13 +46,8 @@ class UserViewModel @Inject constructor(
         _model.value= UiUserModel.Camera
     }
 
-
     fun onButtonClicked() {
         _model.value = UiUserModel.Submit
     }
 
 }
-
-
-
-
