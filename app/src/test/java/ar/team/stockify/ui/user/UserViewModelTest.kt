@@ -66,7 +66,7 @@ class UserViewModelTest {
 
             vm.onButtonClicked()
 
-            assertEquals(vm.model.value, UserViewModel.UiUserModel.Submit)
+            verify(observer).onChanged(UserViewModel.UiUserModel.Submit)
         }
     }
 
@@ -78,7 +78,8 @@ class UserViewModelTest {
 
             vm.onImageButtonClicked()
 
-            assertEquals(vm.model.value, UserViewModel.UiUserModel.Camera)
+            verify(observer).onChanged(UserViewModel.UiUserModel.Camera)
+
         }
     }
 
