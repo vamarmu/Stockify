@@ -57,7 +57,6 @@ class UserIntegrationTests {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
-        val context: Context = Mockito.mock(Context::class.java)
         localDataSource = FakeLocalDataSource()
         stockifyRepository = StockifyRepository(localDataSource, remoteDataSource, apiKey = "1234")
         setUserUseCase = SetUserUseCase(stockifyRepository)
