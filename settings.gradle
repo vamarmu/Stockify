@@ -3,3 +3,4 @@ rootProject.name = "Stockify"
 include ':domain'
 include ':usecases'
 include ':data'
+include ':testShared'
