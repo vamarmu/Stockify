@@ -27,6 +27,7 @@
         </provider>
 
         <activity android:name=".ui.user.UserActivity"></activity>
+        <activity android:name="ar.team.stockify.ui.HiltTestActivity"></activity>
 
         <activity android:name=".ui.main.MainActivity" />
 
