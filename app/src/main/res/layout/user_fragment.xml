@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.user.UserActivity">
+    tools:context=".ui.user.UserFragment">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guidelineHorizontalHeader"
@@ -32,7 +32,6 @@
         android:gravity="center"
         style="@style/TextAppearance.MaterialComponents.Headline3"
         android:textColor="@color/primaryTextColor"
-        android:text="WELCOME"
         android:background="@drawable/search_decor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

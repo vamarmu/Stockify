@@ -1,19 +1,15 @@
 package ar.team.stockify.ui.splash
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ar.team.stockify.BuildConfig
 import ar.team.stockify.R
-import ar.team.stockify.ui.user.UserActivity
-import ar.team.stockify.databinding.ActivitySplashBinding
 import ar.team.stockify.databinding.SplashFragmentBinding
 
 

@@ -1,15 +1,10 @@
 package ar.team.stockify.ui.user
 
-import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import ar.team.stockify.FakeLocalDataSource
 import ar.team.stockify.data.repository.StockifyRepository
-import ar.team.stockify.data.source.LocalDataSource
 import ar.team.stockify.data.source.RemoteDataSource
-import ar.team.stockify.database.LocalDataSourceImp
-import ar.team.stockify.database.StockDatabase
 import ar.team.stockify.usecases.GetUserUseCase
 import ar.team.stockify.usecases.SetUserUseCase
 import kotlinx.coroutines.Dispatchers
@@ -24,8 +19,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito
-import org.mockito.Mockito.verify
 import org.mockito.junit.MockitoJUnitRunner
 
 
