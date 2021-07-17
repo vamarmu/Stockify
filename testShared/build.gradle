@@ -11,4 +11,6 @@ java {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation project(path: ':domain')
+    implementation project(path: ':data')
+
 }
