@@ -1,5 +1,47 @@
 <resources>
     <string name="app_name">Stockify</string>
+
+    <!-- Splash -->
     <string name="logo">logo</string>
     <string name="version">V %s</string>
+
+    <!-- User  -->
+    <string name="error_save_image_user">Error al guardar la imagen</string>
+    <string name="error_validate_info_user">Debes indicar tu nombre y añadir una foto</string>
+    <string name="title_no_user">¿QUIEN ERES?</string>
+    <string name="title_content_user">HOLA</string>
+    <string name="add_image_user">Añade tu foto</string>
+
+
+
+    <string name="stock">Stock</string>
+    <string name="name">Nombre</string>
+    <string name="precio">Precio</string>
+    <string name="cambio">Cambio</string>
+    <string name="resultados">Resultados</string>
+    <string name="favoritos">Favoritos</string>
+    <string name="user_image">user image</string>
+    <string name="username">username</string>
+    <string name="save">Guardar</string>
+    <string name="set_name">Introduce tu nombre</string>
+    <string name="upload_user_image">Subir imagen de usuario</string>
+    <string name="edit_user_image">Edit</string>
+
+    <string name="detalles">Detalles</string>
+    <string name="empresa">Company Name</string>
+    <string name="siglas">Symbol</string>
+
+
+    <!-- Bottom Menu -->
+    <string name="item_menu_user">User</string>
+    <string name="item_menu_search">Search</string>
+    <string name="item_menu_about">About</string>
+
+    <!-- About -->
+    <string name="about_application_id">Application ID  %s</string>
+    <string name="about_version">Version  %s</string>
+
+    <!-- Favourite Button -->
+    <string name="addButton">Agregar a Favoritos</string>
+    <string name="removeButton">Remover de Favoritos</string>
 </resources>
