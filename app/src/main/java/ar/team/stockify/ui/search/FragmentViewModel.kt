@@ -14,13 +14,14 @@ class FragmentViewModel @Inject constructor(
 ): ViewModel() {
     lateinit var favouritesAdapter: FavouritesAdapter
 
-    init {
+
+    private fun addListWithHeader(list: List<Stock>?) {
+        favouritesAdapter.addListWithHeader(list)
+    }
+
+    fun findFavourites(){
         viewModelScope.launch {
             addListWithHeader( getFavouritesUseCase.invoke())
         }
-
-    }
-    private fun addListWithHeader(list: List<Stock>?) {
-        favouritesAdapter.addListWithHeader(list)
     }
 }

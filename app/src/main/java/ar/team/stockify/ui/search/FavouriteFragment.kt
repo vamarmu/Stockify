@@ -7,10 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import ar.team.stockify.databinding.FragmentFavouriteBinding
 import ar.team.stockify.ui.details.DetailFragment
 import ar.team.stockify.ui.details.toBestMatchesDataView
+import ar.team.stockify.ui.details.toStockDataView
+import ar.team.stockify.ui.main.MainContentFragmentDirections
 import ar.team.stockify.ui.model.BestMatchesDataView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,27 +33,26 @@ class FavouriteFragment : Fragment() {
     }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
+
+    private fun loadFavourites(){
         val recyclerViewFavourites = binding.recyclerviewFavourites
-        val managerFavourites = LinearLayoutManager(view.context.applicationContext)
-
+        view?.let {
+            val managerFavourites = LinearLayoutManager(it.context.applicationContext)
+            recyclerViewFavourites.layoutManager = managerFavourites
+        }
         favouritesViewModel.favouritesAdapter = FavouritesAdapter(FavouriteClickListener { stock ->
-            startDetailsActivity( stock.toBestMatchesDataView())
+            findNavController().navigate(MainContentFragmentDirections.actionToDetail(stock.toStockDataView()))
+
         })
-
-        recyclerViewFavourites.layoutManager = managerFavourites
-
+        favouritesViewModel.findFavourites()
         recyclerViewFavourites.adapter = favouritesViewModel.favouritesAdapter
-
-
-
     }
 
-    private fun startDetailsActivity(bestMatches: BestMatchesDataView) {
-        val intent = Intent(context, DetailFragment::class.java)
-        intent.putExtra(DetailFragment.DATA, bestMatches)
-        startActivity(intent)
+    override fun onResume() {
+        super.onResume()
+
+        loadFavourites()
     }
+
 }
