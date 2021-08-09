@@ -34,7 +34,7 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DetailFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -86,23 +86,23 @@ class DetailFragment : Fragment() {
     }
 
     private fun onNoContent(){
-        Toast.makeText(requireContext(),"SIN DATOS", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(),resources.getString(R.string.toast_data_no_found), Toast.LENGTH_SHORT).show()
     }
 
     private fun onLoad(){
-        Toast.makeText(requireContext(),"CARGANDO....", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(),resources.getString(R.string.toast_loading), Toast.LENGTH_SHORT).show()
     }
 
     private fun bindDetailInfo1(result: TextView, list: List<StockDetail>) {
         result.text = buildSpannedString {
 
-            append("estimated EPS: ")
+            append(resources.getString(R.string.estimated_eps))
             bold{ appendLine(list[1].estimatedEPS) }
 
-            append("Fiscal Date Ending: ")
+            append(resources.getString(R.string.fiscal_date_ending))
             bold { appendLine(list[1].fiscalDateEnding) }
 
-            append("Reported Date: ")
+            append(resources.getString(R.string.reported_date))
             bold { appendLine(list[1].reportedDate) }
         }
     }
@@ -110,13 +110,13 @@ class DetailFragment : Fragment() {
     private fun bindDetailInfo2(result: TextView, list: List<StockDetail>) {
         result.text = buildSpannedString {
 
-            append("Reported EPS: ")
+            append(resources.getString(R.string.reported_eps))
             bold { appendLine(list[1].reportedEPS) }
 
-            appendLine("Surprise: ")
+            appendLine(resources.getString(R.string.surprise))
             bold { appendLine(list[1].surprise) }
 
-            append("Surprise Percentage: ")
+            append(resources.getString(R.string.surprise_percentage))
             bold { appendLine(list[1].surprisePercentage) }
         }
     }
