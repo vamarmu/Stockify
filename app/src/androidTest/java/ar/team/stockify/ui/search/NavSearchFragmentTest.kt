@@ -59,7 +59,7 @@ class NavSearchFragmentTest {
         val appCompatImageView = onView(
             Matchers.allOf(
                 ViewMatchers.withId(R.id.search_button),
-                ViewMatchers.withContentDescription("Buscar"),
+                ViewMatchers.withContentDescription("Search"),
                 childAtPosition(
                     Matchers.allOf(
                         ViewMatchers.withId(R.id.search_bar),
