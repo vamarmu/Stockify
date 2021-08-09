@@ -66,6 +66,11 @@ class SearchFragment : Fragment(){
             )
         }
 
+        private fun startDetailsActivity(bestMatches: BestMatchesDataView) {
+            val intent = Intent(context, DetailFragment::class.java)
+            intent.putExtra(DetailFragment.DATA, bestMatches)
+            startActivity(intent)
+        }
 
         internal class QueryTextListener(
             lifecycle: Lifecycle,

@@ -42,5 +42,27 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+
+        val stock1 = LocalStock(symbol = "TSLA", name = "Tesla")
+        val stock2 = LocalStock(symbol = "AAPL", name = "Apple")
+
+
+        lifecycleScope.launch {
+            try {
+                db.stockDao().insert(stock1)
+                db.stockDao().insert(stock2)
+            } catch (e: SQLiteException) {
+                println(e.message)
+            }
+
+        }
+
+        lifecycleScope.launch {
+            val favStocks = db.stockDao().getAllFav()
+
+            favStocks.forEach {
+                println("STOCK SAVED" + it.symbol + "" + it.name)
+            }
+        }
     }
 }

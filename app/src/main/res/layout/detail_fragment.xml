@@ -27,10 +27,10 @@
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
             android:padding="16dp"
-            android:text="@string/detail"
+            android:text="@string/detalles"
             android:textAlignment="center"
             android:textColor="@color/primaryTextColor"
-            android:textSize="30sp"
+            android:textSize="18sp"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="-26dp" />
 
@@ -44,7 +44,7 @@
             android:textSize="42sp"
             app:layout_constraintTop_toBottomOf="@+id/details_title"
             tools:layout_editor_absoluteX="0dp"
-            tools:text="@string/symbol" />
+            tools:text="@string/siglas" />
 
         <TextView
             android:id="@+id/tDetails_company_name"
@@ -56,7 +56,7 @@
             android:textSize="24sp"
             app:layout_constraintTop_toBottomOf="@+id/ttDetailsCompanySymbol"
             tools:layout_editor_absoluteX="0dp"
-            tools:text="@string/company" />
+            tools:text="@string/empresa" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -72,8 +72,7 @@
             android:id="@+id/imgButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_add_button"
-            tools:contentDescription="ignore"/>
+            android:src="@drawable/ic_add_button" />
 
         <TextView
             android:id="@+id/textButton"
@@ -99,8 +98,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:nestedScrollingEnabled="true"
-            android:paddingStart="10dp"
-            android:paddingEnd="4dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="4dp"
             android:textSize="16sp"
             app:lineHeight="24sp" />
 
