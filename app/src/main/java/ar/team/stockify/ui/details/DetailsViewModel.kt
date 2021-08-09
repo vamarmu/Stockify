@@ -42,7 +42,7 @@ class DetailsViewModel @Inject constructor(
         viewModelScope.launch {
             val stock = stockData.toStock()
             checkIsFavourite(stock)
-            val listDetail: List<StockDetail>? = getStockDetailUseCase.invoke(stock.name)
+            val listDetail: List<StockDetail>? = getStockDetailUseCase.invoke(stock.symbol)
             Timber.d("${javaClass.simpleName} -> Network call to Get Company Overview Endpoint")
             println("TAG $listDetail")
 
