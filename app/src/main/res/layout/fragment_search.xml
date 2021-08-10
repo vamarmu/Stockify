@@ -25,7 +25,7 @@
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:text="@string/resultados"
+            android:text="@string/results"
             android:padding="8dp"
             android:textSize="24sp"
             app:layout_constraintTop_toTopOf="parent" />
@@ -35,15 +35,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="8dp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-
-
 
 </LinearLayout>
