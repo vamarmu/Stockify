@@ -49,7 +49,7 @@ class UserRegisterTest {
     @Test
     fun labelRegisterTest() {
         launchUserFragmentFromSplash()
-        onView(withId(R.id.titleUser)).check( ViewAssertions.matches(withText("¿QUIEN ERES?")))
+        onView(withId(R.id.titleUser)).check( ViewAssertions.matches(withText("WHO ARE YOU?")))
     }
 
 
